@@ -3,15 +3,28 @@
 
 ---
 
+## Technical Snapshot
+
+- **Data**: MIMIC-IV v3.1 (PhysioNet), non-ICU hospital admissions
+- **Cohort**: Adult inpatient admissions excluding ICU stays
+- **Exposure**: Early RAAS inhibitor use (ACE inhibitors / ARBs within 24 hours of admission)
+- **Outcome**: In-hospital mortality
+- **Methods**:
+  - BigQuery SQL for cohort construction and exposure definition
+  - Multivariable logistic regression
+  - Absolute risk estimation via average marginal effects
+  - Age-stratified risk difference analyses
+- **Tools**: BigQuery, Python (pandas, statsmodels), Jupyter
+
+---
+
 ## Project Snapshot
 
 - **Population**: Adult non-ICU hospital admissions (MIMIC-IV v3.1)
-- **Exposure**: Early RAAS inhibitor use (ACE inhibitors and/or ARBs within 24 hours of admission)
-- **Outcome**: In-hospital mortality
 - **Design**: Retrospective observational cohort study
-- **Analysis**: Multivariable logistic regression with absolute risk estimation (average marginal effects)
-- **Key Focus**: Comparison of relative (odds ratios) and absolute (risk differences) effect measures for early RAAS inhibitor exposure
-- **Key Finding**: Early RAAS inhibitor exposure was associated with a lower adjusted probability of in-hospital mortality, with clinically interpretable absolute risk reductions that increased with age
+- **Analysis**: Multivariable logistic regression
+- **Key Focus**: Comparison of relative (odds ratios) and absolute (risk differences) effect measures, with emphasis on age-specific absolute risk
+- **Key Finding**: Early RAAS inhibitor exposure was associated with a lower adjusted probability of in-hospital mortality, with larger absolute risk reductions among older patients
 - **Interpretation**: Observational association; hypothesis-generating
 
 ---
