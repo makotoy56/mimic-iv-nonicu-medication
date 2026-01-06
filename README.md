@@ -13,7 +13,6 @@
 📁 **SQL pipelines (BigQuery)**: [sql/](sql/)  
 📁 **Stepwise short documentation**: [docs/](docs/)
 
-
 ---
 
 ## Technical Snapshot
