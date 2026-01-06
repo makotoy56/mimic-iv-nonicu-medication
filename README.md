@@ -3,10 +3,11 @@
 
 ## 🔍 Start Here (Analysis Entry Points)
 
-➡️ **Pipeline overview (notebooks)**: [notebooks/](notebooks/)  
-➡️ **Initial setup**: [00_setup.ipynb](notebooks/00_setup.ipynb)  
 ➡️ **Cohort construction**: [01_cohort.ipynb](notebooks/01_cohort.ipynb)  
 ➡️ **Exposure definition**: [02_exposure.ipynb](notebooks/02_exposure.ipynb)  
+➡️ **Validate input tables**: [03a_validate_input_tables.ipynb](notebooks/03a_validate_input_tables.ipynb)  
+➡️ **Describe_analysis_dataset**: [03b_describe_analysis_dataset](notebooks/03b_describe_analysis_dataset.ipynb)
+➡️ **Unadjusted Outcomes Overview**: [04a_unadjusted_outcomes](notebooks/04a_unadjusted_outcomes.ipynb)]
 ➡️ **Multivariable outcomes**: [04b_multivariable_outcomes.ipynb](notebooks/04b_multivariable_outcomes.ipynb)  
 
 📁 **SQL pipelines (BigQuery)**: [sql/](sql/)  
