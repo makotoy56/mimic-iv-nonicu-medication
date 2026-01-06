@@ -1,4 +1,4 @@
-# 03b Describe Analysis Dataset (Baseline Characteristics)
+# 03b - Describe Analysis Dataset (Baseline Characteristics)
 
 ## Overview
 

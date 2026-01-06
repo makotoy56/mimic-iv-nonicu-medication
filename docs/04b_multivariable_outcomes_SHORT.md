@@ -1,4 +1,4 @@
-# 04b: Multivariable Outcomes Analysis (Short Summary)
+# 04b - Multivariable Outcomes Analysis (Short Summary)
 
 ## Purpose
 This notebook evaluates the association between early in-hospital exposure to renin–angiotensin–aldosterone system (RAAS) inhibitors and in-hospital mortality among adult non-ICU hospital admissions.

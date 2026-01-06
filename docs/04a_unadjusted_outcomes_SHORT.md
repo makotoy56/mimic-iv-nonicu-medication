@@ -1,4 +1,4 @@
-# 04a. Unadjusted Outcomes Overview (Non-ICU Admissions)
+# 04a - Unadjusted Outcomes Overview (Non-ICU Admissions)
 
 ## Overview
 

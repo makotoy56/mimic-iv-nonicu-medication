@@ -1,4 +1,4 @@
-# 03a — Validation of Analysis Input Tables (SHORT)
+# 03a - Validation of Analysis Input Tables (SHORT)
 
 ## Overview
 
