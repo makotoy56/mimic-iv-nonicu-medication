@@ -1,6 +1,18 @@
 # Association of Early RAAS Inhibitor Exposure with In-Hospital Mortality
 *A Non-ICU Hospital Cohort Study Using MIMIC-IV*
 
+## 🔍 Start Here (Analysis Entry Points)
+
+➡️ **Pipeline overview (notebooks)**: [notebooks/](notebooks/)  
+➡️ **Initial setup**: [00_setup.ipynb](notebooks/00_setup.ipynb)  
+➡️ **Cohort construction**: [01_cohort.ipynb](notebooks/01_cohort.ipynb)  
+➡️ **Exposure definition**: [02_exposure.ipynb](notebooks/02_exposure.ipynb)  
+➡️ **Multivariable outcomes**: [04b_multivariable_outcomes.ipynb](notebooks/04b_multivariable_outcomes.ipynb)  
+
+📁 **SQL pipelines (BigQuery)**: [sql/](sql/)  
+📁 **Stepwise short documentation**: [docs/](docs/)
+
+
 ---
 
 ## Technical Snapshot
