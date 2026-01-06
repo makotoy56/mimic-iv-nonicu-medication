@@ -1,6 +1,8 @@
 # Association of Early RAAS Inhibitor Exposure with In-Hospital Mortality
 *A Non-ICU Hospital Cohort Study Using MIMIC-IV*
 
+---
+
 ## 🔍 Start Here (Analysis Entry Points)
 
 ➡️ **Cohort construction**: [01_cohort.ipynb](notebooks/01_cohort.ipynb) <br>
