@@ -23,6 +23,23 @@ A multivariable logistic regression model was fitted, adjusting for:
 Categorical variables were one-hot encoded with explicit handling of missing values.
 Model performance was evaluated using ROC AUC and precision–recall AUC.
 
+### Feature Construction (Model Inputs)
+The modeling matrix is defined explicitly as:
+- `exposure` (binary early RAAS indicator)
+- `num_vars = ["age"]`
+- `cat_vars = ["gender", "race_group", "admission_type", "insurance", "anchor_year_group"]`
+
+Categorical variables are one-hot encoded and concatenated with `exposure` and `num_vars`, yielding `feature_cols` (e.g., `gender_*`, `race_group_*`, `admission_type_*`, `insurance_*`, `anchor_year_group_*`).
+
+Outcome handling is separated from features: `hospital_expire_flag` is used only to construct `outcome` and is not included in `feature_cols`.
+
+**Recommended guard (leakage prevention)**  
+Add a simple assert before modeling to block post-outcome columns:
+```python
+forbidden_cols = {"hosp_los", "dischtime", "deathtime", "hospital_expire_flag", "outcome"}
+assert forbidden_cols.isdisjoint(feature_cols)
+```
+
 To improve interpretability beyond odds ratios, results were summarized using:
 - Average marginal effects (AME)
 - Adjusted predicted risks
