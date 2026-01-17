@@ -49,7 +49,6 @@
   Tables:
    - table_name_1
    - table_name_2
-   - ...
 
 ### Authentication
 This script requires Application Default Credentials (ADC).
