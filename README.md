@@ -34,28 +34,22 @@
 ---
 
 ## Validation checklist
-
 ### Purpose
 - validation_checklist.py performs a lightweight sanity check
 - It enumerates candidate tables in the BigQuery dataset (nonicu_raas)
 - Uses INFORMATION_SCHEMA
-
 ### How to run
 - python scripts/validation_checklist.py
-
 ### What it does
 - Lists available tables
 - Output format:
   Tables:
    - table_name_1
    - table_name_2
-
 ### Authentication
 This script requires Application Default Credentials (ADC).
-
 ### Run
 gcloud auth application-default login
-
 **Important note**
 - This script ONLY checks table existence
 - It does NOT perform any data quality validation
