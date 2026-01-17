@@ -14,6 +14,7 @@
 
 📁 **SQL pipelines (BigQuery)**: [sql/](sql/)  
 📁 **Stepwise short documentation**: [docs/](docs/)
+📁 **Validation checklist**: [scripts/validation_checklist.py](scripts/validation_checklist.py)
 
 ---
 
@@ -29,6 +30,30 @@
   - Absolute risk estimation via average marginal effects
   - Age-stratified risk difference analyses
 - **Tools**: BigQuery, Python (pandas, statsmodels), Jupyter
+
+---
+
+## Validation checklist
+
+Step 1 enumerates candidate tables in BigQuery (`nonicu_raas`) via `INFORMATION_SCHEMA`.
+
+Run the script with a venv Python:
+````text
+/Users/makoto/Projects/my_notebook/venv/bin/python scripts/validation_checklist.py
+````
+
+Or after activating the venv:
+````text
+python scripts/validation_checklist.py
+````
+
+Output lists table names under `Tables:` as a bulleted list.  
+Note: ADC is required (`gcloud auth application-default login`).
+If you use a service account key, set `GOOGLE_APPLICATION_CREDENTIALS` to the JSON key path.
+To set up ADC with gcloud:
+````text
+gcloud auth application-default login
+````
 
 ---
 
@@ -117,6 +142,9 @@ mimic-iv-nonicu-medication-private/
 │   ├── 03b_describe_analysis_dataset_SHORT.md
 │   ├── 04a_unadjusted_outcomes_SHORT.md
 │   └── 04b_multivariable_outcomes_SHORT.md
+│
+├── scripts/          # Utility scripts
+│   └── validation_checklist.py   # Validation checklist for inputs/analysis artifacts
 │
 ├── data/             # Local analysis artifacts (minimal / excluded)
 │   ├── interim/
