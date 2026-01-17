@@ -12,9 +12,9 @@
 ➡️ **Unadjusted Outcomes Overview**: [04a_unadjusted_outcomes.ipynb](notebooks/04a_unadjusted_outcomes.ipynb)<br>
 ➡️ **Multivariable outcomes**: [04b_multivariable_outcomes.ipynb](notebooks/04b_multivariable_outcomes.ipynb)<br>
 
-📁 **SQL pipelines (BigQuery)**: [sql/](sql/)  
-📁 **Stepwise short documentation**: [docs/](docs/)
-📁 **Validation checklist**: [scripts/validation_checklist.py](scripts/validation_checklist.py)
+📁 **SQL pipelines (BigQuery)**: [sql/](sql/) <br>
+📁 **Stepwise short documentation**: [docs/](docs/)<br>
+📁 **Validation checklist**: [scripts/validation_checklist.py](scripts/validation_checklist.py)<br>
 
 ---
 
@@ -37,10 +37,7 @@
 
 Step 1 enumerates candidate tables in BigQuery (`nonicu_raas`) via `INFORMATION_SCHEMA`.
 
-Run the script with a venv Python:
-````text
-/Users/makoto/Projects/my_notebook/venv/bin/python scripts/validation_checklist.py
-````
+Run the script with a venv Python
 
 Or after activating the venv:
 ````text
