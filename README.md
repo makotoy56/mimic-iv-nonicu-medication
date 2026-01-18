@@ -3,6 +3,13 @@
 
 ---
 
+Maintained by <br>
+Makoto Yoshida, PhD <br>
+Clinical Data Analytics Portfolio <br>
+LinkedIn: https://www.linkedin.com/in/makoto-yoshida/ <br>
+
+---
+
 ## 🔍 Start Here (Analysis Entry Points)
 
 ➡️ **Cohort construction**: [01_cohort.ipynb](notebooks/01_cohort.ipynb) <br>
