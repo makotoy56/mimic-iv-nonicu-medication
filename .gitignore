@@ -18,6 +18,7 @@ data/
 
 # --- Jupyter ---
 .ipynb_checkpoints/
+00*.ipynb
 
 # --- Local system files ---
 .DS_Store
@@ -31,8 +32,7 @@ __pycache__/
 venv/
 
 # --- VS Code ---
-.vscode/*
-!.vscode/settings.json
+.vscode/   # ← これに変更
 
 # --- SAS ---
 sas/outputs/
@@ -40,6 +40,4 @@ sas/logs/
 *.pdf
 *.log
 *.lst
-
-# （必要なら）
 sas/programs/*.sas
