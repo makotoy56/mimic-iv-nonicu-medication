@@ -1,6 +1,4 @@
 # --- Sensitive or local-only files ---
-00*.ipynb
-*.json
 .gcp/
 .env
 .env.*
@@ -15,8 +13,10 @@ docs2/
 data/
 *.csv
 *.parquet
+*.xlsx
+*.sas7bdat
 
-# --- Jupyter noise ---
+# --- Jupyter ---
 .ipynb_checkpoints/
 
 # --- Local system files ---
@@ -26,5 +26,20 @@ data/
 __pycache__/
 *.pyc
 
+# --- Virtual environments ---
+.venv/
+venv/
+
 # --- VS Code ---
-.vscode/
+.vscode/*
+!.vscode/settings.json
+
+# --- SAS ---
+sas/outputs/
+sas/logs/
+*.pdf
+*.log
+*.lst
+
+# （必要なら）
+sas/programs/*.sas
