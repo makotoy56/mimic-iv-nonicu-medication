@@ -37,7 +37,7 @@ LinkedIn: https://www.linkedin.com/in/makoto-yoshida/ <br>
   - Multivariable logistic regression
   - Absolute risk estimation via average marginal effects
   - Age-stratified risk difference analyses
-- **Tools**: BigQuery, Python (pandas, statsmodels), Jupyter
+- **Tools**: BigQuery, Python (pandas, statsmodels), SAS, Jupyter
 
 ---
 
@@ -179,7 +179,7 @@ mimic-iv-nonicu-medication-private/
 
 Cohort construction, exposure definition, baseline covariate assembly, and outcome derivation were implemented using a combination of SQL (BigQuery-compatible) and Python-based processing.
 
-Core cohort tables were generated entirely via SQL to ensure reproducibility and transparency, while downstream validation, modeling, and visualization were performed in structured Python notebooks.
+Core cohort tables were generated entirely via SQL to ensure reproducibility and transparency. Downstream modeling and visualization were performed in structured Python notebooks, with selected SAS programs used to reproduce exported results for cross-platform validation.
 
 Modeling strategies and estimands were defined prior to outcome modeling and applied consistently across analyses.
 
@@ -204,7 +204,7 @@ Sensitivity analyses and subgroup definitions, including alternative exposure sp
 
 ## Modeling and Validation
 
-Primary analyses used multivariable logistic regression to estimate the association between early RAAS exposure and in-hospital mortality.
+Primary analyses used multivariable logistic regression to estimate the association between early RAAS exposure and in-hospital mortality, adjusting for age, gender, race group, admission type, insurance, and anchor year group.
 
 In addition to odds ratios, absolute risk measures were emphasized through:
 
@@ -222,7 +222,7 @@ The SAS-Python validation notebook compares independently generated SAS and Pyth
 
 ### Cohort characteristics
 
-The final analytic cohort consisted of adult, non-ICU hospital admissions derived from MIMIC-IV. Patients receiving early RAAS inhibitors differed from unexposed patients in baseline characteristics, reflecting the underlying burden of cardiovascular comorbidity. These differences were addressed through multivariable adjustment.
+The final analytic cohort consisted of adult, non-ICU hospital admissions derived from MIMIC-IV. Patients receiving early RAAS inhibitors differed from unexposed patients in baseline characteristics, reflecting differences in patient demographics and admission context. These measured differences were addressed through multivariable adjustment.
 
 ### Association between RAAS exposure and in-hospital mortality
 
@@ -235,7 +235,7 @@ Although the baseline mortality rate was low in this non-ICU population, the est
 
 ## Interpretation and Limitations
 
-This analysis is observational and does not establish causality. Despite careful temporal ordering and multivariable adjustment, residual confounding by indication and unmeasured clinical severity may remain.
+This analysis is observational and does not establish causality. Despite careful temporal ordering and multivariable adjustment for measured demographic and admission-related factors, residual confounding by indication, comorbidity burden, and unmeasured clinical severity may remain.
 
 Accordingly, the results should be interpreted as evidence of association rather than causal effect. The primary value of this work lies in its transparent, reproducible analytic design and its demonstration of complementary use of relative and absolute risk measures in large EHR-based cohorts.
 
