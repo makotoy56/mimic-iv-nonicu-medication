@@ -11,10 +11,16 @@ docs2/
 
 # --- Data files ---
 data/
-*.csv
 *.parquet
 *.xlsx
 *.sas7bdat
+
+# Ignore CSV by default
+*.csv
+
+# Allow validation artifacts
+!python/outputs/*.csv
+!sas/outputs/*.csv
 
 # --- Jupyter ---
 .ipynb_checkpoints/
@@ -35,10 +41,22 @@ venv/
 .vscode/
 
 # --- SAS ---
-sas/outputs/
 sas/logs/
-*.pdf
 *.log
 *.lst
-sas/programs/*.sas
-sas/docs/*.md
+
+# Sensitive/local SAS inputs
+sas/inputs/*.csv
+
+# Keep SAS programs tracked
+!sas/programs/*.sas
+
+# Keep SAS documentation tracked
+!sas/docs/*.md
+
+# Optional:
+# Ignore PDFs by default
+*.pdf
+
+# If you later want to track selected PDFs:
+# !sas/outputs/*.pdf

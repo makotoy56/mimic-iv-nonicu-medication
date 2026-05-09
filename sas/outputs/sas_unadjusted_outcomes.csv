@@ -1,0 +1,3 @@
+exposure,exposure_group,n,deaths,non_deaths,mortality_proportion,crude_odds,crude_or_vs_no_raas
+0,No early RAAS inhibitor use,403961,2177,401784,0.00538913409958,0.00541833422934,0.99999999999948
+1,Early RAAS inhibitor use,56825,149,56676,0.00262208534976,0.00262897875644,0.48520055152824

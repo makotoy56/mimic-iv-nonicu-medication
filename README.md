@@ -18,10 +18,11 @@ LinkedIn: https://www.linkedin.com/in/makoto-yoshida/ <br>
 ➡️ **Describe analysis dataset**: [03b_describe_analysis_dataset.ipynb](notebooks/03b_describe_analysis_dataset.ipynb)<br>
 ➡️ **Unadjusted Outcomes Overview**: [04a_unadjusted_outcomes.ipynb](notebooks/04a_unadjusted_outcomes.ipynb)<br>
 ➡️ **Multivariable outcomes**: [04b_multivariable_outcomes.ipynb](notebooks/04b_multivariable_outcomes.ipynb)<br>
+➡️ **SAS-Python output validation**: [05_sas_python_validation.ipynb](notebooks/05_sas_python_validation.ipynb)<br>
 
 📁 **SQL pipelines (BigQuery)**: [sql/](sql/) <br>
 📁 **Stepwise short documentation**: [docs/](docs/)<br>
-📁 **Validation checklist**: [scripts/validation_checklist.py](scripts/validation_checklist.py)<br>
+📁 **Infrastructure sanity check**: [scripts/validation_checklist.py](scripts/validation_checklist.py)<br>
 
 ---
 
@@ -40,11 +41,11 @@ LinkedIn: https://www.linkedin.com/in/makoto-yoshida/ <br>
 
 ---
 
-## Validation checklist
+## Infrastructure Sanity Check
 ### Purpose
-- validation_checklist.py performs a lightweight sanity check
-- It enumerates candidate tables in the BigQuery dataset (nonicu_raas)
-- Uses INFORMATION_SCHEMA
+- validation_checklist.py performs a lightweight infrastructure sanity check
+- It only checks whether expected BigQuery tables are visible in the BigQuery dataset (`nonicu_raas`)
+- It uses INFORMATION_SCHEMA metadata
 ### How to run
 - python scripts/validation_checklist.py
 ### What it does
@@ -59,8 +60,8 @@ This script requires Application Default Credentials (ADC).
 gcloud auth application-default login
 **Important note**
 - This script ONLY checks table existence
-- It does NOT perform any data quality validation
-- It does NOT validate table contents
+- It is not the same as SAS-Python output validation
+- It does NOT validate statistical results, data quality, table contents, or model outputs
 
 ---
 
@@ -125,14 +126,15 @@ Among adult, non-ICU hospital admissions in MIMIC-IV, is early exposure to RAAS 
 ## Project Structure
 ````text
 mimic-iv-nonicu-medication-private/
-├── notebooks/        # Stepwise analysis notebooks (00–04b)
+├── notebooks/        # Stepwise analysis and validation notebooks (00–05)
 │   ├── 00_setup.ipynb
 │   ├── 01_cohort.ipynb
 │   ├── 02_exposure.ipynb
 │   ├── 03a_validate_input_tables.ipynb
 │   ├── 03b_describe_analysis_dataset.ipynb
 │   ├── 04a_unadjusted_outcomes.ipynb
-│   └── 04b_multivariable_outcomes.ipynb
+│   ├── 04b_multivariable_outcomes.ipynb
+│   └── 05_sas_python_validation.ipynb
 │
 ├── sql/              # Reproducible BigQuery SQL pipelines
 │   ├── 01_build_base_hosp_admissions.sql
@@ -151,7 +153,15 @@ mimic-iv-nonicu-medication-private/
 │   └── 04b_multivariable_outcomes_SHORT.md
 │
 ├── scripts/          # Utility scripts
-│   └── validation_checklist.py   # Validation checklist for inputs/analysis artifacts
+│   └── validation_checklist.py   # Infrastructure sanity check for BigQuery table visibility
+│
+├── sas/              # SAS implementation and exported validation artifacts
+│   ├── programs/     # SAS analysis programs
+│   ├── outputs/      # Exported SAS result CSVs used by validation notebook
+│   ├── logs/         # SAS execution logs
+│   ├── inputs/       # SAS input extracts
+│   ├── data/         # SAS datasets
+│   └── docs/         # SAS-side documentation placeholders
 │
 ├── data/             # Local analysis artifacts (minimal / excluded)
 │   ├── interim/
@@ -203,6 +213,8 @@ In addition to odds ratios, absolute risk measures were emphasized through:
 - Age-specific risk difference estimation with bootstrap-based confidence intervals
 
 Model performance was evaluated using ROC AUC and precision–recall AUC, and internal consistency checks were conducted throughout the analytic pipeline.
+
+The SAS-Python validation notebook compares independently generated SAS and Python outputs to assess cross-platform reproducibility. It does not perform new statistical modeling, inference, or upstream data derivation.
 
 ---
 
