@@ -1,4 +1,4 @@
-/* 01_import.sas */
+/* 01_import_cohort.sas */
 /* Import BigQuery-exported non-ICU analytic dataset */
 
 options nodate nonumber;
