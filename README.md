@@ -44,13 +44,17 @@ See [Results summary](docs/RESULTS_SUMMARY.md) and [Discussion and limitations](
 
 ## Results Visualizations
 
-Figures shown in the README are generated from the analysis notebooks and saved under `assets/` so that rerunning the notebooks refreshes the displayed results.
+README figures emphasize the clinical result flow: a crude outcome comparison followed by an adjusted absolute risk interpretation. Figures are generated from the analysis notebooks and saved under `assets/` so rerunning the notebooks refreshes the displayed results.
+
+**Crude Outcome Comparison**
 
 ![Unadjusted in-hospital mortality by early RAAS exposure](assets/unadjusted_mortality_by_raas.png)
 
-![Adjusted odds ratio for early RAAS exposure](assets/adjusted_odds_ratio_plot.png)
+**Adjusted Absolute Risk Interpretation**
 
-![SAS-Python validation summary](assets/sas_python_validation_summary.png)
+![Age-specific adjusted absolute risk difference](assets/absolute_risk_difference_plot.png)
+
+SAS-Python reproducibility validation is retained as a workflow quality check through aggregate output comparison and linked validation documentation, but it is not used as a primary README visual.
 
 ## Technical Snapshot
 
