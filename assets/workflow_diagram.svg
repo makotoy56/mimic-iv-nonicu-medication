@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="520" viewBox="0 0 1160 520" role="img" aria-labelledby="title desc">
+  <title id="title">Analysis workflow for the non-ICU RAAS medication study</title>
+  <desc id="desc">MIMIC-IV data flow through BigQuery cohort construction, early RAAS exposure definition, covariate and outcome assembly, regression modeling, marginal effects, SAS-Python validation, and cautious observational interpretation.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#3f4a56"/>
+    </marker>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#1f2933" flood-opacity="0.14"/>
+    </filter>
+  </defs>
+  <rect width="1160" height="520" fill="#f7f9fb"/>
+  <text x="580" y="48" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" fill="#17212b">Non-ICU RAAS Medication Analysis Workflow</text>
+  <text x="580" y="78" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="15" fill="#51606f">From MIMIC-IV source tables to reproducible observational interpretation</text>
+
+  <g font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#17212b">
+    <g filter="url(#shadow)">
+      <rect x="55" y="125" width="170" height="72" rx="8" fill="#ffffff" stroke="#9db2c7"/>
+      <text x="140" y="155" text-anchor="middle" font-weight="700">MIMIC-IV</text>
+      <text x="140" y="178" text-anchor="middle" fill="#51606f">v3.1 EHR tables</text>
+    </g>
+    <g filter="url(#shadow)">
+      <rect x="275" y="125" width="190" height="72" rx="8" fill="#ffffff" stroke="#9db2c7"/>
+      <text x="370" y="151" text-anchor="middle" font-weight="700">BigQuery SQL</text>
+      <text x="370" y="174" text-anchor="middle" fill="#51606f">cohort construction</text>
+    </g>
+    <g filter="url(#shadow)">
+      <rect x="515" y="125" width="190" height="72" rx="8" fill="#ffffff" stroke="#9db2c7"/>
+      <text x="610" y="151" text-anchor="middle" font-weight="700">Adult non-ICU</text>
+      <text x="610" y="174" text-anchor="middle" fill="#51606f">admissions</text>
+    </g>
+    <g filter="url(#shadow)">
+      <rect x="755" y="125" width="190" height="72" rx="8" fill="#ffffff" stroke="#9db2c7"/>
+      <text x="850" y="151" text-anchor="middle" font-weight="700">Early RAAS</text>
+      <text x="850" y="174" text-anchor="middle" fill="#51606f">ACEi/ARB in 24h</text>
+    </g>
+
+    <g filter="url(#shadow)">
+      <rect x="755" y="285" width="190" height="72" rx="8" fill="#ffffff" stroke="#9db2c7"/>
+      <text x="850" y="311" text-anchor="middle" font-weight="700">Covariates and</text>
+      <text x="850" y="334" text-anchor="middle" fill="#51606f">outcome assembly</text>
+    </g>
+    <g filter="url(#shadow)">
+      <rect x="515" y="285" width="190" height="72" rx="8" fill="#ffffff" stroke="#9db2c7"/>
+      <text x="610" y="311" text-anchor="middle" font-weight="700">Unadjusted</text>
+      <text x="610" y="334" text-anchor="middle" fill="#51606f">outcomes</text>
+    </g>
+    <g filter="url(#shadow)">
+      <rect x="275" y="285" width="190" height="72" rx="8" fill="#ffffff" stroke="#9db2c7"/>
+      <text x="370" y="311" text-anchor="middle" font-weight="700">Logistic</text>
+      <text x="370" y="334" text-anchor="middle" fill="#51606f">regression</text>
+    </g>
+    <g filter="url(#shadow)">
+      <rect x="55" y="285" width="170" height="72" rx="8" fill="#ffffff" stroke="#9db2c7"/>
+      <text x="140" y="311" text-anchor="middle" font-weight="700">Absolute risk</text>
+      <text x="140" y="334" text-anchor="middle" fill="#51606f">marginal effects</text>
+    </g>
+
+    <g filter="url(#shadow)">
+      <rect x="285" y="405" width="250" height="72" rx="8" fill="#eef6ff" stroke="#6998c7"/>
+      <text x="410" y="431" text-anchor="middle" font-weight="700">SAS-Python validation</text>
+      <text x="410" y="454" text-anchor="middle" fill="#51606f">aggregate output comparison</text>
+    </g>
+    <g filter="url(#shadow)">
+      <rect x="625" y="405" width="285" height="72" rx="8" fill="#f1f8f3" stroke="#75a882"/>
+      <text x="767.5" y="431" text-anchor="middle" font-weight="700">Cautious interpretation</text>
+      <text x="767.5" y="454" text-anchor="middle" fill="#51606f">observational, hypothesis-generating</text>
+    </g>
+  </g>
+
+  <g stroke="#3f4a56" stroke-width="2.2" fill="none" marker-end="url(#arrow)">
+    <path d="M225 161 H270"/>
+    <path d="M465 161 H510"/>
+    <path d="M705 161 H750"/>
+    <path d="M850 197 V280"/>
+    <path d="M755 321 H710"/>
+    <path d="M515 321 H470"/>
+    <path d="M275 321 H230"/>
+    <path d="M180 357 C230 407 280 431 285 441"/>
+    <path d="M465 357 C505 390 560 418 625 441"/>
+    <path d="M535 441 H620"/>
+  </g>
+</svg>

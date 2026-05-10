@@ -56,12 +56,4 @@ Adjusted outcome modeling and absolute effect estimation are presented in the su
 This notebook does not generate new tables.
 Its outputs are descriptive summaries and figures used for exploratory interpretation and documentation.
 
-Results from this notebook inform the interpretation of adjusted analyses but are not used directly for modeling.mework
-
-All findings presented in this notebook represent **unadjusted comparisons**.
-
-Observed differences in outcomes may reflect confounding by age, admission characteristics, baseline clinical severity, or other unmeasured factors.
-Accordingly, these results should not be interpreted as evidence of a causal or protective effect of early RAAS inhibitor use.
-
-The primary role of this analysis is to establish descriptive context and motivate the need for multivariable adjustment.
-Adjusted outcome modeling and absolute effect estimation are presented in the subsequent multivariable analysis notebook (04b).
+Results from this notebook inform the interpretation of adjusted analyses but are not used directly for modeling.
