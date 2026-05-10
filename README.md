@@ -8,9 +8,9 @@ LinkedIn: https://www.linkedin.com/in/makoto-yoshida/
 
 ## Overview
 
-This repository contains an EHR-based retrospective observational cohort study using MIMIC-IV v3.1. It evaluates whether early inpatient exposure to renin-angiotensin-aldosterone system (RAAS) inhibitors is associated with in-hospital mortality among adult non-ICU hospital admissions.
+This repository presents an EHR-based retrospective cohort study using MIMIC-IV v3.1. It evaluates whether early inpatient exposure to renin-angiotensin-aldosterone system (RAAS) inhibitors is associated with in-hospital mortality among adult non-ICU hospital admissions.
 
-The primary clinical analysis is multivariable logistic regression with absolute risk estimation using average marginal effects. The interpretation remains cautious: this is a hypothesis-generating observational association and cannot establish causality.
+The primary clinical analysis is multivariable logistic regression with absolute risk estimation using average marginal effects. Findings are interpreted as hypothesis-generating associations, not causal effects.
 
 ## What This Demonstrates
 
@@ -18,7 +18,7 @@ The primary clinical analysis is multivariable logistic regression with absolute
 - Reproducible cohort, exposure, covariate, and outcome construction in BigQuery SQL
 - Transparent early medication exposure definition using ACE inhibitor and ARB orders within 24 hours of admission
 - Multivariable logistic regression with odds ratios, adjusted risks, and average marginal effects
-- SAS-Python reproducibility validation of selected unadjusted and logistic model outputs
+- Cross-platform validation of selected unadjusted and logistic model outputs
 - Clear separation between clinical analysis, validation artifacts, and compliance-safe repository contents
 
 ## Workflow
@@ -27,9 +27,9 @@ The primary clinical analysis is multivariable logistic regression with absolute
 
 ## Why This Project Matters
 
-This project shows how clinical analytics teams can move from raw EHR tables to a reproducible real-world evidence workflow. It emphasizes transparent cohort, exposure, covariate, and outcome definitions; multivariable regression; and absolute risk interpretation for findings that need to be understandable beyond a purely statistical audience.
+This project shows how clinical analytics teams can move from raw EHR tables to an auditable real-world evidence workflow. It emphasizes transparent cohort, exposure, covariate, and outcome definitions; multivariable regression; and absolute risk interpretation for findings that need to be understandable beyond a purely statistical audience.
 
-For clinical analytics, RWE, HEOR, and outcomes research teams, the portfolio value is the operational workflow: defensible data definitions, documented modeling choices, reproducible notebooks, and cross-platform SAS/Python validation. The findings remain observational and hypothesis-generating, cannot establish causality, and may still be affected by residual confounding.
+For clinical analytics, RWE, HEOR, and outcomes research teams, the portfolio value is the operational workflow: defensible data definitions, documented modeling choices, reproducible notebooks, and SAS/Python output checks. Limitations, including residual confounding and non-causal interpretation, are documented in the [discussion](docs/DISCUSSION_AND_LIMITATIONS.md).
 
 ## Key Findings
 
@@ -44,17 +44,19 @@ See [Results summary](docs/RESULTS_SUMMARY.md) and [Discussion and limitations](
 
 ## Results Visualizations
 
-README figures emphasize the clinical result flow: a crude outcome comparison followed by an adjusted absolute risk interpretation. Figures are generated from the analysis notebooks and saved under `assets/` so rerunning the notebooks refreshes the displayed results.
+The README uses two primary figures to keep the result flow concise: observed outcome contrast first, then adjusted absolute risk interpretation. Technical validation remains in the reproducibility documentation rather than the main visual narrative.
 
-**Crude Outcome Comparison**
+### Crude Outcome Comparison
 
-![Unadjusted in-hospital mortality by early RAAS exposure](assets/unadjusted_mortality_by_raas.png)
+Observed in-hospital mortality was lower among admissions with early RAAS inhibitor exposure than among unexposed admissions.
 
-**Adjusted Absolute Risk Interpretation**
+<img src="assets/unadjusted_mortality_by_raas.png" alt="Unadjusted in-hospital mortality by early RAAS exposure" width="760">
 
-![Age-specific adjusted absolute risk difference](assets/absolute_risk_difference_plot.png)
+### Adjusted Absolute Risk Interpretation
 
-SAS-Python reproducibility validation is retained as a workflow quality check through aggregate output comparison and linked validation documentation, but it is not used as a primary README visual.
+After multivariable adjustment, the absolute risk difference remained small in percentage-point terms and varied by age group.
+
+<img src="assets/absolute_risk_difference_plot.png" alt="Age-specific adjusted absolute risk difference" width="760">
 
 ## Technical Snapshot
 
@@ -90,12 +92,13 @@ Exposure is based on inpatient prescription records and does not directly captur
 - [Methods overview](docs/METHODS_OVERVIEW.md): design, cohort, exposure, outcome, covariates, and modeling plan
 - [Results summary](docs/RESULTS_SUMMARY.md): concise findings without causal strengthening
 - [Discussion and limitations](docs/DISCUSSION_AND_LIMITATIONS.md): interpretation, residual confounding, and generalizability
+- [Setup and reproducibility](docs/SETUP.md): Python environment, notebook execution expectations, and hygiene guidance
 - [Validation notes](docs/VALIDATION_NOTES.md): Python/SAS validation scope and discrepancy notes
 - [Figure reproducibility](docs/FIGURE_REPRODUCIBILITY.md): README figure export locations and refresh workflow
 
 ## Reproducibility And Validation
 
-The workflow uses version-controlled notebooks, SQL scripts, SAS programs, and aggregate validation CSVs. No patient-level data are included in this repository.
+The workflow uses version-controlled notebooks, SQL scripts, SAS programs, and aggregate validation CSVs. No patient-level data are included in this repository. See [Setup and reproducibility](docs/SETUP.md) for the lightweight Python environment and notebook hygiene workflow.
 
 Validation scope:
 
@@ -105,7 +108,7 @@ Validation scope:
 - Python validation artifacts are stored under `python/outputs/`.
 - `scripts/validation_checklist.py` performs lightweight BigQuery table-existence checks only; it does not validate table contents or statistical results.
 
-MIMIC-IV/PhysioNet access, Google Cloud authentication, BigQuery access, and local SAS path configuration must be set up separately.
+MIMIC-IV/PhysioNet access, Google Cloud authentication, BigQuery access, and local SAS paths are configured outside the repository.
 
 ## Project Structure
 
@@ -118,6 +121,7 @@ mimic-iv-nonicu-medication/
 |-- sas/              # SAS workflow notes, programs, and aggregate validation outputs
 |-- scripts/          # Validation utilities
 |-- sql/              # BigQuery SQL for cohort/exposure construction
+|-- requirements.txt  # Lightweight Python notebook environment
 `-- README.md
 ```
 
