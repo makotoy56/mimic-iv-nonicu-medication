@@ -42,6 +42,16 @@ For clinical analytics, RWE, HEOR, and outcomes research teams, the portfolio va
 
 See [Results summary](docs/RESULTS_SUMMARY.md) and [Discussion and limitations](docs/DISCUSSION_AND_LIMITATIONS.md) for interpretation details.
 
+## Results Visualizations
+
+Figures shown in the README are generated from the analysis notebooks and saved under `assets/` so that rerunning the notebooks refreshes the displayed results.
+
+![Unadjusted in-hospital mortality by early RAAS exposure](assets/unadjusted_mortality_by_raas.png)
+
+![Adjusted odds ratio for early RAAS exposure](assets/adjusted_odds_ratio_plot.png)
+
+![SAS-Python validation summary](assets/sas_python_validation_summary.png)
+
 ## Technical Snapshot
 
 | Area | Details |
@@ -77,6 +87,7 @@ Exposure is based on inpatient prescription records and does not directly captur
 - [Results summary](docs/RESULTS_SUMMARY.md): concise findings without causal strengthening
 - [Discussion and limitations](docs/DISCUSSION_AND_LIMITATIONS.md): interpretation, residual confounding, and generalizability
 - [Validation notes](docs/VALIDATION_NOTES.md): Python/SAS validation scope and discrepancy notes
+- [Figure reproducibility](docs/FIGURE_REPRODUCIBILITY.md): README figure export locations and refresh workflow
 
 ## Reproducibility And Validation
 
