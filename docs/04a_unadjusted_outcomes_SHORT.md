@@ -1,5 +1,9 @@
 # 04a - Unadjusted Outcomes Overview (Non-ICU Admissions)
 
+
+Full notebook:
+[04a. Unadjusted Outcomes Overview](../notebooks/04a_unadjusted_outcomes.ipynb)
+
 ## Overview
 
 This notebook presents unadjusted, descriptive summaries of in-hospital outcomes by early RAAS inhibitor exposure among non-ICU adult hospital admissions.
@@ -57,3 +61,11 @@ This notebook does not generate new tables.
 Its outputs are descriptive summaries and figures used for exploratory interpretation and documentation.
 
 Results from this notebook inform the interpretation of adjusted analyses but are not used directly for modeling.
+
+---
+## Next Step
+
+Proceed to:
+- [04b - Multivariable Outcomes Analysis (Short Summary)](04b_multivariable_outcomes_SHORT.md)
+
+This next notebook/document briefly describes the next workflow step.

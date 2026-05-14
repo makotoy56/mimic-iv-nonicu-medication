@@ -1,5 +1,9 @@
 # 01 - Non-ICU Hospital Admission Cohort Construction (SHORT)
 
+
+Full notebook:
+[01- Non-ICU Hospital Admission Cohort Construction](../notebooks/01_cohort.ipynb)
+
 ## Overview
 
 This notebook constructs the foundational adult, non-ICU hospital admission cohort used throughout the analysis pipeline.
@@ -56,3 +60,11 @@ Downstream notebooks load these tables in read-only mode and do not modify cohor
 - No exposure definitions or outcome modeling are performed in this notebook.
 - All cohort construction steps are implemented entirely in SQL.
 - This separation of cohort definition from modeling supports reproducibility, auditability, and clear data provenance.
+
+---
+## Next Step
+
+Proceed to:
+- [02 - Early RAAS Exposure Definition (Non-ICU Admissions)](02_exposure_SHORT.md)
+
+This next notebook/document briefly describes the next workflow step.

@@ -1,5 +1,9 @@
 # 05 - SAS-Python Reproducibility Validation
 
+
+Full notebook:
+[05. SAS-Python Cross-Platform Validation](../notebooks/05_sas_python_validation.ipynb)
+
 ## Overview
 
 This notebook compares selected aggregate outputs generated independently in Python and SAS for the non-ICU RAAS medication analysis.
@@ -39,3 +43,11 @@ SAS-Python comparison supports reproducibility of selected exported outputs. Any
 ## Data Protection
 
 Only aggregate outputs are tracked in the repository. Patient-level data, local SAS input extracts, credentials, logs, and local data files are excluded by `.gitignore`.
+
+---
+## Next Step
+
+Proceed to:
+- [Repository README](../README.md)
+
+This next notebook/document briefly describes the next workflow step.

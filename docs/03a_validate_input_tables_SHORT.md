@@ -1,5 +1,9 @@
 # 03a - Validation of Analysis Input Tables (SHORT)
 
+
+Full notebook:
+[03a. Input Table Validation and Descriptive Summary](../notebooks/03a_validate_input_tables.ipynb)
+
 ## Overview
 
 This notebook performs structural validation and basic descriptive checks of the intermediate tables used to construct the final admission-level analysis dataset.
@@ -53,3 +57,11 @@ The validated tables serve as stable inputs for subsequent notebooks, including:
 - Multivariable and marginal-effect outcome modeling (04b)
 
 This step ensures that all downstream analyses operate on a consistent, verified analytic dataset.
+
+---
+## Next Step
+
+Proceed to:
+- [03b - Describe Analysis Dataset (Baseline Characteristics)](03b_describe_analysis_dataset_SHORT.md)
+
+This next notebook/document briefly describes the next workflow step.

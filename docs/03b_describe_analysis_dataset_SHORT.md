@@ -1,5 +1,9 @@
 # 03b - Describe Analysis Dataset (Baseline Characteristics)
 
+
+Full notebook:
+[03b. Baseline Characteristics by Early RAAS Exposure](../notebooks/03b_describe_analysis_dataset.ipynb)
+
 ## Overview
 
 This notebook summarizes baseline characteristics of the non-ICU hospital admission cohort stratified by early RAAS inhibitor exposure.
@@ -84,3 +88,11 @@ This notebook produces descriptive baseline summaries used as inputs for subsequ
 - Categorical distribution tables for exploratory assessment
 
 These outputs support interpretation of adjusted outcome models and marginal effect estimates in downstream notebooks (04a, 04b).
+
+---
+## Next Step
+
+Proceed to:
+- [04a - Unadjusted Outcomes Overview (Non-ICU Admissions)](04a_unadjusted_outcomes_SHORT.md)
+
+This next notebook/document briefly describes the next workflow step.

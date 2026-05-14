@@ -1,5 +1,9 @@
 # 04b - Multivariable Outcomes Analysis (Short Summary)
 
+
+Full notebook:
+[04b. Multivariable Logistic Regression](../notebooks/04b_multivariable_outcomes.ipynb)
+
 ## Purpose
 This notebook evaluates the association between early in-hospital exposure to renin–angiotensin–aldosterone system (RAAS) inhibitors and in-hospital mortality among adult non-ICU hospital admissions.
 
@@ -65,3 +69,11 @@ These findings demonstrate how marginal effects and risk differences can complem
 
 While the observational design precludes causal conclusions, the consistency of results across multiple effect measures supports the robustness of the observed association.
 This notebook illustrates a transparent and reproducible approach to multivariable outcome modeling and uncertainty quantification in large clinical datasets.
+
+---
+## Next Step
+
+Proceed to:
+- [05 - SAS-Python Reproducibility Validation](05_sas_python_validation_SHORT.md)
+
+This next notebook/document briefly describes the next workflow step.

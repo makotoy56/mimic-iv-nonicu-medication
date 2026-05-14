@@ -1,5 +1,9 @@
 # 02 – Early RAAS Exposure Definition (Non-ICU Admissions)
 
+
+Full notebook:
+[02. Build Non-ICU RAAS Early Exposure Tables](../notebooks/02_exposure.ipynb)
+
 ## Overview
 
 This notebook defines early renin–angiotensin–aldosterone system (RAAS) inhibitor exposure for non-ICU adult hospital admissions using MIMIC-IV v3.1 data.
@@ -83,3 +87,11 @@ The `analysis_dataset` table produced in this notebook serves as the sole input 
 - Multivariable and adjusted outcome modeling (04b)  
 
 Downstream notebooks load these tables in read-only mode and do not modify exposure definitions or cohort inclusion criteria, ensuring reproducibility and transparent data provenance.
+
+---
+## Next Step
+
+Proceed to:
+- [03a - Validation of Analysis Input Tables (SHORT)](03a_validate_input_tables_SHORT.md)
+
+This next notebook/document briefly describes the next workflow step.
