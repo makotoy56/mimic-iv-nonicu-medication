@@ -2,11 +2,10 @@
 .gcp/
 .env
 .env.*
+*.env
 *.key
 *.pem
 *.p12
-*credential*
-*secret*
 docs2/
 
 # --- Data files ---
@@ -42,8 +41,12 @@ venv/
 
 # --- SAS ---
 sas/logs/
+sas/data/
+sas/outputs/*.html
+sas/outputs/*.rtf
 *.log
 *.lst
+*.sas7bcat
 
 # Sensitive/local SAS inputs
 sas/inputs/*.csv
