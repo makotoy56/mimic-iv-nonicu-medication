@@ -6,12 +6,29 @@
 *.key
 *.pem
 *.p12
+*token*.json
+*secret*.json
+*service-account*.json
+kaggle.json
 docs2/
 
 # --- Data files ---
 data/
 *.parquet
+*.tsv
+*.xls
 *.xlsx
+*.db
+*.sqlite
+*.sqlite3
+*.duckdb
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.gz
+*.feather
+*.rds
 *.sas7bdat
 
 # Ignore CSV by default
