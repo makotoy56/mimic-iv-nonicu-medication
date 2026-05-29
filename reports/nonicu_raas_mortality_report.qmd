@@ -84,7 +84,7 @@ The primary endpoint was in-hospital mortality, defined by `hospital_expire_flag
 
 ## Unadjusted Mortality
 
-The unadjusted outcome table is derived from `python/outputs/python_unadjusted_outcomes.csv`. These estimates are descriptive only and do not address baseline differences between exposure groups.
+The unadjusted outcome table summarizes crude mortality estimates before covariate adjustment. These estimates are descriptive only and do not address baseline differences between exposure groups.
 
 Source notebook and supporting documentation: [04a_unadjusted_outcomes.ipynb](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/notebooks/04a_unadjusted_outcomes.ipynb) and [04a_unadjusted_outcomes_SHORT.md](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/04a_unadjusted_outcomes_SHORT.md).
 
