@@ -101,7 +101,7 @@ The primary adjusted model estimated lower odds of in-hospital mortality among a
 
 Source notebook and supporting documentation: [04b_multivariable_outcomes.ipynb](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/notebooks/04b_multivariable_outcomes.ipynb) and [04b_multivariable_outcomes_SHORT.md](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/04b_multivariable_outcomes_SHORT.md).
 
-The selected coefficient table is derived from `python/outputs/python_logistic_parameters.csv`. The table emphasizes the exposure term and representative adjusted covariates; it is not a causal effect table.
+The selected coefficient table summarizes key parameters from the primary adjusted logistic regression model. The table emphasizes the exposure term and representative adjusted covariates; it is not a causal effect table.
 
 | Term | Coefficient | 95% CI for coefficient | Adjusted OR | 95% CI for OR | p-value |
 | --- | ---: | ---: | ---: | ---: | ---: |
