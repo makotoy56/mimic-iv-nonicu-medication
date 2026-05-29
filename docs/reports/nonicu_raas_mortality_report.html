@@ -535,7 +535,7 @@ ul.task-list li input[type="checkbox"] {
 <h2 data-number="10" class="anchored" data-anchor-id="sas-python-validation"><span class="header-section-number">10</span> SAS-Python Validation</h2>
 <p>The validation workflow compares aggregate Python and SAS outputs. It is a reproducibility check, not a second clinical analysis and not a new estimand.</p>
 <p>Source notebook and supporting documentation: <a href="https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/notebooks/05_sas_python_validation.ipynb">05_sas_python_validation.ipynb</a>, <a href="https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/05_sas_python_validation_SHORT.md">05_sas_python_validation_SHORT.md</a>, and <a href="https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/VALIDATION_NOTES.md">VALIDATION_NOTES.md</a>.</p>
-<p>The table below uses existing exported files in <code>python/outputs/</code> and <code>sas/outputs/</code>.</p>
+<p>The table below summarizes selected aggregate outputs used for cross-platform validation between Python and SAS.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 21%">
@@ -602,12 +602,6 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../assets/sas_python_validation_summary.png" class="img-fluid figure-img" style="width:75.0%" alt="SAS-Python validation summary plot"></p>
-<figcaption>SAS-Python validation summary for selected aggregate outputs.</figcaption>
-</figure>
-</div>
 <p>Observed differences for some sparse admission-type terms are validation diagnostics for model implementation and sparse-category behavior. They should not be interpreted as new clinical findings.</p>
 </section>
 <section id="interpretation-boundary" class="level2" data-number="11">

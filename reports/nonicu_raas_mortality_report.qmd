@@ -160,7 +160,7 @@ The validation workflow compares aggregate Python and SAS outputs. It is a repro
 
 Source notebook and supporting documentation: [05_sas_python_validation.ipynb](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/notebooks/05_sas_python_validation.ipynb), [05_sas_python_validation_SHORT.md](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/05_sas_python_validation_SHORT.md), and [VALIDATION_NOTES.md](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/VALIDATION_NOTES.md).
 
-The table below uses existing exported files in `python/outputs/` and `sas/outputs/`.
+The table below summarizes selected aggregate outputs used for cross-platform validation between Python and SAS.
 
 | Validation item | Python output | SAS output | Agreement |
 | --- | ---: | ---: | --- |
@@ -172,8 +172,6 @@ The table below uses existing exported files in `python/outputs/` and `sas/outpu
 | Exposure adjusted OR | 0.3178484462 | 0.3178484462 | Matched to displayed precision |
 | Exposure OR lower CI | 0.2687743071 | 0.2687743084 | Numerically equivalent after rounding |
 | Exposure OR upper CI | 0.3758827838 | 0.3758827820 | Numerically equivalent after rounding |
-
-![SAS-Python validation summary for selected aggregate outputs.](../assets/sas_python_validation_summary.png){fig-alt="SAS-Python validation summary plot" width="75%"}
 
 Observed differences for some sparse admission-type terms are validation diagnostics for model implementation and sparse-category behavior. They should not be interpreted as new clinical findings.
 
