@@ -35,6 +35,8 @@ The key design choice is that the fixed non-ICU cohort is constructed before exp
 
 The analytic cohort contained 460,786 adult non-ICU hospital admissions. Early RAAS inhibitor exposure was observed in 56,825 admissions, or 12.33% of the cohort.
 
+Source notebooks: [cohort construction](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/notebooks/01_cohort.ipynb) and [exposure definition](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/notebooks/02_exposure.ipynb).
+
 | Cohort measure | Value |
 | --- | ---: |
 | Adult non-ICU hospital admissions | 460,786 |
@@ -47,6 +49,8 @@ The analytic cohort contained 460,786 adult non-ICU hospital admissions. Early R
 ## Baseline Characteristics
 
 The baseline table summarizes the existing Table 1-style outputs. The main imbalance relevant to interpretation is age: exposed admissions were substantially older than unexposed admissions, reinforcing the need for adjusted outcome modeling.
+
+Source notebook and notes: [baseline cohort description](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/notebooks/03b_describe_analysis_dataset.ipynb) and [short documentation](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/03b_describe_analysis_dataset_SHORT.md).
 
 ![Baseline cohort size, age, and hospital length of stay by early RAAS exposure.](../assets/baseline_characteristics_summary.png){fig-alt="Baseline characteristics summary by early RAAS exposure" width="88%"}
 
@@ -80,6 +84,8 @@ The primary endpoint was in-hospital mortality, defined by `hospital_expire_flag
 
 The unadjusted outcome table is derived from `python/outputs/python_unadjusted_outcomes.csv`. These estimates are descriptive only and do not address baseline differences between exposure groups.
 
+Source notebook and notes: [unadjusted outcomes](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/notebooks/04a_unadjusted_outcomes.ipynb) and [short documentation](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/04a_unadjusted_outcomes_SHORT.md).
+
 | Exposure group | Admissions, n | Deaths, n | Non-deaths, n | Mortality proportion | Crude odds | Crude OR vs no early RAAS |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
 | No early RAAS inhibitor use | 403,961 | 2,177 | 401,784 | 0.005389 | 0.005418 | 1.000 |
@@ -90,6 +96,8 @@ The unadjusted outcome table is derived from `python/outputs/python_unadjusted_o
 ## Multivariable Logistic Regression
 
 The primary adjusted model estimated lower odds of in-hospital mortality among admissions with early RAAS inhibitor exposure after adjustment for measured demographic and admission-related covariates.
+
+Source notebook and notes: [multivariable outcomes](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/notebooks/04b_multivariable_outcomes.ipynb) and [short documentation](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/04b_multivariable_outcomes_SHORT.md).
 
 The selected coefficient table is derived from `python/outputs/python_logistic_parameters.csv`. The table emphasizes the exposure term and representative adjusted covariates; it is not a causal effect table.
 
@@ -112,6 +120,8 @@ Admission-type coefficients in the exported model output have very wide interval
 
 Sensitivity analyses evaluated whether the exposure association was directionally stable when restricting to admissions surviving beyond 24 hours and when adding an admission-source proxy.
 
+Source notebook: [multivariable outcomes](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/notebooks/04b_multivariable_outcomes.ipynb).
+
 ![Sensitivity analysis odds ratios for early RAAS exposure.](../assets/landmark_sensitivity_summary.png){fig-alt="Landmark sensitivity analysis odds ratio summary" width="80%"}
 
 | Model | Exposure OR | 95% CI | Purpose |
@@ -125,6 +135,8 @@ The sensitivity estimates were directionally similar to the primary model, but t
 ## Absolute Risk Interpretation
 
 The adjusted odds ratio is a relative measure. Because in-hospital mortality was uncommon in this non-ICU cohort, the project also reported absolute risk estimates and average marginal effects. The estimated average adjusted risk difference associated with early RAAS exposure was approximately -0.38 percentage points.
+
+Source notebook: [multivariable outcomes](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/notebooks/04b_multivariable_outcomes.ipynb).
 
 ![Adjusted predicted in-hospital mortality by age and early RAAS exposure status. Predicted mortality increased with age in both groups, while the early RAAS exposure group had lower adjusted predicted mortality across the plotted age range.](../assets/predicted_mortality_by_age.png){fig-alt="Adjusted predicted mortality curves by age and early RAAS exposure" width="78%"}
 
@@ -144,6 +156,8 @@ The age-specific figure shows why absolute risk reporting matters: the same rela
 
 The validation workflow compares aggregate Python and SAS outputs. It is a reproducibility check, not a second clinical analysis and not a new estimand.
 
+Source notebook and notes: [SAS-Python validation](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/notebooks/05_sas_python_validation.ipynb), [short documentation](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/05_sas_python_validation_SHORT.md), and [validation notes](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/VALIDATION_NOTES.md).
+
 The table below uses existing exported files in `python/outputs/` and `sas/outputs/`.
 
 | Validation item | Python output | SAS output | Agreement |
@@ -160,22 +174,6 @@ The table below uses existing exported files in `python/outputs/` and `sas/outpu
 ![SAS-Python validation summary for selected aggregate outputs.](../assets/sas_python_validation_summary.png){fig-alt="SAS-Python validation summary plot" width="78%"}
 
 Observed differences for some sparse admission-type terms are validation diagnostics for model implementation and sparse-category behavior. They should not be interpreted as new clinical findings.
-
-## Analysis Workflow And Source Notebooks
-
-This report is derived from version-controlled notebooks and validation workflows. The links below provide traceability from the portfolio report back to the analysis code and intermediate documentation.
-
-| Report component | Source notebook |
-| --- | --- |
-| Cohort construction | [01_cohort.ipynb](../../notebooks/01_cohort.ipynb) |
-| Exposure definition | [02_exposure.ipynb](../../notebooks/02_exposure.ipynb) |
-| Input table validation | [03a_validate_input_tables.ipynb](../../notebooks/03a_validate_input_tables.ipynb) |
-| Baseline cohort description and baseline figure export | [03b_describe_analysis_dataset.ipynb](../../notebooks/03b_describe_analysis_dataset.ipynb) |
-| Unadjusted mortality analysis | [04a_unadjusted_outcomes.ipynb](../../notebooks/04a_unadjusted_outcomes.ipynb) |
-| Multivariable logistic regression, adjusted predicted risk, sensitivity analyses, and figure exports | [04b_multivariable_outcomes.ipynb](../../notebooks/04b_multivariable_outcomes.ipynb) |
-| SAS-Python validation | [05_sas_python_validation.ipynb](../../notebooks/05_sas_python_validation.ipynb) |
-
-The README remains the repository overview. This section is included so technical reviewers can move from the rendered report to the corresponding notebook implementation without turning the report into a file inventory.
 
 ## Interpretation Boundary
 
