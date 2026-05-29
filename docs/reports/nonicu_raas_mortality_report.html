@@ -113,7 +113,7 @@ ul.task-list li input[type="checkbox"] {
 <p>The key design choice is that the fixed non-ICU cohort is constructed before exposure definition or outcome modeling. This keeps cohort eligibility independent of treatment status and makes the downstream descriptive, adjusted, absolute-risk, and validation outputs traceable to one admission-level analysis table.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="../assets/workflow_diagram.svg" class="img-fluid figure-img" style="width:88.0%" alt="Analysis workflow diagram"></p>
+<p><img src="../assets/workflow_diagram.svg" class="img-fluid figure-img" style="width:80.0%" alt="Analysis workflow diagram"></p>
 <figcaption>End-to-end cohort construction and analysis workflow.</figcaption>
 </figure>
 </div>
@@ -206,6 +206,18 @@ ul.task-list li input[type="checkbox"] {
 <td style="text-align: right;">2.33 (0.92, 4.58)</td>
 <td style="text-align: right;">2.75 (1.50, 4.79)</td>
 <td>Descriptive only; not an exposure eligibility criterion</td>
+</tr>
+<tr class="even">
+<td>Female sex, n (%)</td>
+<td style="text-align: right;">218,834 (54.17%)</td>
+<td style="text-align: right;">27,549 (48.48%)</td>
+<td>Sex distribution differed modestly by exposure group</td>
+</tr>
+<tr class="odd">
+<td>Male sex, n (%)</td>
+<td style="text-align: right;">185,127 (45.83%)</td>
+<td style="text-align: right;">29,276 (51.52%)</td>
+<td>RAAS-exposed admissions were more frequently male</td>
 </tr>
 <tr class="even">
 <td>Any early RAAS exposure</td>
@@ -606,7 +618,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="reproducibility-and-governance" class="level2" data-number="12">
 <h2 data-number="12" class="anchored" data-anchor-id="reproducibility-and-governance"><span class="header-section-number">12</span> Reproducibility And Governance</h2>
-<p>Reproducibility is implemented through version-controlled SQL definitions, Python analysis notebooks, SAS validation programs, aggregate CSV outputs, and exported figures. Those artifacts support the tables and figures shown in this report without exposing patient-level data.</p>
+<p>Reproducibility was addressed by separating cohort construction, exposure definition, model estimation, figure generation, and SAS-Python validation into version-controlled workflow steps. The rendered report is supported by notebooks, SQL definitions, aggregate validation outputs, and exported figures, while patient-level MIMIC-IV data remain outside the repository.</p>
 <p>MIMIC-IV and PhysioNet access, Google Cloud authentication, BigQuery access, and local SAS paths are configured outside the repository.</p>
 </section>
 <section id="conclusion" class="level2" data-number="13">

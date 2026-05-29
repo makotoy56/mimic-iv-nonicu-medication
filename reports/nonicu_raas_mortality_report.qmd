@@ -31,7 +31,7 @@ The workflow separates data construction, model estimation, visualization, and v
 
 The key design choice is that the fixed non-ICU cohort is constructed before exposure definition or outcome modeling. This keeps cohort eligibility independent of treatment status and makes the downstream descriptive, adjusted, absolute-risk, and validation outputs traceable to one admission-level analysis table.
 
-![End-to-end cohort construction and analysis workflow.](../assets/workflow_diagram.svg){fig-alt="Analysis workflow diagram" width="88%"}
+![End-to-end cohort construction and analysis workflow.](../assets/workflow_diagram.svg){fig-alt="Analysis workflow diagram" width="80%"}
 
 ## Cohort And Exposure
 
@@ -61,6 +61,8 @@ Source notebook and supporting documentation: [03b_describe_analysis_dataset.ipy
 | Age, median (IQR), years | 58.00 (41.00, 72.00) | 69.00 (59.00, 79.00) | Age imbalance supports adjustment |
 | Hospital LOS, mean (SD), days | 3.75 (5.45) | 3.98 (5.13) | Length of stay was similar but slightly higher in exposed admissions |
 | Hospital LOS, median (IQR), days | 2.33 (0.92, 4.58) | 2.75 (1.50, 4.79) | Descriptive only; not an exposure eligibility criterion |
+| Female sex, n (%) | 218,834 (54.17%) | 27,549 (48.48%) | Sex distribution differed modestly by exposure group |
+| Male sex, n (%) | 185,127 (45.83%) | 29,276 (51.52%) | RAAS-exposed admissions were more frequently male |
 | Any early RAAS exposure | 0.00 | 1.00 | Primary exposure flag |
 | Early ACE inhibitor exposure | 0.00 | 0.682 | Exposure subtype among exposed admissions |
 | Early ARB exposure | 0.00 | 0.326 | Exposure subtype among exposed admissions |
@@ -183,7 +185,7 @@ Exposure was based on inpatient prescription records. It did not directly measur
 
 ## Reproducibility And Governance
 
-Reproducibility is implemented through version-controlled SQL definitions, Python analysis notebooks, SAS validation programs, aggregate CSV outputs, and exported figures. Those artifacts support the tables and figures shown in this report without exposing patient-level data.
+Reproducibility was addressed by separating cohort construction, exposure definition, model estimation, figure generation, and SAS-Python validation into version-controlled workflow steps. The rendered report is supported by notebooks, SQL definitions, aggregate validation outputs, and exported figures, while patient-level MIMIC-IV data remain outside the repository.
 
 MIMIC-IV and PhysioNet access, Google Cloud authentication, BigQuery access, and local SAS paths are configured outside the repository.
 
