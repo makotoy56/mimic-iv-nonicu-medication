@@ -16,7 +16,7 @@ The primary clinical analysis is multivariable logistic regression with absolute
 
 For a portfolio-style clinical analytics report presenting the study background, methods, results, interpretation, limitations, and reproducibility workflow:
 
-➡️ [View the Quarto HTML report](outputs/reports/nonicu_raas_mortality_report.html)
+➡️ [View the Quarto HTML report](https://makotoy56.github.io/mimic-iv-nonicu-medication/reports/nonicu_raas_mortality_report.html)
 
 This README provides the repository overview and technical navigation.
 

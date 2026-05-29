@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="560" viewBox="0 0 1440 560" role="img" aria-labelledby="title desc">
+  <title id="title">End-to-end MIMIC-IV non-ICU RAAS medication analysis workflow</title>
+  <desc id="desc">Workflow from MIMIC-IV data through BigQuery cohort construction, adult non-ICU admissions, early RAAS exposure definition, covariate and outcome assembly, unadjusted outcomes, multivariable logistic regression, absolute risk and marginal effects, SAS-Python validation, and cautious observational interpretation.</desc>
+  <defs>
+    <style>
+      .bg { fill: #f8fafc; }
+      .step { fill: #ffffff; stroke: #1d4ed8; stroke-width: 2.2; }
+      .analysis { fill: #eff6ff; stroke: #2563eb; stroke-width: 2.2; }
+      .validation { fill: #ecfdf5; stroke: #059669; stroke-width: 2.2; }
+      .interpretation { fill: #fff7ed; stroke: #ea580c; stroke-width: 2.2; }
+      .title { fill: #0f172a; font: 700 25px Arial, sans-serif; }
+      .subtitle { fill: #475569; font: 16px Arial, sans-serif; }
+      .label { fill: #0f172a; font: 700 17px Arial, sans-serif; }
+      .small { fill: #475569; font: 14px Arial, sans-serif; }
+      .arrow { stroke: #64748b; stroke-width: 2.8; fill: none; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
+      <path d="M0,0 L12,4 L0,8 Z" fill="#64748b" />
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1440" height="560" />
+  <text class="title" x="52" y="52">Early RAAS Exposure and Non-ICU Mortality</text>
+  <text class="subtitle" x="52" y="80">Reproducible EHR-based real-world evidence workflow using MIMIC-IV, Python, BigQuery SQL, and SAS</text>
+
+  <rect class="step" x="52" y="126" width="160" height="104" rx="14" />
+  <text class="label" x="91" y="166">MIMIC-IV</text>
+  <text class="small" x="82" y="193">hospital EHR data</text>
+
+  <path class="arrow" d="M212 178 H248" />
+  <rect class="step" x="248" y="126" width="188" height="104" rx="14" />
+  <text class="label" x="286" y="160">BigQuery SQL</text>
+  <text class="small" x="283" y="187">cohort construction</text>
+  <text class="small" x="293" y="207">reproducible tables</text>
+
+  <path class="arrow" d="M436 178 H472" />
+  <rect class="step" x="472" y="126" width="170" height="104" rx="14" />
+  <text class="label" x="512" y="160">Adult non-ICU</text>
+  <text class="label" x="523" y="181">admissions</text>
+  <text class="small" x="515" y="207">inpatient cohort</text>
+
+  <path class="arrow" d="M642 178 H678" />
+  <rect class="step" x="678" y="126" width="200" height="104" rx="14" />
+  <text class="label" x="727" y="158">Early RAAS</text>
+  <text class="label" x="713" y="180">exposure definition</text>
+  <text class="small" x="727" y="207">ACEi / ARB in 24h</text>
+
+  <path class="arrow" d="M878 178 H914" />
+  <rect class="step" x="914" y="126" width="212" height="104" rx="14" />
+  <text class="label" x="951" y="158">Covariate and</text>
+  <text class="label" x="951" y="180">outcome assembly</text>
+  <text class="small" x="969" y="207">mortality endpoint</text>
+
+  <path class="arrow" d="M1020 230 V286" />
+  <rect class="analysis" x="914" y="286" width="212" height="104" rx="14" />
+  <text class="label" x="960" y="320">Unadjusted</text>
+  <text class="label" x="971" y="342">outcomes</text>
+  <text class="small" x="971" y="368">descriptive rates</text>
+
+  <path class="arrow" d="M914 338 H878" />
+  <rect class="analysis" x="678" y="286" width="200" height="104" rx="14" />
+  <text class="label" x="722" y="320">Multivariable</text>
+  <text class="label" x="708" y="342">logistic regression</text>
+  <text class="small" x="723" y="368">adjusted OR model</text>
+
+  <path class="arrow" d="M678 338 H642" />
+  <rect class="analysis" x="472" y="286" width="170" height="104" rx="14" />
+  <text class="label" x="503" y="320">Absolute risk</text>
+  <text class="label" x="494" y="342">marginal effects</text>
+  <text class="small" x="505" y="368">risk differences</text>
+
+  <path class="arrow" d="M472 338 H436" />
+  <rect class="validation" x="248" y="286" width="188" height="104" rx="14" />
+  <text class="label" x="291" y="320">SAS-Python</text>
+  <text class="label" x="299" y="342">validation</text>
+  <text class="small" x="279" y="368">cross-platform checks</text>
+
+  <path class="arrow" d="M248 338 H212" />
+  <rect class="interpretation" x="52" y="286" width="160" height="104" rx="14" />
+  <text class="label" x="89" y="318">Cautious</text>
+  <text class="label" x="64" y="340">observational</text>
+  <text class="label" x="76" y="362">interpretation</text>
+
+  <text class="subtitle" x="52" y="450">Primary clinical model: multivariable logistic regression with adjusted predicted risks and average marginal effects.</text>
+  <text class="subtitle" x="52" y="480">Validation notebooks compare selected aggregate outputs; they do not define a new clinical analysis.</text>
+  <text class="subtitle" x="52" y="510">Interpretation remains hypothesis-generating: observational associations cannot establish causality, and residual confounding may remain.</text>
+</svg>

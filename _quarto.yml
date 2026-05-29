@@ -1,5 +1,6 @@
 project:
   type: default
+  output-dir: docs
   post-render: scripts/quarto_normalize_outputs.py
 
 format:
