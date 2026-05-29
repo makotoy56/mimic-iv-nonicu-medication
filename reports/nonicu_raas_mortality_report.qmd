@@ -54,8 +54,6 @@ The baseline table summarizes the existing Table 1-style outputs. The main imbal
 
 Source notebook and supporting documentation: [03b_describe_analysis_dataset.ipynb](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/notebooks/03b_describe_analysis_dataset.ipynb) and [03b_describe_analysis_dataset_SHORT.md](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/03b_describe_analysis_dataset_SHORT.md).
 
-![Baseline cohort size, age, and hospital length of stay by early RAAS exposure.](../assets/baseline_characteristics_summary.png){fig-alt="Baseline characteristics summary by early RAAS exposure" width="80%"}
-
 | Characteristic | No early RAAS | Early RAAS | Analytic implication |
 | --- | ---: | ---: | --- |
 | Admissions, n | 403,961 | 56,825 | Exposure was present in 12.33% of admissions |
