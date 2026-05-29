@@ -126,7 +126,9 @@ The sensitivity estimates were directionally similar to the primary model, but t
 
 The adjusted odds ratio is a relative measure. Because in-hospital mortality was uncommon in this non-ICU cohort, the project also reported absolute risk estimates and average marginal effects. The estimated average adjusted risk difference associated with early RAAS exposure was approximately -0.38 percentage points.
 
-![Adjusted predicted mortality by age and early RAAS exposure.](../assets/predicted_mortality_by_age.png){fig-alt="Adjusted predicted mortality curves by age and early RAAS exposure" width="78%"}
+![Adjusted predicted in-hospital mortality by age and early RAAS exposure status. Predicted mortality increased with age in both groups, while the early RAAS exposure group had lower adjusted predicted mortality across the plotted age range.](../assets/predicted_mortality_by_age.png){fig-alt="Adjusted predicted mortality curves by age and early RAAS exposure" width="78%"}
+
+Because this is an observational model-based estimate, the curves should be interpreted as adjusted predicted probabilities under the fitted model, not as causal treatment effects. The figure is useful for communicating how the modeled association varies across age.
 
 | Adjusted risk estimand | Estimate |
 | --- | ---: |
