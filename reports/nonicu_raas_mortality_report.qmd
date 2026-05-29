@@ -10,7 +10,7 @@ format:
     number-sections: true
     fig-align: center
     page-layout: article
-    embed-resources: true
+    embed-resources: false
 execute:
   echo: false
   warning: false
@@ -30,6 +30,8 @@ The results remain hypothesis-generating. The design estimates associations afte
 The workflow separates data construction, model estimation, visualization, and validation. The analytic sequence starts with an adult hospital admission cohort, excludes ICU-associated admissions, classifies early ACE inhibitor or ARB exposure from inpatient prescription records, fits adjusted outcome models, and validates selected aggregate outputs across Python and SAS.
 
 The key design choice is that the fixed non-ICU cohort is constructed before exposure definition or outcome modeling. This keeps cohort eligibility independent of treatment status and makes the downstream descriptive, adjusted, absolute-risk, and validation outputs traceable to one admission-level analysis table.
+
+![End-to-end cohort construction and analysis workflow.](../assets/workflow_diagram.svg){fig-alt="Analysis workflow diagram" width="88%"}
 
 ## Cohort And Exposure
 
