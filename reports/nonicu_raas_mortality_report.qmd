@@ -54,7 +54,7 @@ The baseline table summarizes the existing Table 1-style outputs. The main imbal
 
 Source notebook and supporting documentation: [03b_describe_analysis_dataset.ipynb](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/notebooks/03b_describe_analysis_dataset.ipynb) and [03b_describe_analysis_dataset_SHORT.md](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/03b_describe_analysis_dataset_SHORT.md).
 
-![Baseline cohort size, age, and hospital length of stay by early RAAS exposure.](../assets/baseline_characteristics_summary.png){fig-alt="Baseline characteristics summary by early RAAS exposure" width="88%"}
+![Baseline cohort size, age, and hospital length of stay by early RAAS exposure.](../assets/baseline_characteristics_summary.png){fig-alt="Baseline characteristics summary by early RAAS exposure" width="80%"}
 
 | Characteristic | No early RAAS | Early RAAS | Analytic implication |
 | --- | ---: | ---: | --- |
@@ -93,7 +93,7 @@ Source notebook and supporting documentation: [04a_unadjusted_outcomes.ipynb](ht
 | No early RAAS inhibitor use | 403,961 | 2,177 | 401,784 | 0.005389 | 0.005418 | 1.000 |
 | Early RAAS inhibitor use | 56,825 | 149 | 56,676 | 0.002622 | 0.002629 | 0.485 |
 
-![Observed in-hospital mortality proportion by early RAAS exposure group.](../assets/unadjusted_mortality_by_raas.png){fig-alt="Bar chart comparing unadjusted in-hospital mortality by early RAAS exposure" width="78%"}
+![Observed in-hospital mortality proportion by early RAAS exposure group.](../assets/unadjusted_mortality_by_raas.png){fig-alt="Bar chart comparing unadjusted in-hospital mortality by early RAAS exposure" width="80%"}
 
 ## Multivariable Logistic Regression
 
@@ -114,7 +114,7 @@ The selected coefficient table is derived from `python/outputs/python_logistic_p
 | Other insurance | 2.683 | 2.492, 2.874 | 14.628 | 12.089, 17.702 | 2.14e-167 |
 | Anchor year 2020-2022 | 0.416 | 0.269, 0.564 | 1.517 | 1.308, 1.758 | 3.22e-08 |
 
-![Adjusted odds ratios from the multivariable model.](../assets/adjusted_odds_ratio_plot.png){fig-alt="Forest plot of adjusted odds ratios from the multivariable model" width="82%"}
+![Adjusted odds ratios from the multivariable model.](../assets/adjusted_odds_ratio_plot.png){fig-alt="Forest plot of adjusted odds ratios from the multivariable model" width="90%"}
 
 Admission-type coefficients in the exported model output have very wide intervals for some categories. These terms are retained as adjustment variables but are not interpreted as stable clinical findings.
 
@@ -140,7 +140,7 @@ The adjusted odds ratio is a relative measure. Because in-hospital mortality was
 
 Source notebook: [04b_multivariable_outcomes.ipynb](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/notebooks/04b_multivariable_outcomes.ipynb).
 
-![Adjusted predicted in-hospital mortality by age and early RAAS exposure status. Predicted mortality increased with age in both groups, while the early RAAS exposure group had lower adjusted predicted mortality across the plotted age range.](../assets/predicted_mortality_by_age.png){fig-alt="Adjusted predicted mortality curves by age and early RAAS exposure" width="78%"}
+![Adjusted predicted in-hospital mortality by age and early RAAS exposure status. Predicted mortality increased with age in both groups, while the early RAAS exposure group had lower adjusted predicted mortality across the plotted age range.](../assets/predicted_mortality_by_age.png){fig-alt="Adjusted predicted mortality curves by age and early RAAS exposure" width="90%"}
 
 Because this is an observational model-based estimate, the curves should be interpreted as adjusted predicted probabilities under the fitted model, not as causal treatment effects. The figure is useful for communicating how the modeled association varies across age.
 
@@ -150,7 +150,7 @@ Because this is an observational model-based estimate, the curves should be inte
 | Average predicted mortality risk with early RAAS exposure | 0.1936% |
 | Average marginal effect / risk difference | -0.38 percentage points |
 
-![Age-specific adjusted absolute risk difference associated with early RAAS exposure.](../assets/absolute_risk_difference_plot.png){fig-alt="Plot of age-specific adjusted absolute risk differences for early RAAS exposure" width="82%"}
+![Age-specific adjusted absolute risk difference associated with early RAAS exposure.](../assets/absolute_risk_difference_plot.png){fig-alt="Plot of age-specific adjusted absolute risk differences for early RAAS exposure" width="90%"}
 
 The age-specific figure shows why absolute risk reporting matters: the same relative association can correspond to different absolute differences across the age distribution.
 
@@ -173,7 +173,7 @@ The table below uses existing exported files in `python/outputs/` and `sas/outpu
 | Exposure OR lower CI | 0.2687743071 | 0.2687743084 | Numerically equivalent after rounding |
 | Exposure OR upper CI | 0.3758827838 | 0.3758827820 | Numerically equivalent after rounding |
 
-![SAS-Python validation summary for selected aggregate outputs.](../assets/sas_python_validation_summary.png){fig-alt="SAS-Python validation summary plot" width="78%"}
+![SAS-Python validation summary for selected aggregate outputs.](../assets/sas_python_validation_summary.png){fig-alt="SAS-Python validation summary plot" width="75%"}
 
 Observed differences for some sparse admission-type terms are validation diagnostics for model implementation and sparse-category behavior. They should not be interpreted as new clinical findings.
 
