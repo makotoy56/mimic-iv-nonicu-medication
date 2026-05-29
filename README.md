@@ -12,6 +12,10 @@ This repository presents an EHR-based retrospective cohort study using MIMIC-IV 
 
 The primary clinical analysis is multivariable logistic regression with absolute risk estimation using average marginal effects. Findings are interpreted as hypothesis-generating associations, not causal effects.
 
+[View the Quarto HTML report](outputs/reports/nonicu_raas_mortality_report.html)
+
+The Quarto report is the polished portfolio-style clinical analytics report. This README is the project overview.
+
 ## What This Demonstrates
 
 - Real-world evidence workflow using hospital EHR data
