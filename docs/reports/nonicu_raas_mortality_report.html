@@ -2184,9 +2184,10 @@ vertical-align: -.125em;
   <li><a href="#sensitivity-analyses" id="toc-sensitivity-analyses" class="nav-link" data-scroll-target="#sensitivity-analyses"><span class="header-section-number">8</span> Sensitivity Analyses</a></li>
   <li><a href="#absolute-risk-interpretation" id="toc-absolute-risk-interpretation" class="nav-link" data-scroll-target="#absolute-risk-interpretation"><span class="header-section-number">9</span> Absolute Risk Interpretation</a></li>
   <li><a href="#sas-python-validation" id="toc-sas-python-validation" class="nav-link" data-scroll-target="#sas-python-validation"><span class="header-section-number">10</span> SAS-Python Validation</a></li>
-  <li><a href="#interpretation-boundary" id="toc-interpretation-boundary" class="nav-link" data-scroll-target="#interpretation-boundary"><span class="header-section-number">11</span> Interpretation Boundary</a></li>
-  <li><a href="#reproducibility-and-governance" id="toc-reproducibility-and-governance" class="nav-link" data-scroll-target="#reproducibility-and-governance"><span class="header-section-number">12</span> Reproducibility And Governance</a></li>
-  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="header-section-number">13</span> Conclusion</a></li>
+  <li><a href="#analysis-workflow-and-source-notebooks" id="toc-analysis-workflow-and-source-notebooks" class="nav-link" data-scroll-target="#analysis-workflow-and-source-notebooks"><span class="header-section-number">11</span> Analysis Workflow And Source Notebooks</a></li>
+  <li><a href="#interpretation-boundary" id="toc-interpretation-boundary" class="nav-link" data-scroll-target="#interpretation-boundary"><span class="header-section-number">12</span> Interpretation Boundary</a></li>
+  <li><a href="#reproducibility-and-governance" id="toc-reproducibility-and-governance" class="nav-link" data-scroll-target="#reproducibility-and-governance"><span class="header-section-number">13</span> Reproducibility And Governance</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="header-section-number">14</span> Conclusion</a></li>
   </ul>
 </nav>
 </div>
@@ -2720,19 +2721,62 @@ vertical-align: -.125em;
 </div>
 <p>Observed differences for some sparse admission-type terms are validation diagnostics for model implementation and sparse-category behavior. They should not be interpreted as new clinical findings.</p>
 </section>
-<section id="interpretation-boundary" class="level2" data-number="11">
-<h2 data-number="11" class="anchored" data-anchor-id="interpretation-boundary"><span class="header-section-number">11</span> Interpretation Boundary</h2>
+<section id="analysis-workflow-and-source-notebooks" class="level2" data-number="11">
+<h2 data-number="11" class="anchored" data-anchor-id="analysis-workflow-and-source-notebooks"><span class="header-section-number">11</span> Analysis Workflow And Source Notebooks</h2>
+<p>This report is derived from version-controlled notebooks and validation workflows. The links below provide traceability from the portfolio report back to the analysis code and intermediate documentation.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Report component</th>
+<th>Source notebook</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Cohort construction</td>
+<td><a href="../../notebooks/01_cohort.ipynb">01_cohort.ipynb</a></td>
+</tr>
+<tr class="even">
+<td>Exposure definition</td>
+<td><a href="../../notebooks/02_exposure.ipynb">02_exposure.ipynb</a></td>
+</tr>
+<tr class="odd">
+<td>Input table validation</td>
+<td><a href="../../notebooks/03a_validate_input_tables.ipynb">03a_validate_input_tables.ipynb</a></td>
+</tr>
+<tr class="even">
+<td>Baseline cohort description and baseline figure export</td>
+<td><a href="../../notebooks/03b_describe_analysis_dataset.ipynb">03b_describe_analysis_dataset.ipynb</a></td>
+</tr>
+<tr class="odd">
+<td>Unadjusted mortality analysis</td>
+<td><a href="../../notebooks/04a_unadjusted_outcomes.ipynb">04a_unadjusted_outcomes.ipynb</a></td>
+</tr>
+<tr class="even">
+<td>Multivariable logistic regression, adjusted predicted risk, sensitivity analyses, and figure exports</td>
+<td><a href="../../notebooks/04b_multivariable_outcomes.ipynb">04b_multivariable_outcomes.ipynb</a></td>
+</tr>
+<tr class="odd">
+<td>SAS-Python validation</td>
+<td><a href="../../notebooks/05_sas_python_validation.ipynb">05_sas_python_validation.ipynb</a></td>
+</tr>
+</tbody>
+</table>
+<p>The README remains the repository overview. This section is included so technical reviewers can move from the rendered report to the corresponding notebook implementation without turning the report into a file inventory.</p>
+</section>
+<section id="interpretation-boundary" class="level2" data-number="12">
+<h2 data-number="12" class="anchored" data-anchor-id="interpretation-boundary"><span class="header-section-number">12</span> Interpretation Boundary</h2>
 <p>The primary adjusted association was consistent across the main model and the reported sensitivity analyses, and the exposure term was stable across Python and SAS validation outputs. The analysis remains observational.</p>
 <p>The main sources of potential bias are residual confounding by indication, unmeasured comorbidity burden, acute physiologic severity, outpatient medication history, prescribing behavior, medication discontinuation, dose, duration, adherence, and selection effects related to early survival and treatment eligibility.</p>
 <p>Exposure was based on inpatient prescription records. It did not directly measure outpatient chronic RAAS inhibitor use, medication adherence before admission, inpatient administration confirmation, or duration of therapy. The outcome was limited to in-hospital mortality.</p>
 </section>
-<section id="reproducibility-and-governance" class="level2" data-number="12">
-<h2 data-number="12" class="anchored" data-anchor-id="reproducibility-and-governance"><span class="header-section-number">12</span> Reproducibility And Governance</h2>
+<section id="reproducibility-and-governance" class="level2" data-number="13">
+<h2 data-number="13" class="anchored" data-anchor-id="reproducibility-and-governance"><span class="header-section-number">13</span> Reproducibility And Governance</h2>
 <p>Reproducibility is implemented through version-controlled SQL definitions, Python analysis notebooks, SAS validation programs, aggregate CSV outputs, and exported figures. Those artifacts support the tables and figures shown in this report without exposing patient-level data.</p>
 <p>MIMIC-IV and PhysioNet access, Google Cloud authentication, BigQuery access, and local SAS paths are configured outside the repository.</p>
 </section>
-<section id="conclusion" class="level2" data-number="13">
-<h2 data-number="13" class="anchored" data-anchor-id="conclusion"><span class="header-section-number">13</span> Conclusion</h2>
+<section id="conclusion" class="level2" data-number="14">
+<h2 data-number="14" class="anchored" data-anchor-id="conclusion"><span class="header-section-number">14</span> Conclusion</h2>
 <p>Early inpatient RAAS inhibitor exposure was associated with lower in-hospital mortality in this adult non-ICU MIMIC-IV cohort after adjustment for measured covariates. The association was also presented on the absolute risk scale, where the average adjusted risk difference was small in percentage-point terms and varied by age.</p>
 <p>The portfolio value of the project is the reproducible clinical analytics workflow: transparent cohort and exposure definitions, multivariable modeling, absolute risk interpretation, cautious observational framing, and selected SAS-Python validation using aggregate outputs.</p>
 </section>

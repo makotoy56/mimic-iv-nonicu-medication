@@ -161,6 +161,22 @@ The table below uses existing exported files in `python/outputs/` and `sas/outpu
 
 Observed differences for some sparse admission-type terms are validation diagnostics for model implementation and sparse-category behavior. They should not be interpreted as new clinical findings.
 
+## Analysis Workflow And Source Notebooks
+
+This report is derived from version-controlled notebooks and validation workflows. The links below provide traceability from the portfolio report back to the analysis code and intermediate documentation.
+
+| Report component | Source notebook |
+| --- | --- |
+| Cohort construction | [01_cohort.ipynb](../../notebooks/01_cohort.ipynb) |
+| Exposure definition | [02_exposure.ipynb](../../notebooks/02_exposure.ipynb) |
+| Input table validation | [03a_validate_input_tables.ipynb](../../notebooks/03a_validate_input_tables.ipynb) |
+| Baseline cohort description and baseline figure export | [03b_describe_analysis_dataset.ipynb](../../notebooks/03b_describe_analysis_dataset.ipynb) |
+| Unadjusted mortality analysis | [04a_unadjusted_outcomes.ipynb](../../notebooks/04a_unadjusted_outcomes.ipynb) |
+| Multivariable logistic regression, adjusted predicted risk, sensitivity analyses, and figure exports | [04b_multivariable_outcomes.ipynb](../../notebooks/04b_multivariable_outcomes.ipynb) |
+| SAS-Python validation | [05_sas_python_validation.ipynb](../../notebooks/05_sas_python_validation.ipynb) |
+
+The README remains the repository overview. This section is included so technical reviewers can move from the rendered report to the corresponding notebook implementation without turning the report into a file inventory.
+
 ## Interpretation Boundary
 
 The primary adjusted association was consistent across the main model and the reported sensitivity analyses, and the exposure term was stable across Python and SAS validation outputs. The analysis remains observational.
