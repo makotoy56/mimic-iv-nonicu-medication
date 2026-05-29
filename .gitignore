@@ -41,6 +41,7 @@ data/
 # --- Jupyter ---
 .ipynb_checkpoints/
 00*.ipynb
+**/*.quarto_ipynb
 
 # --- Local system files ---
 .DS_Store
@@ -80,3 +81,6 @@ sas/inputs/*.csv
 
 # If you later want to track selected PDFs:
 # !sas/outputs/*.pdf
+
+/.quarto/
+outputs/

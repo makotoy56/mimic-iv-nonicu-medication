@@ -1,0 +1,158 @@
+---
+title: "Early RAAS Inhibitor Exposure and In-Hospital Mortality in Adult Non-ICU Admissions"
+subtitle: "A MIMIC-IV Clinical Data Analytics and Real-World Evidence Portfolio Report"
+author: "Makoto Yoshida, PhD"
+date: "2026-05-29"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    number-sections: true
+    fig-align: center
+    page-layout: article
+    embed-resources: true
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+## Short Summary
+
+This report summarizes a reproducible, admission-level observational analysis of adult non-ICU hospital admissions in MIMIC-IV v3.1. The study evaluated whether early inpatient exposure to renin-angiotensin-aldosterone system (RAAS) inhibitors was associated with in-hospital mortality.
+
+The analytic cohort included 460,786 adult non-ICU hospital admissions. Early RAAS inhibitor exposure occurred in 56,825 admissions, or 12.33% of the cohort. In unadjusted summaries, in-hospital mortality was lower among admissions with early RAAS exposure than among unexposed admissions. After multivariable adjustment, early RAAS exposure was associated with lower odds of in-hospital mortality: odds ratio 0.32, 95% confidence interval 0.27-0.38. On the absolute risk scale, early RAAS exposure was associated with an average reduction of approximately 0.38 percentage points in predicted in-hospital mortality.
+
+These findings are hypothesis-generating. Because the study has an observational design, they should be interpreted as associations rather than evidence of treatment effectiveness.
+
+## Background And Rationale
+
+Hospitalized patients outside the intensive care unit represent a large and clinically heterogeneous population. Even among non-ICU admissions, in-hospital mortality is influenced by age, admission context, comorbidities, treatment eligibility, and pre-existing medication use.
+
+RAAS inhibitors, including angiotensin-converting enzyme inhibitors and angiotensin II receptor blockers, are widely prescribed for cardiovascular, renal, and metabolic indications. Prior observational work in hospitalized and population-based settings has evaluated associations between RAAS inhibitor exposure and outcomes in systemic illness, pneumonia-related outcomes, and viral respiratory infections. During the COVID-19 pandemic, large observational studies supported the clinical safety of continued RAAS inhibitor use during acute illness and did not show increased risk of infection or adverse outcomes.
+
+Much of the prior evidence has focused on specific diseases, ICU cohorts, or pandemic-related populations. General adult non-ICU hospital admissions remain an important setting for real-world evidence research because they represent a broad inpatient population where absolute risk interpretation may be clinically meaningful even when event rates are low.
+
+The research question was: among adult, non-ICU hospital admissions in MIMIC-IV, is early exposure to RAAS inhibitors associated with differences in in-hospital mortality after multivariable adjustment?
+
+## Study Design And Data Source
+
+This project used a retrospective observational cohort design with MIMIC-IV v3.1 hospital data. The unit of analysis was the hospital admission, with each row representing one adult non-ICU admission.
+
+Cohort construction, exposure definition, baseline covariate assembly, and outcome derivation were implemented with BigQuery-compatible SQL and structured Python notebooks. SAS programs reproduced selected aggregate outputs for validation.
+
+The workflow emphasizes a portfolio-ready clinical analytics pattern: transparent definitions, reproducible data construction, multivariable modeling, absolute risk interpretation, and clear separation between clinical analysis and reproducibility validation.
+
+![Analysis workflow showing cohort construction, exposure definition, outcome modeling, visualization, and validation.](../assets/workflow_diagram.svg){fig-alt="Analysis workflow diagram" width="85%"}
+
+## Cohort Definition
+
+The cohort included adult inpatient admissions from MIMIC-IV after excluding admissions associated with at least one ICU stay. The fixed non-ICU cohort was constructed upstream before exposure definition or outcome modeling.
+
+The final analytic cohort contained 460,786 adult non-ICU hospital admissions.
+
+## Exposure Definition
+
+Early RAAS inhibitor exposure was defined from inpatient medication prescription records in the MIMIC-IV prescriptions table.
+
+Admissions were classified as exposed if they had at least one ACE inhibitor or ARB prescription with a documented medication start time on or after hospital admission and within the first 24 hours after admission. Admissions without such a prescription were classified as unexposed.
+
+The exposure table included early ACE inhibitor exposure, early ARB exposure, concurrent early ACE inhibitor and ARB exposure, and any early RAAS inhibitor exposure. The primary exposure variable was any early RAAS inhibitor exposure.
+
+Exposure ascertainment was based on inpatient prescription records. It did not directly measure outpatient chronic use, medication adherence before admission, inpatient administration confirmation, dose intensity, or duration of therapy.
+
+## Outcome And Covariates
+
+The primary outcome was in-hospital mortality, defined using `hospital_expire_flag`.
+
+The primary multivariable logistic regression adjusted for age, gender, race group, admission type, insurance category, and calendar period of admission. Categorical variables were one-hot encoded with explicit handling of missing values. Outcome variables and post-outcome fields were kept out of the feature matrix.
+
+These covariates provide adjustment for measured demographic and admission-related factors. They do not fully capture comorbidity burden, acute physiologic severity, outpatient medication history, clinician prescribing behavior, or other clinical context that may influence both RAAS exposure and mortality.
+
+## Statistical Analysis
+
+The primary clinical analysis was multivariable logistic regression estimating the association between early RAAS exposure and in-hospital mortality. Results were summarized using logistic regression coefficients, odds ratios and confidence intervals, adjusted predicted mortality risks, average marginal effects, and age-specific adjusted risk differences.
+
+Bootstrap resampling was used in the notebook to quantify uncertainty for selected marginal-effect estimates.
+
+The multivariable notebook also included a 24-hour landmark sensitivity analysis to mitigate immortal-time bias by restricting to admissions surviving beyond 24 hours, or with no recorded death, and refitting the same core model. An additional landmark model included admission source as a proxy for baseline severity.
+
+These analyses do not remove all potential bias. Residual confounding, confounding by indication, unmeasured clinical severity, selection effects related to early survival and treatment eligibility, and differences in prescribing behavior may remain.
+
+## Results
+
+### Cohort And Exposure
+
+The final analytic cohort included 460,786 adult non-ICU hospital admissions. Early RAAS inhibitor exposure was observed in 56,825 admissions, corresponding to 12.33% of the cohort.
+
+Patients in the early RAAS exposure group differed systematically from unexposed patients at baseline. In particular, RAAS-exposed admissions were older on average, and exposure groups differed by sex distribution and admission context. These differences support the need for multivariable adjustment.
+
+### Unadjusted Outcomes
+
+The overall in-hospital mortality rate was approximately 0.5%. In unadjusted summaries, no early RAAS exposure was associated with 2,177 deaths among 403,961 admissions, with a mortality proportion of 0.00539. Early RAAS exposure was associated with 149 deaths among 56,825 admissions, with a mortality proportion of 0.00262. The crude odds ratio for early RAAS exposure versus no early RAAS exposure was approximately 0.49.
+
+These unadjusted comparisons are descriptive only and should not be interpreted causally.
+
+![Observed in-hospital mortality proportion by early RAAS exposure group.](../assets/unadjusted_mortality_by_raas.png){fig-alt="Bar chart comparing unadjusted in-hospital mortality by early RAAS exposure" width="82%"}
+
+### Adjusted Outcomes
+
+After adjustment for age, gender, race group, admission type, insurance category, and calendar period, early RAAS exposure was associated with lower odds of in-hospital mortality.
+
+The primary model estimated an exposure coefficient of -1.146, an adjusted odds ratio of 0.32, a 95% confidence interval of 0.27-0.38, and a p-value of approximately 6.42e-41.
+
+Sensitivity analyses reported in the notebook were directionally similar. The primary model exposure odds ratio was 0.32, with a 95% confidence interval of 0.27-0.38. The 24-hour landmark exposure odds ratio was 0.36, with a 95% confidence interval of 0.30-0.43. The 24-hour landmark plus proxy exposure odds ratio was 0.39, with a 95% confidence interval of 0.32-0.46.
+
+### Absolute Risk Interpretation
+
+On the absolute risk scale, early RAAS exposure was associated with an average reduction of approximately 0.38 percentage points in predicted in-hospital mortality.
+
+Age-specific adjusted analyses suggested that the absolute risk difference associated with early RAAS exposure widened among older patients. This supports reporting both relative measures, such as odds ratios, and absolute measures, such as adjusted predicted risks and average marginal effects.
+
+![Age-specific adjusted absolute risk difference associated with early RAAS exposure.](../assets/absolute_risk_difference_plot.png){fig-alt="Plot of age-specific adjusted absolute risk differences for early RAAS exposure" width="82%"}
+
+## Interpretation
+
+Early RAAS inhibitor exposure was associated with lower in-hospital mortality in this adult non-ICU MIMIC-IV cohort after multivariable adjustment. The association was present on both the relative scale and the absolute scale.
+
+The absolute-risk framing is important because the baseline event rate in this non-ICU cohort was low. A percentage-point risk difference is more directly interpretable for clinical analytics and outcomes research audiences than an odds ratio alone.
+
+These findings should be treated as hypothesis-generating association evidence. The analysis does not establish that early RAAS exposure lowers mortality, and it should not be used to claim treatment effectiveness.
+
+## Limitations
+
+This study has an observational design and cannot establish causality. Although exposure ascertainment was restricted to the first 24 hours after admission and models adjusted for measured demographic and admission-related variables, residual confounding may remain.
+
+Important potential sources of bias include confounding by indication, differences in chronic outpatient medication history, comorbidity burden not fully represented in the primary model, acute physiologic severity and laboratory findings, clinician prescribing behavior, medication discontinuation, dose, duration, adherence, and selection effects related to early survival and treatment eligibility.
+
+The exposure definition used inpatient prescription records. It did not directly measure outpatient chronic RAAS inhibitor use, medication adherence before admission, inpatient administration confirmation, dose intensity, or duration of therapy.
+
+The outcome was in-hospital mortality. The analysis did not evaluate post-discharge mortality, readmission, adverse events, renal outcomes, or disease-specific endpoints.
+
+MIMIC-IV reflects care delivered within its source health system and time period. Findings may not generalize to all hospitals, geographic regions, prescribing practices, or patient populations.
+
+## Reproducibility And Validation
+
+The primary clinical analysis is contained in `notebooks/04b_multivariable_outcomes.ipynb`. That notebook fits the multivariable logistic regression model and estimates adjusted predicted risks and average marginal effects.
+
+The SAS-Python validation workflow is contained in `notebooks/05_sas_python_validation.ipynb`. It is a reproducibility validation exercise, not a separate clinical analysis and not a new clinical estimand.
+
+The validation notebook compares selected exported aggregate outputs from Python and SAS, including unadjusted outcome summaries and logistic regression parameters where fields are available in both platforms. The repository tracks aggregate validation CSVs only and does not include patient-level extracts, SAS input CSVs, SAS datasets, local logs, or sensitive credential files.
+
+The exposure term was stable across the exported Python and SAS logistic outputs, with both platforms reporting an exposure odds ratio of 0.3178484462. Differences observed for some admission-type terms were interpreted as validation diagnostics for sparse-category behavior, not as new clinical findings.
+
+The infrastructure sanity check script, `scripts/validation_checklist.py`, is separate from SAS-Python output validation. It checks expected BigQuery table visibility through metadata and does not validate statistical results, table contents, data quality, model outputs, or SAS-Python agreement.
+
+## Data Governance And Compliance
+
+This project uses MIMIC-IV v3.1, maintained by the MIT Laboratory for Computational Physiology and made available through PhysioNet.
+
+Access was granted after required training and approval under the PhysioNet data use agreement. The repository contains no patient-level data. MIMIC-IV and PhysioNet access, Google Cloud authentication, BigQuery access, and local SAS paths are configured outside the repository.
+
+The portfolio materials use documentation, code, aggregate validation outputs, and exported figures rather than restricted patient-level data.
+
+## Conclusion
+
+In this admission-level observational analysis of adult non-ICU hospital admissions in MIMIC-IV, early inpatient RAAS inhibitor exposure was associated with lower in-hospital mortality after multivariable adjustment. The estimated association was also presented on the absolute risk scale, where the average adjusted risk difference was small in percentage-point terms and age-specific analyses suggested larger absolute risk differences among older patients.
+
+The main value of this project is methodological and operational: it demonstrates a reproducible real-world evidence workflow with transparent cohort and exposure definitions, multivariable outcome modeling, absolute risk interpretation, cautious clinical epidemiology framing, and selected SAS-Python validation of exported outputs.

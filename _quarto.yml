@@ -1,0 +1,14 @@
+project:
+  type: default
+  post-render: scripts/quarto_normalize_outputs.py
+
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    number-sections: true
+    theme: cosmo
+    code-fold: true
+    fig-align: center
+    page-layout: article
+    embed-resources: true
