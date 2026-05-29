@@ -121,7 +121,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="cohort-and-exposure" class="level2" data-number="3">
 <h2 data-number="3" class="anchored" data-anchor-id="cohort-and-exposure"><span class="header-section-number">3</span> Cohort And Exposure</h2>
 <p>The analytic cohort contained 460,786 adult non-ICU hospital admissions. Early RAAS inhibitor exposure was observed in 56,825 admissions, or 12.33% of the cohort.</p>
-<p>Source notebooks: <a href="https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/notebooks/01_cohort.ipynb">cohort construction</a> and <a href="https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/notebooks/02_exposure.ipynb">exposure definition</a>.</p>
+<p>Source notebooks: <a href="https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/notebooks/01_cohort.ipynb">01_cohort.ipynb</a> and <a href="https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/notebooks/02_exposure.ipynb">02_exposure.ipynb</a>.</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -160,7 +160,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="baseline-characteristics" class="level2" data-number="4">
 <h2 data-number="4" class="anchored" data-anchor-id="baseline-characteristics"><span class="header-section-number">4</span> Baseline Characteristics</h2>
 <p>The baseline table summarizes the existing Table 1-style outputs. The main imbalance relevant to interpretation is age: exposed admissions were substantially older than unexposed admissions, reinforcing the need for adjusted outcome modeling.</p>
-<p>Source notebook and notes: <a href="https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/notebooks/03b_describe_analysis_dataset.ipynb">baseline cohort description</a> and <a href="https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/03b_describe_analysis_dataset_SHORT.md">short documentation</a>.</p>
+<p>Source notebook and supporting documentation: <a href="https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/notebooks/03b_describe_analysis_dataset.ipynb">03b_describe_analysis_dataset.ipynb</a> and <a href="https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/03b_describe_analysis_dataset_SHORT.md">03b_describe_analysis_dataset_SHORT.md</a>.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../assets/baseline_characteristics_summary.png" class="img-fluid figure-img" style="width:88.0%" alt="Baseline characteristics summary by early RAAS exposure"></p>
@@ -289,7 +289,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="unadjusted-mortality" class="level2" data-number="6">
 <h2 data-number="6" class="anchored" data-anchor-id="unadjusted-mortality"><span class="header-section-number">6</span> Unadjusted Mortality</h2>
 <p>The unadjusted outcome table is derived from <code>python/outputs/python_unadjusted_outcomes.csv</code>. These estimates are descriptive only and do not address baseline differences between exposure groups.</p>
-<p>Source notebook and notes: <a href="https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/notebooks/04a_unadjusted_outcomes.ipynb">unadjusted outcomes</a> and <a href="https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/04a_unadjusted_outcomes_SHORT.md">short documentation</a>.</p>
+<p>Source notebook and supporting documentation: <a href="https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/notebooks/04a_unadjusted_outcomes.ipynb">04a_unadjusted_outcomes.ipynb</a> and <a href="https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/04a_unadjusted_outcomes_SHORT.md">04a_unadjusted_outcomes_SHORT.md</a>.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 11%">
@@ -342,7 +342,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="multivariable-logistic-regression" class="level2" data-number="7">
 <h2 data-number="7" class="anchored" data-anchor-id="multivariable-logistic-regression"><span class="header-section-number">7</span> Multivariable Logistic Regression</h2>
 <p>The primary adjusted model estimated lower odds of in-hospital mortality among admissions with early RAAS inhibitor exposure after adjustment for measured demographic and admission-related covariates.</p>
-<p>Source notebook and notes: <a href="https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/notebooks/04b_multivariable_outcomes.ipynb">multivariable outcomes</a> and <a href="https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/04b_multivariable_outcomes_SHORT.md">short documentation</a>.</p>
+<p>Source notebook and supporting documentation: <a href="https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/notebooks/04b_multivariable_outcomes.ipynb">04b_multivariable_outcomes.ipynb</a> and <a href="https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/04b_multivariable_outcomes_SHORT.md">04b_multivariable_outcomes_SHORT.md</a>.</p>
 <p>The selected coefficient table is derived from <code>python/outputs/python_logistic_parameters.csv</code>. The table emphasizes the exposure term and representative adjusted covariates; it is not a causal effect table.</p>
 <table class="caption-top table">
 <colgroup>
@@ -441,7 +441,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="sensitivity-analyses" class="level2" data-number="8">
 <h2 data-number="8" class="anchored" data-anchor-id="sensitivity-analyses"><span class="header-section-number">8</span> Sensitivity Analyses</h2>
 <p>Sensitivity analyses evaluated whether the exposure association was directionally stable when restricting to admissions surviving beyond 24 hours and when adding an admission-source proxy.</p>
-<p>Source notebook: <a href="https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/notebooks/04b_multivariable_outcomes.ipynb">multivariable outcomes</a>.</p>
+<p>Source notebook: <a href="https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/notebooks/04b_multivariable_outcomes.ipynb">04b_multivariable_outcomes.ipynb</a>.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../assets/landmark_sensitivity_summary.png" class="img-fluid figure-img" style="width:80.0%" alt="Landmark sensitivity analysis odds ratio summary"></p>
@@ -489,7 +489,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="absolute-risk-interpretation" class="level2" data-number="9">
 <h2 data-number="9" class="anchored" data-anchor-id="absolute-risk-interpretation"><span class="header-section-number">9</span> Absolute Risk Interpretation</h2>
 <p>The adjusted odds ratio is a relative measure. Because in-hospital mortality was uncommon in this non-ICU cohort, the project also reported absolute risk estimates and average marginal effects. The estimated average adjusted risk difference associated with early RAAS exposure was approximately -0.38 percentage points.</p>
-<p>Source notebook: <a href="https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/notebooks/04b_multivariable_outcomes.ipynb">multivariable outcomes</a>.</p>
+<p>Source notebook: <a href="https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/notebooks/04b_multivariable_outcomes.ipynb">04b_multivariable_outcomes.ipynb</a>.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../assets/predicted_mortality_by_age.png" class="img-fluid figure-img" style="width:78.0%" alt="Adjusted predicted mortality curves by age and early RAAS exposure"></p>
@@ -534,7 +534,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="sas-python-validation" class="level2" data-number="10">
 <h2 data-number="10" class="anchored" data-anchor-id="sas-python-validation"><span class="header-section-number">10</span> SAS-Python Validation</h2>
 <p>The validation workflow compares aggregate Python and SAS outputs. It is a reproducibility check, not a second clinical analysis and not a new estimand.</p>
-<p>Source notebook and notes: <a href="https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/notebooks/05_sas_python_validation.ipynb">SAS-Python validation</a>, <a href="https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/05_sas_python_validation_SHORT.md">short documentation</a>, and <a href="https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/VALIDATION_NOTES.md">validation notes</a>.</p>
+<p>Source notebook and supporting documentation: <a href="https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/notebooks/05_sas_python_validation.ipynb">05_sas_python_validation.ipynb</a>, <a href="https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/05_sas_python_validation_SHORT.md">05_sas_python_validation_SHORT.md</a>, and <a href="https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/VALIDATION_NOTES.md">VALIDATION_NOTES.md</a>.</p>
 <p>The table below uses existing exported files in <code>python/outputs/</code> and <code>sas/outputs/</code>.</p>
 <table class="caption-top table">
 <colgroup>
