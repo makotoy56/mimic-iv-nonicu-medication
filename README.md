@@ -108,6 +108,8 @@ Exposure is based on inpatient prescription records and does not directly captur
 
 The workflow uses version-controlled notebooks, SQL scripts, SAS programs, and aggregate validation CSVs. No patient-level data are included in this repository. See [Setup and reproducibility](docs/SETUP.md) for the lightweight Python environment and notebook hygiene workflow.
 
+For complete environment and reproducibility details, see [REPRODUCIBILITY.md](REPRODUCIBILITY.md).
+
 Validation scope:
 
 - `04b_multivariable_outcomes.ipynb` contains the primary clinical analysis: multivariable logistic regression and absolute risk estimation.
