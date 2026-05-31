@@ -48,8 +48,9 @@ The workflow is organized as an admission-level clinical analytics pipeline:
 
 ## Environment Summary
 
-- **Python version**: Python 3.10 is documented in `docs/SETUP.md` as the development environment.
-- **SAS version**: not documented in this repository. SAS paths and runtime configuration may need local adjustment before running the SAS programs.
+- **Python environment**: Analyses were developed and executed using Python 3.10 as documented in `docs/SETUP.md`. Project dependencies are specified in `requirements.txt` and include pandas, NumPy, statsmodels, scikit-learn, matplotlib, and Google BigQuery client libraries.
+
+- **SAS environment**: SAS® OnDemand for Academics was used for SAS validation workflows. The exact SAS maintenance release was not pinned in the repository.
 - **Quarto version**: 1.9.38 detected locally with `quarto --version`. Quarto configuration is stored in `_quarto.yml`, including output to `docs/` and a post-render normalization script.
 - **Version control**: Git/GitHub are used for code, documentation, SQL definitions, notebooks, SAS programs, aggregate validation outputs, curated figures, and rendered portfolio materials.
 
@@ -119,7 +120,7 @@ No `pyproject.toml` or `environment.yml` file was detected.
    - `notebooks/04a_unadjusted_outcomes.ipynb`
    - `notebooks/04b_multivariable_outcomes.ipynb`
    - `notebooks/05_sas_python_validation.ipynb`
-6. If SAS validation is being reproduced, update local SAS library paths as needed and run the programs in `sas/programs/` in numeric order.
+6. If SAS validation is being reproduced, run the SAS programs in SAS® OnDemand for Academics or another compatible SAS environment, updating library paths as needed.
 7. Render the Quarto report from the repository root:
 
    ```bash
