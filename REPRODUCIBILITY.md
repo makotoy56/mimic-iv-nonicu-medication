@@ -54,6 +54,25 @@ The workflow is organized as an admission-level clinical analytics pipeline:
 - **Quarto version**: 1.9.38 detected locally with `quarto --version`. Quarto configuration is stored in `_quarto.yml`, including output to `docs/` and a post-render normalization script.
 - **Version control**: Git/GitHub are used for code, documentation, SQL definitions, notebooks, SAS programs, aggregate validation outputs, curated figures, and rendered portfolio materials.
 
+## Notebook Output Policy
+
+Jupyter notebooks may be rerun locally during development, but notebook outputs, execution counts, generated cell IDs, and volatile notebook metadata are stripped before commit.
+
+The repository uses `nbstripout` as a uv development dependency and a Git clean filter for `*.ipynb` files. After cloning or recreating the environment, install the local Git filter from the repository root:
+
+```bash
+uv sync
+uv run nbstripout --install --attributes .gitattributes
+git config filter.nbstripout.extrakeys 'metadata.kernelspec metadata.language_info.version cell.metadata.execution cell.metadata.vscode cell.metadata.notebookRunGroups'
+uv run nbstripout --status
+```
+
+To verify notebooks are clean before committing:
+
+```bash
+uv run nbstripout --verify notebooks/*.ipynb
+```
+
 ## Major Analytical Libraries
 
 The project dependency metadata indicates use of:
