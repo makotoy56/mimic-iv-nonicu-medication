@@ -40,19 +40,31 @@ data/
 
 # --- Jupyter ---
 .ipynb_checkpoints/
+**/.ipynb_checkpoints/
 00*.ipynb
 **/*.quarto_ipynb
 
 # --- Local system files ---
 .DS_Store
+._*
 
 # --- Python cache ---
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+coverage.xml
+htmlcov/
+*.egg-info/
 
 # --- Virtual environments ---
 .venv/
 venv/
+.uv-cache/
 
 # --- VS Code ---
 .vscode/
@@ -83,4 +95,7 @@ sas/inputs/*.csv
 # !sas/outputs/*.pdf
 
 /.quarto/
+**/.quarto/
+_site/
+**/_site/
 outputs/
