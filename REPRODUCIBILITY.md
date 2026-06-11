@@ -48,7 +48,7 @@ The workflow is organized as an admission-level clinical analytics pipeline:
 
 ## Environment Summary
 
-- **Python environment**: Analyses were developed and executed using Python 3.10 as documented in `docs/SETUP.md`. Project dependencies are specified in `requirements.txt` and include pandas, NumPy, statsmodels, scikit-learn, matplotlib, and Google BigQuery client libraries.
+- **Python environment**: The repository now uses uv with Python 3.12, as documented in `docs/SETUP.md`. Project dependencies are specified in `pyproject.toml` and locked in `uv.lock`; they include pandas, NumPy, statsmodels, scikit-learn, matplotlib, and Google BigQuery client libraries.
 
 - **SAS environment**: SAS® OnDemand for Academics was used for SAS validation workflows. The exact SAS maintenance release was not pinned in the repository.
 - **Quarto version**: 1.9.38 detected locally with `quarto --version`. Quarto configuration is stored in `_quarto.yml`, including output to `docs/` and a post-render normalization script.
@@ -56,7 +56,7 @@ The workflow is organized as an admission-level clinical analytics pipeline:
 
 ## Major Analytical Libraries
 
-The project dependency file indicates use of:
+The project dependency metadata indicates use of:
 
 - pandas
 - NumPy
@@ -76,7 +76,7 @@ This project was developed using an AI-assisted workflow that included ChatGPT a
 
 ## Complete Dependency Specification
 
-The project includes `requirements.txt`. Dependencies are specified with lower bounds rather than exact pins.
+The project includes `pyproject.toml` and `uv.lock`. Direct dependencies retain the lower bounds from the original `requirements.txt`; the resolved transitive environment is captured in `uv.lock`.
 
 ```text
 pandas>=2.0
@@ -92,26 +92,24 @@ jupyterlab>=4.0
 ipykernel>=6.0
 ```
 
-No `pyproject.toml` or `environment.yml` file was detected.
+The project targets Python 3.12 with `requires-python = ">=3.12,<3.13"` and `.python-version`.
 
 ## Reproduction Steps
 
 1. Obtain independent MIMIC-IV/PhysioNet approval and configure Google Cloud/BigQuery access for MIMIC-IV v3.1.
-2. Create and activate a Python virtual environment:
+2. Install uv if it is not already available, then create or update the repository-local environment:
 
    ```bash
-   python -m venv .venv
-   source .venv/bin/activate
+   uv sync
    ```
 
-3. Install Python dependencies:
+3. If needed, register the notebook kernel:
 
    ```bash
-   python -m pip install -r requirements.txt
+   uv run python -m ipykernel install --user --name mimic-portfolio --display-name "Python (mimic-portfolio)"
    ```
 
-4. If needed, register the notebook kernel described in `docs/SETUP.md`.
-5. Run the notebooks in workflow order:
+4. Run the notebooks in workflow order:
    - `notebooks/00_setup.ipynb`
    - `notebooks/01_cohort.ipynb`
    - `notebooks/02_exposure.ipynb`
@@ -120,11 +118,11 @@ No `pyproject.toml` or `environment.yml` file was detected.
    - `notebooks/04a_unadjusted_outcomes.ipynb`
    - `notebooks/04b_multivariable_outcomes.ipynb`
    - `notebooks/05_sas_python_validation.ipynb`
-6. If SAS validation is being reproduced, run the SAS programs in SAS® OnDemand for Academics or another compatible SAS environment, updating library paths as needed.
-7. Render the Quarto report from the repository root:
+5. If SAS validation is being reproduced, run the SAS programs in SAS® OnDemand for Academics or another compatible SAS environment, updating library paths as needed.
+6. Render the Quarto report from the repository root:
 
    ```bash
    quarto render reports/nonicu_raas_mortality_report.qmd
    ```
 
-8. Review the rendered report at `docs/reports/nonicu_raas_mortality_report.html`.
+7. Review the rendered report at `docs/reports/nonicu_raas_mortality_report.html`.

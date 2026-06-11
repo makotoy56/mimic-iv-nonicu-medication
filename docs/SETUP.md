@@ -4,17 +4,16 @@ This repository is a portfolio-focused analysis project, not a packaged producti
 
 ## Python Environment
 
-The notebooks were developed with Python 3.10 in a local virtual environment. A repository-local `.venv/` works, and a shared parent environment such as `../.venv/` is also fine when working across related portfolio projects.
+The repository uses uv with Python 3.12. The project metadata is stored in `pyproject.toml`, the resolved dependency set is stored in `uv.lock`, and `.python-version` pins the local interpreter preference to Python 3.12.
 
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
-python -m pip install --upgrade pip
-python -m pip install -r requirements.txt
-python -m ipykernel install --user --name mimic-portfolio --display-name "Python (mimic-portfolio)"
+uv sync
+uv run python -m ipykernel install --user --name mimic-portfolio --display-name "Python (mimic-portfolio)"
 ```
 
-The notebook metadata points to the `mimic-portfolio` kernel name. If you use a shared parent environment, run the same `ipykernel install` command from that activated environment.
+The notebook metadata points to the `mimic-portfolio` kernel name. A repository-local `.venv/` is ignored by git and may be created by `uv sync`; do not commit virtual environment contents. Existing local virtual environments do not need to be deleted for this workflow.
+
+To add or update Python dependencies, use `uv add` from the repository root so `pyproject.toml` and `uv.lock` stay in sync.
 
 ## Data And Credential Expectations
 

@@ -106,7 +106,7 @@ Exposure is based on inpatient prescription records and does not directly captur
 
 ## Reproducibility And Validation
 
-The workflow uses version-controlled notebooks, SQL scripts, SAS programs, and aggregate validation CSVs. No patient-level data are included in this repository. See [Setup and reproducibility](docs/SETUP.md) for the lightweight Python environment and notebook hygiene workflow.
+The workflow uses version-controlled notebooks, SQL scripts, SAS programs, and aggregate validation CSVs. No patient-level data are included in this repository. See [Setup and reproducibility](docs/SETUP.md) for the uv-managed Python environment and notebook hygiene workflow.
 
 For complete environment and reproducibility details, see [REPRODUCIBILITY.md](REPRODUCIBILITY.md).
 
@@ -127,11 +127,12 @@ mimic-iv-nonicu-medication/
 |-- assets/           # Portfolio visuals
 |-- docs/             # Study background, methods, results, limitations, validation notes
 |-- notebooks/        # Stepwise analysis and validation notebooks
+|-- pyproject.toml    # uv project dependency metadata
 |-- python/outputs/   # Aggregate Python validation CSVs
 |-- sas/              # SAS workflow notes, programs, and aggregate validation outputs
 |-- scripts/          # Validation utilities
 |-- sql/              # BigQuery SQL for cohort/exposure construction
-|-- requirements.txt  # Lightweight Python notebook environment
+|-- uv.lock           # uv-resolved dependency lockfile
 `-- README.md
 ```
 
