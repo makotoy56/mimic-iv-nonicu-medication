@@ -117,6 +117,11 @@ ul.task-list li input[type="checkbox"] {
 <figcaption>End-to-end cohort construction and analysis workflow.</figcaption>
 </figure>
 </div>
+<section id="source-tables-to-analysis-dataset" class="level3" data-number="2.1">
+<h3 data-number="2.1" class="anchored" data-anchor-id="source-tables-to-analysis-dataset"><span class="header-section-number">2.1</span> Source Tables To Analysis Dataset</h3>
+<p>The lineage figure separates native MIMIC-IV source tables from SQL-derived, project-created BigQuery tables. It shows how source tables feed <code>nonicu_raas.nonicu_admissions</code>, the fixed adult non-ICU admission-level cohort; <code>nonicu_raas.exposure_raas_early</code>, which contains early ACEi / ARB exposure indicators; and <code>nonicu_raas.analysis_dataset</code>, the final analysis-ready dataset for the observational association analyses.</p>
+<p><img src="../assets/nonicu_table_lineage_construction.svg" class="img-fluid" style="width:95.0%" alt="MIMIC-IV source tables to project-created non-ICU cohort, exposure, and analysis dataset tables"></p>
+</section>
 </section>
 <section id="cohort-and-exposure" class="level2" data-number="3">
 <h2 data-number="3" class="anchored" data-anchor-id="cohort-and-exposure"><span class="header-section-number">3</span> Cohort And Exposure</h2>

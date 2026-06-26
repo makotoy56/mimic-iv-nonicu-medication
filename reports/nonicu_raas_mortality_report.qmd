@@ -33,6 +33,12 @@ The key design choice is that the fixed non-ICU cohort is constructed before exp
 
 ![End-to-end cohort construction and analysis workflow.](../assets/workflow_diagram.svg){fig-alt="Analysis workflow diagram" width="80%"}
 
+### Source Tables To Analysis Dataset
+
+The lineage figure separates native MIMIC-IV source tables from SQL-derived, project-created BigQuery tables. It shows how source tables feed `nonicu_raas.nonicu_admissions`, the fixed adult non-ICU admission-level cohort; `nonicu_raas.exposure_raas_early`, which contains early ACEi / ARB exposure indicators; and `nonicu_raas.analysis_dataset`, the final analysis-ready dataset for the observational association analyses.
+
+![](../assets/nonicu_table_lineage_construction.svg){fig-alt="MIMIC-IV source tables to project-created non-ICU cohort, exposure, and analysis dataset tables" width="95%"}
+
 ## Cohort And Exposure
 
 The analytic cohort contained 460,786 adult non-ICU hospital admissions. Early RAAS inhibitor exposure was observed in 56,825 admissions, or 12.33% of the cohort.

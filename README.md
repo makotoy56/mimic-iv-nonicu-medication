@@ -33,6 +33,8 @@ This README provides the repository overview and technical navigation.
 
 ![Analysis workflow](assets/workflow_diagram.svg)
 
+For the detailed source-table-to-analysis-dataset lineage, see the [Quarto HTML report](https://makotoy56.github.io/mimic-iv-nonicu-medication/reports/nonicu_raas_mortality_report.html) section on source tables and project-created analysis tables.
+
 ## Why This Project Matters
 
 This project shows how clinical analytics teams can move from raw EHR tables to an auditable real-world evidence workflow. It emphasizes transparent cohort, exposure, covariate, and outcome definitions; multivariable regression; and absolute risk interpretation for findings that need to be understandable beyond a purely statistical audience.
