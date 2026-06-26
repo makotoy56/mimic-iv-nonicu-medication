@@ -18,6 +18,8 @@ Early RAAS inhibitor exposure is defined using inpatient medication prescription
 
 Admissions are classified as exposed if they have at least one ACE inhibitor or ARB prescription with a documented medication start time on or after hospital admission and within the first 24 hours after admission. Admissions without such a prescription are classified as unexposed.
 
+The 0 to <24 hour window is an operational analytic definition, not a biological threshold or guideline-based treatment window.
+
 The exposure table includes:
 
 - `acei_early`: early ACE inhibitor exposure
@@ -26,6 +28,10 @@ The exposure table includes:
 - `raas_any_early`: any early RAAS inhibitor exposure
 
 The primary exposure variable is `raas_any_early`.
+
+## Analysis Dataset Construction
+
+`nonicu_raas.analysis_dataset` is an admission-level table built by left-joining `nonicu_raas.nonicu_admissions` to `nonicu_raas.exposure_raas_early` on `subject_id` and `hadm_id`. Missing exposure flags are handled with `COALESCE` so unexposed admissions remain in the analysis dataset.
 
 ## Outcome
 

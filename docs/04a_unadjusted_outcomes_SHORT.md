@@ -24,7 +24,7 @@ Each hospital admission is treated as an independent observation.
 
 ## Exposure and Outcome Definitions
 
-- **Exposure**: Early RAAS inhibitor use, defined as administration of any ACE inhibitor or ARB during the early phase of hospitalization (`raas_any_early`, binary).
+- **Exposure**: Early RAAS inhibitor use, defined from inpatient prescription records for ACE inhibitor or ARB orders during the early phase of hospitalization (`raas_any_early`, binary).
 - **Outcome**: In-hospital mortality, defined using the hospital expiration flag (`hospital_expire_flag`).
 
 ## Descriptive Analyses

@@ -33,7 +33,7 @@ This README provides the repository overview and technical navigation.
 
 ![Analysis workflow](assets/workflow_diagram.svg)
 
-For the detailed source-table-to-analysis-dataset lineage, see the [Quarto HTML report](https://makotoy56.github.io/mimic-iv-nonicu-medication/reports/nonicu_raas_mortality_report.html) section on source tables and project-created analysis tables.
+For the detailed source-table-to-analysis-dataset lineage, see the [Quarto HTML report section on source tables and project-created analysis tables](https://makotoy56.github.io/mimic-iv-nonicu-medication/reports/nonicu_raas_mortality_report.html#source-tables-to-analysis-dataset).
 
 ## Why This Project Matters
 

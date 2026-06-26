@@ -33,7 +33,7 @@ Early RAAS inhibitor exposure was observed in 12.33% of admissions (n = 56,825).
 
 ## Exposure Definition
 
-Early RAAS inhibitor exposure was defined as any early in-hospital administration of:
+Early RAAS inhibitor exposure was defined from early inpatient prescription records for:
 - ACE inhibitors, or
 - Angiotensin receptor blockers (ARBs)
 
