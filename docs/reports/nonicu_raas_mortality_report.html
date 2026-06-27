@@ -111,16 +111,21 @@ ul.task-list li input[type="checkbox"] {
 <h2 data-number="2" class="anchored" data-anchor-id="reproducible-workflow"><span class="header-section-number">2</span> Reproducible Workflow</h2>
 <p>The workflow separates data construction, model estimation, visualization, and validation. The analytic sequence starts with an adult hospital admission cohort, excludes ICU-associated admissions, classifies early ACE inhibitor or ARB exposure from inpatient prescription records, fits adjusted outcome models, and validates selected aggregate outputs across Python and SAS.</p>
 <p>The key design choice is that the fixed non-ICU cohort is constructed before exposure definition or outcome modeling. This keeps cohort eligibility independent of treatment status and makes the downstream descriptive, adjusted, absolute-risk, and validation outputs traceable to one admission-level analysis table.</p>
-<div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="../assets/workflow_diagram.svg" class="img-fluid figure-img" style="width:80.0%" alt="Analysis workflow diagram"></p>
-<figcaption>End-to-end cohort construction and analysis workflow.</figcaption>
+<a href="../assets/workflow_diagram.svg" target="_blank" rel="noopener"> <img src="../assets/workflow_diagram.svg" class="img-fluid figure-img" style="width:80%" alt="End-to-end cohort construction and analysis workflow diagram."> </a>
+<figcaption>
+End-to-end cohort construction and analysis workflow. <a href="../assets/workflow_diagram.svg" target="_blank" rel="noopener">Open full-size workflow diagram</a>.
+</figcaption>
 </figure>
-</div>
 <section id="source-tables-to-analysis-dataset" class="level3" data-number="2.1">
 <h3 data-number="2.1" class="anchored" data-anchor-id="source-tables-to-analysis-dataset"><span class="header-section-number">2.1</span> Source Tables To Analysis Dataset</h3>
 <p>The lineage figure separates native MIMIC-IV source tables from SQL-derived, project-created BigQuery tables. It shows how source tables feed <code>nonicu_raas.nonicu_admissions</code>, the fixed adult non-ICU admission-level cohort; <code>nonicu_raas.exposure_raas_early</code>, which contains early ACEi / ARB exposure indicators; and <code>nonicu_raas.analysis_dataset</code>, the final analysis-ready dataset for the observational association analyses.</p>
-<p><img src="../assets/nonicu_table_lineage_construction.svg" class="img-fluid" style="width:95.0%" alt="MIMIC-IV source tables to project-created non-ICU cohort, exposure, and analysis dataset tables"></p>
+<figure class="figure">
+<a href="../assets/nonicu_table_lineage_construction.svg" target="_blank" rel="noopener"> <img src="../assets/nonicu_table_lineage_construction.svg" class="img-fluid figure-img" style="width:95%" alt="MIMIC-IV source tables to project-created non-ICU cohort, exposure, and analysis dataset tables."> </a>
+<figcaption>
+Source tables to analysis dataset lineage. <a href="../assets/nonicu_table_lineage_construction.svg" target="_blank" rel="noopener">Open full-size SVG</a>.
+</figcaption>
+</figure>
 </section>
 </section>
 <section id="cohort-and-exposure" class="level2" data-number="3">
