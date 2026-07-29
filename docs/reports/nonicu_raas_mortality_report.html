@@ -9,7 +9,7 @@
 <meta name="author" content="Makoto Yoshida, PhD">
 <meta name="dcterms.date" content="2026-05-29">
 
-<title>Early RAAS Inhibitor Exposure and In-Hospital Mortality in Adult Non-ICU Admissions</title>
+<title>Documented Early Inpatient RAAS Prescription Exposure and In-Hospital Mortality in Adult Non-ICU Admissions</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -71,7 +71,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Early RAAS Inhibitor Exposure and In-Hospital Mortality in Adult Non-ICU Admissions</h1>
+<h1 class="title">Documented Early Inpatient RAAS Prescription Exposure and In-Hospital Mortality in Adult Non-ICU Admissions</h1>
 <p class="subtitle lead">A MIMIC-IV Clinical Data Analytics and Real-World Evidence Portfolio Report</p>
 </div>
 
@@ -103,14 +103,15 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="analytical-report-scope" class="level2" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="analytical-report-scope"><span class="header-section-number">1</span> Analytical Report Scope</h2>
-<p>This report presents the analytic outputs from an admission-level observational study of early inpatient renin-angiotensin-aldosterone system (RAAS) inhibitor exposure and in-hospital mortality among adult non-ICU admissions in MIMIC-IV v3.1.</p>
+<p>This report presents the analytic outputs from an admission-level observational study of documented inpatient renin-angiotensin-aldosterone system (RAAS) prescription exposure within the first 24 hours and in-hospital mortality among adult non-ICU admissions in MIMIC-IV v3.1.</p>
 <p>The emphasis is on reproducible clinical analytics: cohort construction, exposure definition, covariate handling, outcome modeling, absolute risk interpretation, and cross-platform validation using aggregate Python and SAS outputs already produced by the project.</p>
 <p>The results remain hypothesis-generating. The design estimates associations after adjustment for measured covariates; it does not establish treatment effectiveness.</p>
+<p>The primary adjusted exposure OR was 0.318 (95% CI 0.269-0.376), and the fitted absolute-risk model produced an average adjusted predicted mortality difference of -0.3797 percentage points. The 24-hour landmark OR was 0.36 and the landmark-plus-proxy OR was 0.39. These directionally consistent estimates remain observational and may reflect treatment eligibility, confounding by indication, early clinical stability, clinician prescribing behavior, and unmeasured clinical severity.</p>
 </section>
 <section id="reproducible-workflow" class="level2" data-number="2">
 <h2 data-number="2" class="anchored" data-anchor-id="reproducible-workflow"><span class="header-section-number">2</span> Reproducible Workflow</h2>
-<p>The workflow separates data construction, model estimation, visualization, and validation. The analytic sequence starts with an adult hospital admission cohort, excludes ICU-associated admissions, classifies early ACE inhibitor or ARB exposure from inpatient prescription records, fits adjusted outcome models, and validates selected aggregate outputs across Python and SAS.</p>
-<p>The key design choice is that the fixed non-ICU cohort is constructed before exposure definition or outcome modeling. This keeps cohort eligibility independent of treatment status and makes the downstream descriptive, adjusted, absolute-risk, and validation outputs traceable to one admission-level analysis table.</p>
+<p>The workflow separates data construction, model estimation, visualization, and validation. The analytic sequence starts with an adult hospital admission cohort, excludes ICU-associated admissions, classifies documented ACE inhibitor or ARB prescription exposure from records with start times within 24 hours, fits adjusted outcome models, and validates selected aggregate outputs across Python and SAS.</p>
+<p>The key design choice is that the fixed non-ICU cohort is constructed before exposure definition or outcome modeling. This keeps cohort eligibility independent of prescription-exposure status and makes the downstream descriptive, adjusted, absolute-risk, and validation outputs traceable to one admission-level analysis table.</p>
 <figure class="figure">
 <a href="../assets/workflow_diagram.svg" target="_blank" rel="noopener"> <img src="../assets/workflow_diagram.svg" class="img-fluid figure-img" style="width:80%" alt="End-to-end cohort construction and analysis workflow diagram."> </a>
 <figcaption>
@@ -119,7 +120,7 @@ End-to-end cohort construction and analysis workflow. <a href="../assets/workflo
 </figure>
 <section id="source-tables-to-analysis-dataset" class="level3" data-number="2.1">
 <h3 data-number="2.1" class="anchored" data-anchor-id="source-tables-to-analysis-dataset"><span class="header-section-number">2.1</span> Source Tables To Analysis Dataset</h3>
-<p>The lineage figure separates native MIMIC-IV source tables from SQL-derived, project-created BigQuery tables. It shows how source tables feed <code>nonicu_raas.nonicu_admissions</code>, the fixed adult non-ICU admission-level cohort; <code>nonicu_raas.exposure_raas_early</code>, which contains early ACEi / ARB exposure indicators; and <code>nonicu_raas.analysis_dataset</code>, the final analysis-ready dataset for the observational association analyses.</p>
+<p>The lineage figure separates native MIMIC-IV source tables from SQL-derived, project-created BigQuery tables. It shows how source tables feed <code>nonicu_raas.nonicu_admissions</code>, the fixed adult non-ICU admission-level cohort; <code>nonicu_raas.exposure_raas_early</code>, which contains documented early inpatient ACEi / ARB prescription-exposure indicators; and <code>nonicu_raas.analysis_dataset</code>, the final analysis-ready dataset for the observational association analyses.</p>
 <figure class="figure">
 <a href="../assets/nonicu_table_lineage_construction.svg" target="_blank" rel="noopener"> <img src="../assets/nonicu_table_lineage_construction.svg" class="img-fluid figure-img" style="width:95%" alt="MIMIC-IV source tables to project-created non-ICU cohort, exposure, and analysis dataset tables."> </a>
 <figcaption>
@@ -130,7 +131,7 @@ Source tables to analysis dataset lineage. <a href="../assets/nonicu_table_linea
 </section>
 <section id="cohort-and-exposure" class="level2" data-number="3">
 <h2 data-number="3" class="anchored" data-anchor-id="cohort-and-exposure"><span class="header-section-number">3</span> Cohort And Exposure</h2>
-<p>The analytic cohort contained 460,786 adult non-ICU hospital admissions. Early RAAS inhibitor exposure was observed in 56,825 admissions, or 12.33% of the cohort.</p>
+<p>The analytic cohort contained 460,786 adult non-ICU hospital admissions. Documented inpatient RAAS prescription exposure within 24 hours was observed in 56,825 admissions, or 12.33% of the cohort. The unit of analysis was the hospital admission (<code>hadm_id</code>); the cohort was not restricted to one admission per patient, so patients could contribute multiple admissions.</p>
 <p>Source notebooks: <a href="https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/notebooks/01_cohort.ipynb">01_cohort.ipynb</a> and <a href="https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/notebooks/02_exposure.ipynb">02_exposure.ipynb</a>.</p>
 <table class="caption-top table">
 <thead>
@@ -145,15 +146,15 @@ Source tables to analysis dataset lineage. <a href="../assets/nonicu_table_linea
 <td style="text-align: right;">460,786</td>
 </tr>
 <tr class="even">
-<td>No early RAAS inhibitor exposure</td>
+<td>No documented early inpatient RAAS prescription exposure</td>
 <td style="text-align: right;">403,961</td>
 </tr>
 <tr class="odd">
-<td>Early RAAS inhibitor exposure</td>
+<td>Documented early inpatient RAAS prescription exposure</td>
 <td style="text-align: right;">56,825</td>
 </tr>
 <tr class="even">
-<td>Early RAAS exposure prevalence</td>
+<td>Documented prescription-exposure prevalence</td>
 <td style="text-align: right;">12.33%</td>
 </tr>
 <tr class="odd">
@@ -181,8 +182,8 @@ Source tables to analysis dataset lineage. <a href="../assets/nonicu_table_linea
 <thead>
 <tr class="header">
 <th>Characteristic</th>
-<th style="text-align: right;">No early RAAS</th>
-<th style="text-align: right;">Early RAAS</th>
+<th style="text-align: right;">No documented early RAAS prescription</th>
+<th style="text-align: right;">Documented early RAAS prescription exposure</th>
 <th>Analytic implication</th>
 </tr>
 </thead>
@@ -191,7 +192,7 @@ Source tables to analysis dataset lineage. <a href="../assets/nonicu_table_linea
 <td>Admissions, n</td>
 <td style="text-align: right;">403,961</td>
 <td style="text-align: right;">56,825</td>
-<td>Exposure was present in 12.33% of admissions</td>
+<td>Documented prescription exposure was present in 12.33% of admissions</td>
 </tr>
 <tr class="even">
 <td>Age, mean (SD), years</td>
@@ -227,28 +228,28 @@ Source tables to analysis dataset lineage. <a href="../assets/nonicu_table_linea
 <td>Male sex, n (%)</td>
 <td style="text-align: right;">185,127 (45.83%)</td>
 <td style="text-align: right;">29,276 (51.52%)</td>
-<td>RAAS-exposed admissions were more frequently male</td>
+<td>Admissions with documented early prescription exposure were more frequently male</td>
 </tr>
 <tr class="even">
-<td>Any early RAAS exposure</td>
+<td>Any documented early RAAS prescription exposure</td>
 <td style="text-align: right;">0.00</td>
 <td style="text-align: right;">1.00</td>
 <td>Primary exposure flag</td>
 </tr>
 <tr class="odd">
-<td>Early ACE inhibitor exposure</td>
+<td>Documented early ACE inhibitor prescription exposure</td>
 <td style="text-align: right;">0.00</td>
 <td style="text-align: right;">0.682</td>
 <td>Exposure subtype among exposed admissions</td>
 </tr>
 <tr class="even">
-<td>Early ARB exposure</td>
+<td>Documented early ARB prescription exposure</td>
 <td style="text-align: right;">0.00</td>
 <td style="text-align: right;">0.326</td>
 <td>Exposure subtype among exposed admissions</td>
 </tr>
 <tr class="odd">
-<td>Concurrent early ACE inhibitor and ARB exposure</td>
+<td>Concurrent documented early ACE inhibitor and ARB prescription exposure</td>
 <td style="text-align: right;">0.00</td>
 <td style="text-align: right;">0.008</td>
 <td>Rare combined early exposure</td>
@@ -273,11 +274,11 @@ Source tables to analysis dataset lineage. <a href="../assets/nonicu_table_linea
 <tbody>
 <tr class="odd">
 <td>Unit of analysis</td>
-<td>Hospital admission</td>
+<td>Hospital admission (<code>hadm_id</code>); patients may contribute multiple admissions</td>
 </tr>
 <tr class="even">
 <td>Primary exposure</td>
-<td>Any ACE inhibitor or ARB prescription started within 24 hours after admission</td>
+<td>Documented ACE inhibitor or ARB prescription record with <code>starttime</code> from admission through less than 24 hours</td>
 </tr>
 <tr class="odd">
 <td>Primary endpoint</td>
@@ -301,6 +302,7 @@ Source tables to analysis dataset lineage. <a href="../assets/nonicu_table_linea
 </tr>
 </tbody>
 </table>
+<p>The prescription-based exposure definition does not confirm medication administration and does not directly measure outpatient chronic use, adherence, dose, treatment indication, or duration.</p>
 </section>
 <section id="unadjusted-mortality" class="level2" data-number="6">
 <h2 data-number="6" class="anchored" data-anchor-id="unadjusted-mortality"><span class="header-section-number">6</span> Unadjusted Mortality</h2>
@@ -329,7 +331,7 @@ Source tables to analysis dataset lineage. <a href="../assets/nonicu_table_linea
 </thead>
 <tbody>
 <tr class="odd">
-<td>No early RAAS inhibitor use</td>
+<td>No documented early inpatient RAAS prescription exposure</td>
 <td style="text-align: right;">403,961</td>
 <td style="text-align: right;">2,177</td>
 <td style="text-align: right;">401,784</td>
@@ -338,7 +340,7 @@ Source tables to analysis dataset lineage. <a href="../assets/nonicu_table_linea
 <td style="text-align: right;">1.000</td>
 </tr>
 <tr class="even">
-<td>Early RAAS inhibitor use</td>
+<td>Documented early inpatient RAAS prescription exposure</td>
 <td style="text-align: right;">56,825</td>
 <td style="text-align: right;">149</td>
 <td style="text-align: right;">56,676</td>
@@ -350,14 +352,14 @@ Source tables to analysis dataset lineage. <a href="../assets/nonicu_table_linea
 </table>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="../assets/unadjusted_mortality_by_raas.png" class="img-fluid figure-img" style="width:80.0%" alt="Bar chart comparing unadjusted in-hospital mortality by early RAAS exposure"></p>
-<figcaption>Observed in-hospital mortality proportion by early RAAS exposure group.</figcaption>
+<p><img src="../assets/unadjusted_mortality_by_raas.png" class="img-fluid figure-img" style="width:80.0%" alt="Bar chart comparing unadjusted in-hospital mortality by documented early inpatient RAAS prescription exposure"></p>
+<figcaption>Observed in-hospital mortality proportion by documented early inpatient RAAS prescription-exposure group.</figcaption>
 </figure>
 </div>
 </section>
 <section id="multivariable-logistic-regression" class="level2" data-number="7">
 <h2 data-number="7" class="anchored" data-anchor-id="multivariable-logistic-regression"><span class="header-section-number">7</span> Multivariable Logistic Regression</h2>
-<p>The primary adjusted model estimated lower odds of in-hospital mortality among admissions with early RAAS inhibitor exposure after adjustment for measured demographic and admission-related covariates.</p>
+<p>The primary adjusted model estimated lower odds of in-hospital mortality among admissions with documented early inpatient RAAS prescription exposure after adjustment for measured demographic and admission-related covariates.</p>
 <p>Source notebook and supporting documentation: <a href="https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/notebooks/04b_multivariable_outcomes.ipynb">04b_multivariable_outcomes.ipynb</a> and <a href="https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/04b_multivariable_outcomes_SHORT.md">04b_multivariable_outcomes_SHORT.md</a>.</p>
 <p>The selected coefficient table summarizes key parameters from the primary adjusted logistic regression model. The table emphasizes the exposure term and representative adjusted covariates; it is not a causal effect table.</p>
 <table class="caption-top table">
@@ -381,7 +383,7 @@ Source tables to analysis dataset lineage. <a href="../assets/nonicu_table_linea
 </thead>
 <tbody>
 <tr class="odd">
-<td>Early RAAS exposure</td>
+<td>Documented early inpatient RAAS prescription exposure</td>
 <td style="text-align: right;">-1.146</td>
 <td style="text-align: right;">-1.314, -0.978</td>
 <td style="text-align: right;">0.318</td>
@@ -446,9 +448,10 @@ Source tables to analysis dataset lineage. <a href="../assets/nonicu_table_linea
 </tr>
 </tbody>
 </table>
+<p>The OR of 0.318 is an observational association, not evidence that RAAS inhibitors caused lower mortality. Treatment eligibility, confounding by indication, early clinical stability, prescribing behavior, and unmeasured clinical severity may influence the estimate.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="../assets/adjusted_odds_ratio_plot.png" class="img-fluid figure-img" style="width:90.0%" alt="Forest plot of adjusted odds ratios from the multivariable model"></p>
+<p><img src="../assets/adjusted_odds_ratio_plot.png" class="img-fluid figure-img" style="width:90.0%" alt="Forest plot of adjusted odds ratios for documented early inpatient RAAS prescription exposure and measured covariates"></p>
 <figcaption>Adjusted odds ratios from the multivariable model.</figcaption>
 </figure>
 </div>
@@ -456,12 +459,12 @@ Source tables to analysis dataset lineage. <a href="../assets/nonicu_table_linea
 </section>
 <section id="sensitivity-analyses" class="level2" data-number="8">
 <h2 data-number="8" class="anchored" data-anchor-id="sensitivity-analyses"><span class="header-section-number">8</span> Sensitivity Analyses</h2>
-<p>Sensitivity analyses evaluated whether the exposure association was directionally stable when restricting to admissions surviving beyond 24 hours and when adding an admission-source proxy.</p>
+<p>The 24-hour landmark analysis was performed as a bias-reduction sensitivity analysis. It evaluated whether the prescription-exposure association was directionally stable after excluding admissions with recorded death during the first 24 hours. A second landmark model added admission source as a proxy for baseline severity.</p>
 <p>Source notebook: <a href="https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/notebooks/04b_multivariable_outcomes.ipynb">04b_multivariable_outcomes.ipynb</a>.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="../assets/landmark_sensitivity_summary.png" class="img-fluid figure-img" style="width:80.0%" alt="Landmark sensitivity analysis odds ratio summary"></p>
-<figcaption>Sensitivity analysis odds ratios for early RAAS exposure.</figcaption>
+<p><img src="../assets/landmark_sensitivity_summary.png" class="img-fluid figure-img" style="width:80.0%" alt="Primary and 24-hour landmark odds ratios for documented early inpatient RAAS prescription exposure"></p>
+<figcaption>Sensitivity analysis odds ratios for documented early inpatient RAAS prescription exposure.</figcaption>
 </figure>
 </div>
 <table class="caption-top table">
@@ -490,7 +493,7 @@ Source tables to analysis dataset lineage. <a href="../assets/nonicu_table_linea
 <td>24-hour landmark model</td>
 <td style="text-align: right;">0.36</td>
 <td style="text-align: right;">0.30, 0.43</td>
-<td>Reduces immortal-time bias from deaths before exposure opportunity</td>
+<td>Bias-reduction check excluding recorded deaths during the first 24 hours</td>
 </tr>
 <tr class="odd">
 <td>24-hour landmark plus proxy model</td>
@@ -500,16 +503,16 @@ Source tables to analysis dataset lineage. <a href="../assets/nonicu_table_linea
 </tr>
 </tbody>
 </table>
-<p>The sensitivity estimates were directionally similar to the primary model, but they do not eliminate residual confounding or convert the analysis into a causal design.</p>
+<p>The sensitivity estimates remained directionally consistent with the primary model, but they do not eliminate residual confounding, resolve all treatment-eligibility or early-stability bias, or convert the analysis into a causal design.</p>
 </section>
 <section id="absolute-risk-interpretation" class="level2" data-number="9">
 <h2 data-number="9" class="anchored" data-anchor-id="absolute-risk-interpretation"><span class="header-section-number">9</span> Absolute Risk Interpretation</h2>
-<p>The adjusted odds ratio is a relative measure. Because in-hospital mortality was uncommon in this non-ICU cohort, the project also reported absolute risk estimates and average marginal effects. The estimated average adjusted risk difference associated with early RAAS exposure was approximately -0.38 percentage points.</p>
+<p>The adjusted odds ratio is a relative measure. Because in-hospital mortality was uncommon in this non-ICU cohort, the project also reported adjusted predicted risks and average marginal effects. The fitted model produced an average adjusted predicted mortality difference of approximately -0.38 percentage points between the documented-exposure and no-exposure scenarios.</p>
 <p>Source notebook: <a href="https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/notebooks/04b_multivariable_outcomes.ipynb">04b_multivariable_outcomes.ipynb</a>.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="../assets/predicted_mortality_by_age.png" class="img-fluid figure-img" style="width:90.0%" alt="Adjusted predicted mortality curves by age and early RAAS exposure"></p>
-<figcaption>Adjusted predicted in-hospital mortality by age and early RAAS exposure status. Predicted mortality increased with age in both groups, while the early RAAS exposure group had lower adjusted predicted mortality across the plotted age range.</figcaption>
+<p><img src="../assets/predicted_mortality_by_age.png" class="img-fluid figure-img" style="width:90.0%" alt="Adjusted predicted mortality curves by age and documented early inpatient RAAS prescription exposure"></p>
+<figcaption>Adjusted predicted in-hospital mortality by age and documented early inpatient RAAS prescription-exposure status. Predicted mortality increased with age in both groups, while the documented-exposure scenario had lower adjusted predicted mortality across the plotted age range.</figcaption>
 </figure>
 </div>
 <p>Because this is an observational model-based estimate, the curves should be interpreted as adjusted predicted probabilities under the fitted model, not as causal treatment effects. The figure is useful for communicating how the modeled association varies across age.</p>
@@ -526,23 +529,23 @@ Source tables to analysis dataset lineage. <a href="../assets/nonicu_table_linea
 </thead>
 <tbody>
 <tr class="odd">
-<td>Average predicted mortality risk without early RAAS exposure</td>
+<td>Average predicted mortality risk without documented early prescription exposure</td>
 <td style="text-align: right;">0.5733%</td>
 </tr>
 <tr class="even">
-<td>Average predicted mortality risk with early RAAS exposure</td>
+<td>Average predicted mortality risk with documented early prescription exposure</td>
 <td style="text-align: right;">0.1936%</td>
 </tr>
 <tr class="odd">
-<td>Average marginal effect / risk difference</td>
+<td>Difference in average adjusted predicted risk</td>
 <td style="text-align: right;">-0.38 percentage points</td>
 </tr>
 </tbody>
 </table>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="../assets/absolute_risk_difference_plot.png" class="img-fluid figure-img" style="width:90.0%" alt="Plot of age-specific adjusted absolute risk differences for early RAAS exposure"></p>
-<figcaption>Age-specific adjusted absolute risk difference associated with early RAAS exposure.</figcaption>
+<p><img src="../assets/absolute_risk_difference_plot.png" class="img-fluid figure-img" style="width:90.0%" alt="Plot of age-specific differences in adjusted predicted mortality risk by documented early inpatient RAAS prescription exposure"></p>
+<figcaption>Age-specific difference in adjusted predicted risk by documented early inpatient RAAS prescription exposure.</figcaption>
 </figure>
 </div>
 <p>The age-specific figure shows why absolute risk reporting matters: the same relative association can correspond to different absolute differences across the age distribution.</p>
@@ -569,25 +572,25 @@ Source tables to analysis dataset lineage. <a href="../assets/nonicu_table_linea
 </thead>
 <tbody>
 <tr class="odd">
-<td>No early RAAS admissions</td>
+<td>No documented early prescription-exposure admissions</td>
 <td style="text-align: right;">403,961</td>
 <td style="text-align: right;">403,961</td>
 <td>Matched</td>
 </tr>
 <tr class="even">
-<td>No early RAAS deaths</td>
+<td>No documented early prescription-exposure deaths</td>
 <td style="text-align: right;">2,177</td>
 <td style="text-align: right;">2,177</td>
 <td>Matched</td>
 </tr>
 <tr class="odd">
-<td>Early RAAS admissions</td>
+<td>Documented early prescription-exposure admissions</td>
 <td style="text-align: right;">56,825</td>
 <td style="text-align: right;">56,825</td>
 <td>Matched</td>
 </tr>
 <tr class="even">
-<td>Early RAAS deaths</td>
+<td>Documented early prescription-exposure deaths</td>
 <td style="text-align: right;">149</td>
 <td style="text-align: right;">149</td>
 <td>Matched</td>
@@ -622,9 +625,10 @@ Source tables to analysis dataset lineage. <a href="../assets/nonicu_table_linea
 </section>
 <section id="interpretation-boundary" class="level2" data-number="11">
 <h2 data-number="11" class="anchored" data-anchor-id="interpretation-boundary"><span class="header-section-number">11</span> Interpretation Boundary</h2>
-<p>The primary adjusted association was consistent across the main model and the reported sensitivity analyses, and the exposure term was stable across Python and SAS validation outputs. The analysis remains observational.</p>
+<p>The primary adjusted association was directionally consistent across the main model and the reported sensitivity analyses, and the prescription-exposure term was stable across Python and SAS validation outputs. The analysis remains observational.</p>
 <p>The main sources of potential bias are residual confounding by indication, unmeasured comorbidity burden, acute physiologic severity, outpatient medication history, prescribing behavior, medication discontinuation, dose, duration, adherence, and selection effects related to early survival and treatment eligibility.</p>
-<p>Exposure was based on inpatient prescription records. It did not directly measure outpatient chronic RAAS inhibitor use, medication adherence before admission, inpatient administration confirmation, or duration of therapy. The outcome was limited to in-hospital mortality.</p>
+<p>Exposure was based on inpatient prescription records. It did not directly measure outpatient chronic RAAS inhibitor use, medication adherence before admission, confirmed inpatient administration, dose, treatment indication, or duration of therapy. The outcome was limited to in-hospital mortality.</p>
+<p>The unit of analysis was the hospital admission (<code>hadm_id</code>), and patients could contribute multiple admissions. The models treated admissions as observations and did not account for within-patient correlation across repeat admissions.</p>
 </section>
 <section id="reproducibility-and-governance" class="level2" data-number="12">
 <h2 data-number="12" class="anchored" data-anchor-id="reproducibility-and-governance"><span class="header-section-number">12</span> Reproducibility And Governance</h2>
@@ -634,8 +638,8 @@ Source tables to analysis dataset lineage. <a href="../assets/nonicu_table_linea
 </section>
 <section id="conclusion" class="level2" data-number="13">
 <h2 data-number="13" class="anchored" data-anchor-id="conclusion"><span class="header-section-number">13</span> Conclusion</h2>
-<p>Early inpatient RAAS inhibitor exposure was associated with lower in-hospital mortality in this adult non-ICU MIMIC-IV cohort after adjustment for measured covariates. The association was also presented on the absolute risk scale, where the average adjusted risk difference was small in percentage-point terms and varied by age.</p>
-<p>The portfolio value of the project is the reproducible clinical analytics workflow: transparent cohort and exposure definitions, multivariable modeling, absolute risk interpretation, cautious observational framing, and selected SAS-Python validation using aggregate outputs.</p>
+<p>Documented early inpatient RAAS prescription exposure was associated with lower in-hospital mortality in this adult non-ICU MIMIC-IV cohort after adjustment for measured covariates. The association was also presented on the absolute risk scale, where the difference in adjusted predicted mortality risk was small in percentage-point terms and varied by age.</p>
+<p>The portfolio value of the project is the reproducible EHR clinical analytics workflow: transparent cohort and prescription-exposure definitions, multivariable modeling, absolute risk interpretation, cautious observational framing, a visible 24-hour landmark sensitivity analysis, and selected SAS-Python validation using aggregate outputs.</p>
 </section>
 
 </main>
