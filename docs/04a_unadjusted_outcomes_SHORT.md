@@ -6,7 +6,7 @@ Full notebook:
 
 ## Overview
 
-This notebook presents unadjusted, descriptive summaries of in-hospital outcomes by early RAAS inhibitor exposure among non-ICU adult hospital admissions.
+This notebook presents unadjusted, descriptive summaries of in-hospital outcomes by documented early inpatient RAAS prescription exposure among non-ICU adult hospital admissions.
 
 The purpose of this step is to characterize crude outcome patterns prior to any multivariable adjustment, providing baseline context for subsequent adjusted analyses.
 
@@ -20,16 +20,16 @@ All results in this notebook are descriptive only and are not interpreted causal
   (constructed in `03_build_analysis_dataset.sql`)
 
 The study population includes adult (≥18 years) non-ICU hospital admissions.
-Each hospital admission is treated as an independent observation.
+Each hospital admission is an analysis observation. Patients may contribute multiple qualifying admissions, and within-patient correlation is not modeled.
 
 ## Exposure and Outcome Definitions
 
-- **Exposure**: Early RAAS inhibitor use, defined from inpatient prescription records for ACE inhibitor or ARB orders during the early phase of hospitalization (`raas_any_early`, binary).
+- **Exposure**: Documented early inpatient RAAS prescription exposure, defined from ACE inhibitor or ARB prescription records with start times within 24 hours of admission (`raas_any_early`, binary). This does not confirm administration.
 - **Outcome**: In-hospital mortality, defined using the hospital expiration flag (`hospital_expire_flag`).
 
 ## Descriptive Analyses
 
-Unadjusted summaries were computed separately for admissions with and without early RAAS inhibitor exposure, including:
+Unadjusted summaries were computed separately for admissions with and without documented early inpatient RAAS prescription exposure, including:
 
 - Number of admissions per exposure group
 - Number of in-hospital deaths
@@ -40,17 +40,17 @@ No regression modeling or covariate adjustment was performed in this notebook.
 
 ## Key Unadjusted Findings
 
-- Early RAAS inhibitor exposure occurred in approximately 12% of non-ICU admissions.
+- Documented early inpatient RAAS prescription exposure occurred in approximately 12% of non-ICU admissions.
 - The overall in-hospital mortality rate in the cohort was approximately 0.5%.
-- Crude in-hospital mortality was lower among admissions with early RAAS exposure compared with those without exposure.
-- Admissions with early RAAS exposure had a slightly longer unadjusted hospital length of stay.
+- Crude in-hospital mortality was lower among admissions with documented early prescription exposure compared with those without documented exposure.
+- Admissions with documented early prescription exposure had a slightly longer unadjusted hospital length of stay.
 
 ## Interpretation Framework
 
 All findings presented in this notebook represent **unadjusted comparisons**.
 
 Observed differences in outcomes may reflect confounding by age, admission characteristics, baseline clinical severity, or other unmeasured factors.
-Accordingly, these results should not be interpreted as evidence of a causal or protective effect of early RAAS inhibitor use.
+Accordingly, these results should not be interpreted as evidence of a causal or protective effect of RAAS treatment.
 
 The primary role of this analysis is to establish descriptive context and motivate the need for multivariable adjustment.
 Adjusted outcome modeling and absolute effect estimation are presented in the subsequent multivariable analysis notebook (04b).

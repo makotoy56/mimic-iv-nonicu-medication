@@ -6,7 +6,7 @@ Full notebook:
 
 ## Overview
 
-This notebook summarizes baseline characteristics of the non-ICU hospital admission cohort stratified by early RAAS inhibitor exposure.
+This notebook summarizes baseline characteristics of the non-ICU hospital admission cohort stratified by documented early inpatient RAAS prescription exposure.
 
 The primary objective is to describe cohort composition, assess baseline differences between exposure groups, and generate Table 1–style descriptive summaries to inform downstream adjusted outcome analyses.
 
@@ -26,22 +26,25 @@ Each row represents a unique non-ICU hospital admission.
 
 - Total admissions: 460,786
 - Each row corresponds to a unique hospital admission (one-to-one with hadm_id)
+- Patients may contribute multiple qualifying admissions.
 - Adult patients only (age ≥ 18 years)
 - Non-ICU hospital admissions only
 
-Early RAAS inhibitor exposure was observed in 12.33% of admissions (n = 56,825).
+Documented early inpatient RAAS prescription exposure was observed in 12.33% of admissions (n = 56,825).
 
 ## Exposure Definition
 
-Early RAAS inhibitor exposure was defined from early inpatient prescription records for:
+Documented early inpatient RAAS prescription exposure was defined from prescription records with start times within 24 hours for:
 - ACE inhibitors, or
 - Angiotensin receptor blockers (ARBs)
 
 A binary indicator (raas_any_early) was used as the primary exposure variable.
 
+The prescription-based definition does not confirm administration or measure outpatient chronic use, adherence, dose, treatment indication, or duration.
+
 Exposure groups were labeled for descriptive clarity as:
-- RAAS early
-- No RAAS early
+- Documented early RAAS prescription exposure
+- No documented early RAAS prescription exposure
 
 Internal consistency checks confirmed perfect agreement between composite exposure indicators and their component definitions.
 
@@ -52,9 +55,9 @@ Baseline continuous variables were summarized by exposure group using both:
 - Median [interquartile range]
 
 Key findings:
-- Patients in the RAAS early group were substantially older than those without early RAAS exposure  
+- Admissions with documented early RAAS prescription exposure involved substantially older patients than admissions without documented exposure
   (mean age 68.6 vs. 56.6 years; median 69 vs. 58 years).
-- Hospital length of stay was slightly longer among RAAS-exposed admissions  
+- Hospital length of stay was slightly longer among admissions with documented early prescription exposure
   (median 2.75 vs. 2.33 days).
 
 These summaries indicate marked baseline age differences between exposure groups.
@@ -67,15 +70,15 @@ Categorical variables were summarized as counts and percentages within each expo
 - Calendar period (anchor year group)
 
 Notable patterns included:
-- A higher proportion of males in the RAAS early group.
-- Substantial differences in admission type, with RAAS exposure more common among emergency-related admissions.
+- A higher proportion of males among admissions with documented early prescription exposure.
+- Substantial differences in admission type, with documented early prescription exposure more common among emergency-related admissions.
 - Broadly similar calendar-period distributions, with modest differences across eras.
 
 Percentage-point differences were reported to aid interpretation.
 
 ## Summary Interpretation
 
-Baseline characteristics differed systematically between early RAAS exposure groups, particularly with respect to age, sex distribution, and admission pathway.
+Baseline characteristics differed systematically between documented early inpatient RAAS prescription-exposure groups, particularly with respect to age, sex distribution, and admission pathway.
 
 These unadjusted differences suggest substantial confounding by baseline risk and clinical context, underscoring the need for multivariable adjustment in downstream outcome analyses.
 

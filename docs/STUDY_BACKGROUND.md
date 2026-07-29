@@ -14,7 +14,7 @@ Much of the prior evidence has focused on specific diseases, ICU cohorts, or pan
 
 ## Study Objective
 
-The primary objective is to evaluate whether early RAAS inhibitor exposure is associated with differences in in-hospital mortality among adult, non-ICU hospital admissions in MIMIC-IV.
+The primary objective is to evaluate whether documented inpatient RAAS prescription exposure within 24 hours of admission is associated with differences in in-hospital mortality among adult, non-ICU hospital admissions in MIMIC-IV.
 
 Secondary objectives include:
 
@@ -24,7 +24,7 @@ Secondary objectives include:
 
 ## Research Question
 
-Among adult, non-ICU hospital admissions in MIMIC-IV, is early exposure to RAAS inhibitors associated with differences in in-hospital mortality after multivariable adjustment?
+Among adult, non-ICU hospital admissions in MIMIC-IV, is documented inpatient RAAS prescription exposure within 24 hours associated with differences in in-hospital mortality after multivariable adjustment?
 
 ## References
 

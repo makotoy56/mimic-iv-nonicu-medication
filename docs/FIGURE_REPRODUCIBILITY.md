@@ -6,15 +6,15 @@ Notebook-generated figures are written to stable paths under `assets/`. Rerunnin
 
 | Figure | Primary use | Exporting notebook | Output path |
 | --- | --- | --- |
-| Unadjusted in-hospital mortality by early RAAS exposure | README and Quarto report | `notebooks/04a_unadjusted_outcomes.ipynb` | `assets/unadjusted_mortality_by_raas.png` |
-| Age-specific adjusted absolute risk difference | README and Quarto report | `notebooks/04b_multivariable_outcomes.ipynb` | `assets/absolute_risk_difference_plot.png` |
+| Unadjusted in-hospital mortality by documented early inpatient RAAS prescription exposure | README and Quarto report | `notebooks/04a_unadjusted_outcomes.ipynb` | `assets/unadjusted_mortality_by_raas.png` |
+| Age-specific difference in adjusted predicted mortality risk | README and Quarto report | `notebooks/04b_multivariable_outcomes.ipynb` | `assets/absolute_risk_difference_plot.png` |
 | Adjusted odds ratio plot | Quarto report | `notebooks/04b_multivariable_outcomes.ipynb` | `assets/adjusted_odds_ratio_plot.png` |
 | Adjusted predicted mortality by age | Quarto report | `notebooks/04b_multivariable_outcomes.ipynb` | `assets/predicted_mortality_by_age.png` |
-| Landmark sensitivity summary | Quarto report | `notebooks/04b_multivariable_outcomes.ipynb` | `assets/landmark_sensitivity_summary.png` |
+| 24-hour landmark bias-reduction sensitivity summary | README and Quarto report | `notebooks/04b_multivariable_outcomes.ipynb` | `assets/landmark_sensitivity_summary.png` |
 | Baseline characteristics summary | Supplemental portfolio visual | `notebooks/03b_describe_analysis_dataset.ipynb` | `assets/baseline_characteristics_summary.png` |
 | SAS-Python validation summary | Supplemental validation visual | `notebooks/05_sas_python_validation.ipynb` | `assets/sas_python_validation_summary.png` |
 
-The README emphasizes the clinical result flow rather than validation visuals, so it displays only the unadjusted mortality and age-specific absolute risk difference figures.
+The README emphasizes the clinical result flow rather than validation visuals, so it displays the unadjusted mortality, age-specific adjusted predicted-risk difference, and 24-hour landmark sensitivity figures.
 
 ## Manually Curated Architecture Figure
 
@@ -33,4 +33,4 @@ The figure files contain only aggregate, presentation-level summaries. No patien
 
 ## Interpretation Boundary
 
-The README figures summarize observational associations. They should not be interpreted as causal treatment-effect evidence. Residual confounding may remain despite multivariable adjustment and sensitivity analyses. SAS-Python validation remains a reproducibility check based on aggregate output comparison.
+The README figures summarize observational associations based on documented inpatient prescription exposure. They do not confirm medication administration and should not be interpreted as causal treatment-effect evidence. Residual confounding may remain despite multivariable adjustment and sensitivity analyses. SAS-Python validation remains a reproducibility check based on aggregate output comparison.

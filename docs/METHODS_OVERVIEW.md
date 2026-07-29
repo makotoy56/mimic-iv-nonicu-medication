@@ -2,7 +2,7 @@
 
 ## Design
 
-This project is a retrospective observational cohort study using MIMIC-IV v3.1 hospital data. The analysis is admission-level: each row represents one adult non-ICU hospital admission.
+This project is a retrospective observational cohort study using MIMIC-IV v3.1 hospital data. The unit of analysis is the hospital admission (`hadm_id`): each row represents one adult non-ICU hospital admission. The cohort is not restricted to one admission per patient, so patients may contribute multiple qualifying admissions.
 
 Cohort construction, exposure definition, baseline covariate assembly, and outcome derivation are implemented with BigQuery-compatible SQL and structured Python notebooks. SAS programs reproduce selected aggregate outputs for validation.
 
@@ -14,18 +14,20 @@ The final analytic cohort contains 460,786 adult non-ICU hospital admissions.
 
 ## Exposure Definition
 
-Early RAAS inhibitor exposure is defined using inpatient medication prescription records from the MIMIC-IV prescriptions table.
+Documented early inpatient RAAS prescription exposure is defined using records from the MIMIC-IV `prescriptions` table.
 
-Admissions are classified as exposed if they have at least one ACE inhibitor or ARB prescription with a documented medication start time on or after hospital admission and within the first 24 hours after admission. Admissions without such a prescription are classified as unexposed.
+Admissions are classified as exposed if they have at least one ACE inhibitor or ARB prescription record with `starttime` on or after hospital admission and before 24 hours after admission. Admissions without such a record are classified as unexposed.
 
 The 0 to <24 hour window is an operational analytic definition, not a biological threshold or guideline-based treatment window.
+
+This prescription-based definition does not confirm medication administration and does not measure outpatient chronic use, adherence, dose, treatment indication, or duration.
 
 The exposure table includes:
 
 - `acei_early`: early ACE inhibitor exposure
 - `arb_early`: early ARB exposure
 - `raas_both_early`: concurrent early ACE inhibitor and ARB exposure
-- `raas_any_early`: any early RAAS inhibitor exposure
+- `raas_any_early`: any documented early RAAS prescription exposure
 
 The primary exposure variable is `raas_any_early`.
 
@@ -52,7 +54,7 @@ Categorical variables are one-hot encoded with explicit handling of missing valu
 
 ## Primary Analysis
 
-The primary clinical analysis is multivariable logistic regression estimating the association between early RAAS exposure and in-hospital mortality. Results are summarized using:
+The primary clinical analysis is multivariable logistic regression estimating the association between documented early inpatient RAAS prescription exposure and in-hospital mortality. Results are summarized using:
 
 - Logistic regression coefficients
 - Odds ratios and confidence intervals
@@ -64,9 +66,11 @@ Bootstrap resampling is used in the notebook to quantify uncertainty for selecte
 
 ## Sensitivity And Bias Checks
 
-The multivariable notebook includes a 24-hour landmark sensitivity analysis to mitigate immortal-time bias by restricting to admissions surviving beyond 24 hours, or with no recorded death, and refitting the same core model. An additional landmark model includes admission source as a proxy for baseline severity.
+The multivariable notebook includes a 24-hour landmark bias-reduction sensitivity analysis. It restricts the cohort to admissions with no recorded death or with recorded death more than 24 hours after admission, then refits the same core model. An additional landmark model includes admission source as a proxy for baseline severity.
 
-These sensitivity analyses do not remove all potential bias. Residual confounding by indication, comorbidity burden, acute severity, prescribing behavior, and unmeasured clinical context may remain.
+These sensitivity analyses do not establish causality or remove all potential bias. Residual confounding by indication, treatment eligibility, early clinical stability, comorbidity burden, acute severity, prescribing behavior, and unmeasured clinical context may remain.
+
+The models treat admissions as observations and do not account for within-patient correlation across multiple qualifying admissions.
 
 ## Validation Workflow
 

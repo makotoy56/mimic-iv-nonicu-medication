@@ -45,6 +45,8 @@ The exposure term is stable across the exported Python and SAS logistic outputs:
 - Python exposure OR: 0.3178484462
 - SAS exposure OR: 0.3178484462
 
+The exposure term represents documented inpatient ACE inhibitor or ARB prescription records with start times within 24 hours of admission. Cross-platform agreement validates implementation consistency for the exported parameter; it does not confirm medication administration or establish a causal treatment effect.
+
 Observed differences for some admission-type terms should be interpreted as validation diagnostics for sparse-category behavior, not as new clinical findings.
 
 ## Infrastructure Sanity Check

@@ -21,6 +21,7 @@ The objective is to define a clean, admission-level cohort prior to any exposure
 1. **Base adult admissions**
    - All adult hospital admissions are extracted at the admission (HADM) level.
    - One row per hospital admission is retained.
+   - The cohort is not restricted to one admission per patient, so a patient may contribute multiple admissions.
    - Demographic variables, admission metadata, insurance type, approximate age at admission, and hospital length of stay are included.
 
 2. **Race category collapsing**
@@ -47,7 +48,7 @@ This notebook materializes the following tables in the `mimic-iv-portfolio.nonic
 ## Downstream Use
 
 The `nonicu_admissions` table serves as the fixed cohort input for:
-- Early RAAS inhibitor exposure definition (02)
+- Documented early inpatient RAAS prescription-exposure definition (02)
 - Construction of the unified analysis dataset (03a)
 - Baseline characteristic summaries (03b)
 - Unadjusted outcome analyses (04a)
@@ -65,6 +66,6 @@ Downstream notebooks load these tables in read-only mode and do not modify cohor
 ## Next Step
 
 Proceed to:
-- [02 - Early RAAS Exposure Definition (Non-ICU Admissions)](02_exposure_SHORT.md)
+- [02 - Documented Early Inpatient RAAS Prescription-Exposure Definition (Non-ICU Admissions)](02_exposure_SHORT.md)
 
 This next notebook/document briefly describes the next workflow step.

@@ -1,4 +1,4 @@
-# Early RAAS Inhibitor Exposure and In-Hospital Mortality in Non-ICU Admissions
+# Documented Early Inpatient RAAS Prescription Exposure and In-Hospital Mortality in Non-ICU Admissions
 
 *A reproducible MIMIC-IV clinical analytics portfolio project*
 
@@ -8,9 +8,11 @@ LinkedIn: https://www.linkedin.com/in/makoto-yoshida/
 
 ## Overview
 
-This repository presents an EHR-based retrospective cohort study using MIMIC-IV v3.1. It evaluates whether early inpatient exposure to renin-angiotensin-aldosterone system (RAAS) inhibitors is associated with in-hospital mortality among adult non-ICU hospital admissions.
+This repository presents an EHR-based retrospective cohort study using MIMIC-IV v3.1. It evaluates whether documented inpatient renin-angiotensin-aldosterone system (RAAS) prescription exposure within the first 24 hours of admission is associated with in-hospital mortality among adult non-ICU hospital admissions.
 
 The primary clinical analysis is multivariable logistic regression with absolute risk estimation using average marginal effects. Findings are interpreted as hypothesis-generating associations, not causal effects.
+
+The analytic unit is the hospital admission (`hadm_id`). The cohort is not restricted to one admission per patient, so a patient may contribute multiple qualifying admissions.
 
 ## Portfolio Report
 
@@ -20,11 +22,20 @@ For a portfolio-style clinical analytics report presenting the study background,
 
 This README provides the repository overview and technical navigation.
 
+## Reviewer Path
+
+For a quick review:
+
+1. Read the Study Snapshot and Key Findings.
+2. Review the representative figures, including the 24-hour landmark sensitivity analysis.
+3. Open the Quarto report for methods, results, and interpretation.
+4. Inspect the cohort-construction and modeling notebooks for implementation details.
+
 ## What This Demonstrates
 
 - Real-world evidence workflow using hospital EHR data
 - Reproducible cohort, exposure, covariate, and outcome construction in BigQuery SQL
-- Transparent early medication exposure definition using ACE inhibitor and ARB orders within 24 hours of admission
+- Transparent documented inpatient prescription-exposure definition using ACE inhibitor and ARB records with start times within 24 hours of admission
 - Multivariable logistic regression with odds ratios, adjusted risks, and average marginal effects
 - Cross-platform validation of selected unadjusted and logistic model outputs
 - Clear separation between clinical analysis, validation artifacts, and compliance-safe repository contents
@@ -44,45 +55,55 @@ For clinical analytics, RWE, HEOR, and outcomes research teams, the portfolio va
 ## Key Findings
 
 - The analytic cohort included 460,786 adult non-ICU hospital admissions.
-- Early RAAS inhibitor exposure occurred in 56,825 admissions, or 12.33% of the cohort.
-- Crude in-hospital mortality was lower among early RAAS-exposed admissions than among unexposed admissions.
-- After multivariable adjustment, early RAAS exposure was associated with lower odds of in-hospital mortality: OR 0.32 (95% CI 0.27-0.38).
-- On the absolute risk scale, early RAAS exposure was associated with an average reduction of approximately 0.38 percentage points in predicted in-hospital mortality.
+- Documented inpatient RAAS prescription exposure within 24 hours occurred in 56,825 admissions, or 12.33% of the cohort.
+- Crude in-hospital mortality was lower among admissions with documented early RAAS prescription exposure than among admissions without it.
+- After multivariable adjustment, documented early RAAS prescription exposure was associated with lower odds of in-hospital mortality: OR 0.32 (95% CI 0.27-0.38).
+- The fitted absolute-risk model produced an average adjusted predicted mortality difference of -0.38 percentage points between the documented-exposure and no-exposure scenarios.
 - Age-specific adjusted analyses suggested larger absolute risk differences among older patients.
+- In a 24-hour landmark bias-reduction sensitivity analysis, the exposure OR was 0.36 (95% CI 0.30-0.43); it was 0.39 (95% CI 0.32-0.46) after adding an admission-source proxy. These estimates remained directionally consistent with the primary result.
+
+**Reviewer interpretation:** The OR of approximately 0.32 and the model-predicted mortality difference are observational associations, not evidence that RAAS inhibitors caused lower mortality. Treatment eligibility, confounding by indication, early clinical stability, clinician prescribing behavior, and unmeasured clinical severity may affect the estimates. The landmark analyses address one timing-related bias concern but do not establish causality.
 
 See [Results summary](docs/RESULTS_SUMMARY.md) and [Discussion and limitations](docs/DISCUSSION_AND_LIMITATIONS.md) for interpretation details.
 
 ## Results Visualizations
 
-The README uses two primary figures to keep the result flow concise: observed outcome contrast first, then adjusted absolute risk interpretation. Technical validation remains in the reproducibility documentation rather than the main visual narrative.
+The README uses three figures to keep the result flow concise: observed outcome contrast, adjusted absolute-risk interpretation, and the 24-hour landmark sensitivity context. Technical validation remains in the reproducibility documentation rather than the main visual narrative.
 
 ### Crude Outcome Comparison
 
-Observed in-hospital mortality was lower among admissions with early RAAS inhibitor exposure than among unexposed admissions.
+Observed in-hospital mortality was lower among admissions with documented early inpatient RAAS prescription exposure than among admissions without documented exposure.
 
-<img src="assets/unadjusted_mortality_by_raas.png" alt="Unadjusted in-hospital mortality by early RAAS exposure" width="760">
+<img src="assets/unadjusted_mortality_by_raas.png" alt="Unadjusted in-hospital mortality by documented early inpatient RAAS prescription exposure" width="760">
 
 ### Adjusted Absolute Risk Interpretation
 
-After multivariable adjustment, the absolute risk difference remained small in percentage-point terms and varied by age group.
+After multivariable adjustment, the difference in model-predicted mortality risk remained small in percentage-point terms and varied by age group.
 
-<img src="assets/absolute_risk_difference_plot.png" alt="Age-specific adjusted absolute risk difference" width="760">
+<img src="assets/absolute_risk_difference_plot.png" alt="Age-specific difference in adjusted predicted mortality risk" width="760">
 
-## Technical Snapshot
+### 24-Hour Landmark Sensitivity Analysis
+
+The 24-hour landmark analysis was performed as a bias-reduction sensitivity analysis addressing deaths before a full exposure-classification opportunity. Its OR of 0.36, and the admission-source proxy model OR of 0.39, remained directionally consistent with the primary OR of 0.32. This sensitivity analysis does not eliminate residual confounding or establish causality.
+
+<img src="assets/landmark_sensitivity_summary.png" alt="Primary and 24-hour landmark odds ratios for documented early inpatient RAAS prescription exposure" width="760">
+
+## Study Snapshot
 
 | Area | Details |
 | --- | --- |
 | Data | MIMIC-IV v3.1 hospital admissions |
 | Design | Retrospective observational cohort study |
 | Population | Adult inpatient admissions excluding ICU stays |
-| Exposure | ACE inhibitor or ARB prescription started within 24 hours after hospital admission |
+| Analytic unit | Hospital admission (`hadm_id`); patients may contribute multiple admissions |
+| Exposure | Documented inpatient ACE inhibitor or ARB prescription with recorded start time from admission through less than 24 hours |
 | Primary outcome | In-hospital mortality |
 | Primary model | Multivariable logistic regression |
 | Absolute risk estimand | Adjusted predicted risks and average marginal effects |
 | Validation | SAS-Python comparison of exported unadjusted and logistic model outputs |
 | Tools | BigQuery SQL, Python, Jupyter, SAS |
 
-Exposure is based on inpatient prescription records and does not directly capture outpatient chronic use, adherence, dose, or duration.
+Exposure is based on inpatient prescription records. It does not confirm medication administration and does not directly capture outpatient chronic use, adherence, dose, treatment indication, or duration.
 
 ## Explore The Project
 

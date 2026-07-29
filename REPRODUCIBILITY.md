@@ -2,9 +2,9 @@
 
 ## Project Purpose
 
-This project is a retrospective observational MIMIC-IV clinical analytics workflow evaluating whether early inpatient RAAS inhibitor exposure is associated with in-hospital mortality among adult non-ICU hospital admissions.
+This project is a retrospective observational MIMIC-IV clinical analytics workflow evaluating whether documented inpatient RAAS prescription exposure within 24 hours of admission is associated with in-hospital mortality among adult non-ICU hospital admissions.
 
-The analytical purpose is to demonstrate reproducible EHR cohort construction, early medication exposure classification, multivariable logistic regression, absolute risk interpretation, sensitivity analysis, SAS/Python validation, and Quarto-based clinical reporting. The findings are hypothesis-generating associations and are not causal treatment-effect estimates.
+The analytical purpose is to demonstrate reproducible EHR cohort construction, documented inpatient prescription-exposure classification, multivariable logistic regression, absolute risk interpretation, sensitivity analysis, SAS/Python validation, and Quarto-based clinical reporting. The findings are hypothesis-generating associations and are not causal treatment-effect estimates.
 
 ## Data Source
 
@@ -14,14 +14,14 @@ Patient-level MIMIC-IV source tables, patient-level derived analysis datasets, c
 
 ## Analytical Workflow
 
-The workflow is organized as an admission-level clinical analytics pipeline:
+The workflow is organized as an admission-level clinical analytics pipeline. The analytic unit is the hospital admission (`hadm_id`), and the cohort is not restricted to one admission per patient.
 
 1. **Cohort construction**: adult hospital admissions are identified and ICU-associated admissions are excluded before exposure or outcome modeling.
    - `sql/01_build_base_hosp_admissions.sql`
    - `sql/01_collapse_race_categories.sql`
    - `sql/02_exclude_icu_admissions.sql`
    - `notebooks/01_cohort.ipynb`
-2. **Exposure definition**: early ACE inhibitor or ARB exposure is defined from inpatient prescription orders started within 24 hours after hospital admission.
+2. **Exposure definition**: documented early inpatient ACE inhibitor or ARB prescription exposure is defined from records with `starttime` from hospital admission through less than 24 hours. This definition does not confirm administration, adherence, outpatient chronic use, or treatment duration.
    - `sql/03_define_exposure_raas_early.sql`
    - `sql/04_check_raas_drugs.sql`
    - `notebooks/02_exposure.ipynb`

@@ -1,4 +1,4 @@
-# 02 – Early RAAS Exposure Definition (Non-ICU Admissions)
+# 02 – Documented Early Inpatient RAAS Prescription-Exposure Definition (Non-ICU Admissions)
 
 
 Full notebook:
@@ -6,24 +6,24 @@ Full notebook:
 
 ## Overview
 
-This notebook defines early renin–angiotensin–aldosterone system (RAAS) inhibitor exposure for non-ICU adult hospital admissions using MIMIC-IV v3.1 data.
+This notebook defines documented early inpatient renin–angiotensin–aldosterone system (RAAS) prescription exposure for non-ICU adult hospital admissions using MIMIC-IV v3.1 data.
 
-Using SQL-based preprocessing in BigQuery, medication prescription records are linked to hospital admissions to identify early exposure to angiotensin-converting enzyme inhibitors (ACE inhibitors) and angiotensin receptor blockers (ARBs) within a fixed time window after admission.
+Using SQL-based preprocessing in BigQuery, inpatient prescription records are linked to hospital admissions to identify documented ACE inhibitor and angiotensin receptor blocker (ARB) prescription exposure within a fixed time window after admission.
 
 The resulting exposure indicators are constructed at the hospital admission (HADM) level and serve as fixed inputs for downstream descriptive analyses and multivariable outcome modeling.
 
 ## Purpose
 
-The purpose of this notebook is to construct early RAAS inhibitor exposure variables for the finalized non-ICU admission cohort.
+The purpose of this notebook is to construct documented early inpatient RAAS prescription-exposure variables for the finalized non-ICU admission cohort.
 
 Specifically, this notebook:
 
-- Defines early RAAS exposure based on medication prescriptions initiated within 24 hours after hospital admission  
+- Defines documented early RAAS prescription exposure from records with `starttime` from hospital admission through less than 24 hours
 - Constructs binary admission-level indicators for:
-  - Early ACE inhibitor use  
-  - Early ARB use  
-  - Concurrent early use of both drug classes  
-  - Composite early RAAS exposure (any ACEi or ARB)  
+  - Documented early ACE inhibitor prescription exposure
+  - Documented early ARB prescription exposure
+  - Concurrent documented early prescription exposure to both drug classes
+  - Composite documented early RAAS prescription exposure (any ACEi or ARB)
 - Materializes exposure tables in BigQuery for downstream analytic use  
 
 This notebook performs **data construction and validation only** and does not conduct baseline summaries, outcome comparisons, or statistical modeling.
@@ -43,16 +43,16 @@ This notebook performs **data construction and validation only** and does not co
 
 ## Exposure Definition
 
-Early RAAS inhibitor exposure is defined as any ACE inhibitor or ARB prescription with a recorded start time occurring within **24 hours after hospital admission time**.
+Documented early inpatient RAAS prescription exposure is defined as any ACE inhibitor or ARB prescription record with `starttime` on or after hospital admission and before **24 hours after hospital admission time**.
 
-Exposure is operationalized using prescription start timestamps relative to admission time, without conditioning on duration or dose.
+Exposure is operationalized using prescription start timestamps relative to admission time. It does not confirm medication administration and does not measure outpatient chronic use, adherence, dose, treatment indication, or duration.
 
 The following binary indicators are constructed at the admission level:
 
 - `acei_early`: early ACE inhibitor exposure  
 - `arb_early`: early ARB exposure  
 - `raas_both_early`: concurrent early ACE inhibitor and ARB exposure  
-- `raas_any_early`: any early RAAS inhibitor exposure  
+- `raas_any_early`: any documented early RAAS prescription exposure
 
 ## Outputs
 
@@ -60,10 +60,10 @@ Execution of the SQL scripts in this notebook materializes the following tables 
 `mimic-iv-portfolio.nonicu_raas`:
 
 - **exposure_raas_early**  
-  An admission-level table encoding early RAAS inhibitor exposure indicators (`acei_early`, `arb_early`, `raas_both_early`, `raas_any_early`).
+  An admission-level table encoding documented early inpatient RAAS prescription-exposure indicators (`acei_early`, `arb_early`, `raas_both_early`, `raas_any_early`).
 
 - **analysis_dataset**  
-  A unified analytic dataset created by left-joining the non-ICU admission cohort with early RAAS exposure indicators on `(subject_id, hadm_id)`.  
+  A unified analytic dataset created by left-joining the non-ICU admission cohort with documented early RAAS prescription-exposure indicators on `(subject_id, hadm_id)`.
   All admissions are retained, with non-exposed admissions explicitly coded as zero.
 
 These tables are constructed entirely via SQL and treated as finalized exposure-definition outputs.
@@ -72,7 +72,7 @@ These tables are constructed entirely via SQL and treated as finalized exposure-
 
 The following internal checks are performed to validate exposure construction:
 
-- Distribution of early RAAS exposure indicators  
+- Distribution of documented early RAAS prescription-exposure indicators
 - Logical consistency between component indicators and composite variables  
 - Verification that exposure tables and cohort tables contain identical admission counts  
 
