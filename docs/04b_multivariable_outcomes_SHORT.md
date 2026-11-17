@@ -53,11 +53,11 @@ Statistical uncertainty for marginal effects was quantified using nonparametric 
 
 The corrected 24-hour landmark analysis requires confirmed survival and continued hospitalization strictly beyond admission + 24 hours. Death or discharge exactly at 24 hours is excluded. Missing/invalid admission or discharge times, missing death times in hospital deaths, contradictory death flags/times, and deaths outside the admission interval are excluded with explicit counts. A consistent live discharge may have no death time. Subsequent in-hospital mortality is modeled with the same covariates and the unchanged 0–<24-hour prescription exposure.
 
-**Real-data recalculation (2026-11-17):** The analysis table has been rebuilt and verified. The corrected cohort contains 342,519 admissions and 1,769 deaths, compared with 460,350 admissions and 1,890 deaths under the original condition. The unchanged unpenalized primary and all four sensitivity fits failed to converge at the existing 35-iteration limit. ORs/intervals are provisional diagnostic outputs, not validated inference. Existing OR figures are historical and were not refreshed. See [validation results](24H_LANDMARK_VALIDATION.md).
+**Separation-robust supplement (2026-11-17):** The original unpenalized primary/sensitivity fits remain nonconverged and are retained for audit. An explicit Firth/Jeffreys-penalized sensitivity analysis, using the same admissions, exposure and adjustment variables, converged for all five comparisons. Its 95% intervals use penalized profile likelihood; numerical rank, profile bounds and independent adjusted-score checks passed. This changes the estimator, not the original primary fit or the separate prediction/risk model. See [Firth validation](FIRTH_SENSITIVITY_VALIDATION.md).
 
 The primary and landmark exposure OR/95% CI are reported side-by-side in the notebook comparison table; interpret any attenuation or shift in magnitude from that table.
 As an added proxy for baseline severity, admission source (`admission_location`) was included in a 24-hour landmark refit.
-The original-condition ordinary/proxy OR diagnostics were 0.361/0.387; the corrected-condition diagnostics were 0.355/0.382. All four fits and the primary fit failed convergence. These point outputs do not validate confidence intervals or establish robustness.
+The original unpenalized outputs remain nonconverged. In the additional Firth analysis, original-condition ordinary/proxy ORs were 0.362/0.388; corrected-condition ORs were 0.356/0.382. All five Firth fits converged, using profile-likelihood intervals. The full table and independent numerical checks are in the Firth validation note.
 
 ## Key Results
 Documented early inpatient RAAS prescription exposure was consistently associated with lower in-hospital mortality after multivariable adjustment.
@@ -70,7 +70,7 @@ Documented early inpatient RAAS prescription exposure was consistently associate
 ## Interpretation
 These findings demonstrate how marginal effects and risk differences can complement odds ratios by providing clinically interpretable estimates on the absolute risk scale.
 
-The observational design precludes causal conclusions. The corrected landmark outputs have been recalculated but remain provisional because of nonconvergence; treatment eligibility, confounding by indication, early clinical stability, clinician prescribing behavior, and unmeasured severity may still affect the estimates.
+The observational design precludes causal conclusions. The added Firth sensitivity estimates address separation, while the original unpenalized outputs remain nonconverged; treatment eligibility, confounding by indication, early clinical stability, clinician prescribing behavior, and unmeasured severity may still affect the estimates.
 This notebook illustrates a transparent and reproducible approach to multivariable outcome modeling and uncertainty quantification in large clinical datasets.
 
 ---

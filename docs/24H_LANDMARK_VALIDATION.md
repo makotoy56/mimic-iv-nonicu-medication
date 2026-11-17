@@ -56,7 +56,7 @@ The following first-applicable-reason counts are mutually exclusive, include eli
 
 The original condition retained 460,350 admissions/1,890 deaths; the correction retains 342,519 admissions/1,769 deaths, removing 117,831 admissions and 121 deaths. Independent BigQuery aggregate SQL exactly reproduced Python counts, including 48,416 exposed admissions/129 deaths and 294,103 unexposed admissions/1,640 deaths in the corrected cohort.
 
-## Model diagnostics: nonconvergence remains unresolved
+## Original MLE diagnostics: separation remains; supplementary remedy added
 
 The unchanged unpenalized statsmodels Logit/default optimizer and 35-iteration limit were used. **None of the five fits converged. The nominal confidence intervals below are diagnostic outputs, not validated inference.** No covariate, category handling, penalty, optimizer or iteration-limit change was made to obtain a different result.
 
@@ -70,7 +70,7 @@ The unchanged unpenalized statsmodels Logit/default optimizer and 35-iteration l
 
 Ordinary/proxy specifications have identical model counts and dropped zero numeric-covariate-missing rows. All four sensitivity fits recorded `ConvergenceWarning` and 35 iterations. The unchanged primary cell suppresses warning messages, but its `mle_retvals['converged']` was explicitly checked and was false.
 
-An aggregate check found 7,170 `AMBULATORY OBSERVATION` admissions with zero deaths, consistent with a separation problem in the unpenalized model. This is a diagnostic finding, not a completed remedy. Changing estimation/category handling requires a separate modeling decision under the requirement to preserve the primary specification. Existing OR figures remain historical and were not overwritten with unconverged results. A skipped export now allows later notebook prediction/bootstrap sections to continue.
+An aggregate check found 7,170 `AMBULATORY OBSERVATION` admissions with zero deaths, consistent with a separation problem in the unpenalized model. A subsequent explicit Firth sensitivity analysis retained every adjustment category and converged for all five comparisons. It changes the estimator while preserving the original primary specification/output; see [Firth validation](FIRTH_SENSITIVITY_VALIDATION.md). The original MLE remains separated and is not relabeled as converged. Existing OR figures remain historical and were not overwritten with unconverged results. A skipped export now allows later notebook prediction/bootstrap sections to continue.
 
 ## Full primary prediction/risk rerun
 

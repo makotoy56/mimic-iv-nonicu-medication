@@ -2,13 +2,13 @@
 
 ## Interpretation
 
-**Real-data rerun (2026-11-17):** The unchanged primary and all four original/corrected sensitivity OR fits failed convergence at 35 iterations. Their point outputs and nominal intervals are provisional diagnostics, not validated inference. An admission-type category has 7,170 admissions with zero deaths, consistent with a separation problem. See [real-data validation](24H_LANDMARK_VALIDATION.md).
+**Separation-robust supplement (2026-11-17):** The original unpenalized primary/sensitivity fits remain nonconverged and are retained for audit. An explicit Firth/Jeffreys-penalized sensitivity analysis, using the same admissions, exposure and adjustment variables, converged for all five comparisons. Its 95% intervals use penalized profile likelihood; numerical rank, profile bounds and independent adjusted-score checks passed. This changes the estimator, not the original primary fit or the separate prediction/risk model. See [Firth validation](FIRTH_SENSITIVITY_VALIDATION.md).
 
 Documented early inpatient RAAS prescription exposure was associated with lower in-hospital mortality in this adult non-ICU MIMIC-IV cohort after multivariable adjustment. The association was present on both the relative scale, using odds ratios, and the absolute scale, using differences in model-predicted risk.
 
 The absolute-risk framing is important because the baseline event rate in this non-ICU cohort is low. A percentage-point difference in adjusted predicted risk is more directly interpretable for clinical analytics and outcomes research audiences than an odds ratio alone.
 
-The corrected landmark cohort requires confirmed survival and continued hospitalization beyond 24 hours and contains 342,519 admissions/1,769 deaths. The ordinary/proxy OR outputs were 0.355/0.382, but both fits failed convergence. These results do not establish inferential robustness or causality, and historical OR figures have not been refreshed.
+The corrected landmark cohort requires confirmed survival and continued hospitalization beyond 24 hours and contains 342,519 admissions/1,769 deaths. The supplementary Firth ordinary/proxy ORs were 0.356/0.382, with 95% penalized profile intervals 0.296–0.425 and 0.317–0.455. These fits converged without removing adjustment categories. The estimator differs from the original MLE; it does not establish causality or correct repeated-admission dependence. Historical MLE OR assets are retained unchanged, and the new Firth figure is explicitly labeled.
 
 ## Observational Design
 

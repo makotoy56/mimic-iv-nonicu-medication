@@ -67,3 +67,13 @@ If the notebook reports that `nonicu_raas.analysis_dataset` does not exist, recr
 ```
 
 This restores five derived tables from authorized MIMIC-IV v3.1 sources. It is reconstruction from source, not recovery of an old deleted table snapshot. Review aggregate cohort checks and model convergence after reconstruction; successful table creation alone does not validate statistical inference. The 2026-11-17 reconstruction and rerun results are recorded in [landmark validation](24H_LANDMARK_VALIDATION.md).
+
+## Supplementary Firth sensitivity analysis
+
+`firthmodels==0.8.2` is pinned in both dependency specifications and the uv lock. Existing locked package versions are unchanged. Run `uv sync` after updating the repository, then run the added Firth cells in notebook 04b after the cohort/model comparison section. The original MLE and sklearn prediction/risk models remain available.
+
+```bash
+.venv/bin/python scripts/test_firth_sensitivity.py
+```
+
+See [Firth validation](FIRTH_SENSITIVITY_VALIDATION.md) for the estimator change, profile interval checks, separation certificate and real-data aggregate results.

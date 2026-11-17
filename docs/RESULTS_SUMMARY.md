@@ -27,16 +27,17 @@ The unchanged primary fit returned the following diagnostics, with failed conver
 - 95% confidence interval: 0.27-0.38
 - p-value: approximately 6.42e-41
 
-**Real-data recalculation (2026-11-17):** The analysis table has been rebuilt and verified. The corrected cohort contains 342,519 admissions and 1,769 deaths, compared with 460,350 admissions and 1,890 deaths under the original condition. The unchanged unpenalized primary and all four sensitivity fits failed to converge at the existing 35-iteration limit. ORs/intervals are provisional diagnostic outputs, not validated inference. Existing OR figures are historical and were not refreshed. See [validation results](24H_LANDMARK_VALIDATION.md).
+**Separation-robust supplement (2026-11-17):** The original unpenalized primary/sensitivity fits remain nonconverged and are retained for audit. An explicit Firth/Jeffreys-penalized sensitivity analysis, using the same admissions, exposure and adjustment variables, converged for all five comparisons. Its 95% intervals use penalized profile likelihood; numerical rank, profile bounds and independent adjusted-score checks passed. This changes the estimator, not the original primary fit or the separate prediction/risk model. See [Firth validation](FIRTH_SENSITIVITY_VALIDATION.md).
 
-| Condition | Model admissions | Deaths | OR diagnostic | Nominal 95% CI | Converged |
+| Firth sensitivity model | Admissions | Deaths | OR | 95% profile CI | Converged |
 | --- | ---: | ---: | ---: | --- | --- |
-| Original condition | 460,350 | 1,890 | 0.361 | 0.304–0.430 | No |
-| Original + admission-source proxy | 460,350 | 1,890 | 0.387 | 0.325–0.460 | No |
-| Corrected 24-hour landmark | 342,519 | 1,769 | 0.355 | 0.296–0.425 | No |
-| Corrected + admission-source proxy | 342,519 | 1,769 | 0.382 | 0.319–0.457 | No |
+| Primary cohort | 460,786 | 2,326 | 0.319 | 0.269–0.376 | Yes |
+| Original condition | 460,350 | 1,890 | 0.362 | 0.303–0.429 | Yes |
+| Original condition + proxy | 460,350 | 1,890 | 0.388 | 0.325–0.460 | Yes |
+| 24h landmark | 342,519 | 1,769 | 0.356 | 0.296–0.425 | Yes |
+| 24h landmark + proxy | 342,519 | 1,769 | 0.382 | 0.317–0.455 | Yes |
 
-Numerical covariate exclusions were zero in all four fits. Nominal intervals from unconverged fits must not be interpreted as validated inference. Existing covariates and estimator defaults were retained; no alternative estimator was silently substituted.
+These are explicitly supplementary Firth estimates. The original unpenalized results and failed convergence statuses remain available in `python/outputs/landmark_model_comparison.csv`. Firth inference retains the admission-independence assumption and does not address unmeasured confounding.
 
 ## Absolute Risk Interpretation
 

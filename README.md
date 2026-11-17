@@ -54,15 +54,15 @@ For clinical analytics, RWE, HEOR, and outcomes research teams, the portfolio va
 
 ## Key Findings
 
-**Inference status:** The 2026-11-17 rerun reproduced the primary outputs, but the unpenalized statsmodels models did not converge. Treat their ORs and confidence intervals as provisional diagnostics. The separate existing penalized prediction models and 200 bootstrap refits completed.
+**Inference status:** The historical unpenalized primary/sensitivity fits have separation and remain nonconverged. The newly added Firth sensitivity fits all converged, with profile-likelihood intervals. They are supplementary estimates, not a relabeling of the original primary model. The separate existing prediction/risk model is unchanged.
 
 - The analytic cohort included 460,786 adult non-ICU hospital admissions.
 - Documented inpatient RAAS prescription exposure within 24 hours occurred in 56,825 admissions, or 12.33% of the cohort.
 - Crude in-hospital mortality was lower among admissions with documented early RAAS prescription exposure than among admissions without it.
-- The unchanged primary fit returned OR 0.32 (95% CI 0.27-0.38), with failed convergence; this interval is not validated inference.
+- The Firth sensitivity fit on the primary cohort returned OR 0.319 (95% profile CI 0.269–0.376). The original unpenalized primary output remains historical and nonconverged.
 - The fitted absolute-risk model produced an average adjusted predicted mortality difference of -0.38 percentage points between the documented-exposure and no-exposure scenarios.
 - Age-specific adjusted analyses suggested larger absolute risk differences among older patients.
-- The corrected 24-hour cohort contains 342,519 admissions and 1,769 deaths. Its ordinary/proxy OR diagnostics were 0.355 and 0.382; both fits failed convergence. See the validation table for the original-condition comparison.
+- The corrected 24-hour cohort contains 342,519 admissions and 1,769 deaths. Its Firth ordinary/proxy ORs were 0.356 (95% profile CI 0.296–0.425) and 0.382 (0.317–0.455); both fits converged.
 
 **Reviewer interpretation:** The OR of approximately 0.32 and the model-predicted mortality difference are observational associations, not evidence that RAAS inhibitors caused lower mortality. Treatment eligibility, confounding by indication, early clinical stability, clinician prescribing behavior, and unmeasured clinical severity may affect the estimates. The landmark analyses address one timing-related bias concern but do not establish causality.
 
@@ -86,11 +86,11 @@ After multivariable adjustment, the difference in model-predicted mortality risk
 
 ### 24-Hour Landmark Sensitivity Analysis
 
-**Real-data recalculation (2026-11-17):** The analysis table has been rebuilt and verified. The corrected cohort contains 342,519 admissions and 1,769 deaths, compared with 460,350 admissions and 1,890 deaths under the original condition. The unchanged unpenalized primary and all four sensitivity fits failed to converge at the existing 35-iteration limit. ORs/intervals are provisional diagnostic outputs, not validated inference. Existing OR figures are historical and were not refreshed. See [validation results](docs/24H_LANDMARK_VALIDATION.md).
+**Separation-robust supplement (2026-11-17):** The original unpenalized primary/sensitivity fits remain nonconverged and are retained for audit. An explicit Firth/Jeffreys-penalized sensitivity analysis, using the same admissions, exposure and adjustment variables, converged for all five comparisons. Its 95% intervals use penalized profile likelihood; numerical rank, profile bounds and independent adjusted-score checks passed. This changes the estimator, not the original primary fit or the separate prediction/risk model. See [Firth validation](docs/FIRTH_SENSITIVITY_VALIDATION.md).
 
-The corrected rule requires confirmed survival and continued hospitalization beyond 24 hours. It removes 117,637 temporally valid early live discharges retained by the original condition, plus separately counted inconsistent records. The image below predates this correction; all unpenalized fits require resolution of nonconvergence before a corrected figure is published.
+The corrected rule requires confirmed survival and continued hospitalization beyond 24 hours, removing 117,637 early live discharges plus separately counted inconsistent records. The figure below explicitly uses the supplementary Firth estimator. Historical unpenalized OR assets are retained unchanged for audit.
 
-<img src="assets/landmark_sensitivity_summary.png" alt="Primary and 24-hour landmark odds ratios for documented early inpatient RAAS prescription exposure" width="760">
+<img src="assets/firth_landmark_sensitivity.png" alt="Supplementary Firth odds ratios with 95 percent penalized profile intervals" width="760">
 
 ## Study Snapshot
 

@@ -3,6 +3,7 @@ name = "mimic-iv-nonicu-medication"
 version = "0.1.0"
 requires-python = ">=3.12,<3.13"
 dependencies = [
+    "firthmodels==0.8.2",
     "db-dtypes>=1.0",
     "google-auth>=2.0",
     "google-cloud-bigquery[pandas]>=3.0",
