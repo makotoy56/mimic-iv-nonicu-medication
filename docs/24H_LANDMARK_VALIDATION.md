@@ -1,6 +1,6 @@
 # 24-hour landmark correction: real-data validation
 
-## Reconstruction on 2026-11-17
+## Initial reconstruction on 2026-11-17
 
 All five derived tables were reconstructed from the existing MIMIC-IV v3.1 SQL. The project uses the free BigQuery sandbox: attempting to remove expiration failed because billing is not enabled. Following the user's choice, billing was left unchanged and the tables were set to expire within 60 days. The dataset default remains 60 days. See [Google's sandbox specification](https://docs.cloud.google.com/bigquery/docs/sandbox).
 
@@ -96,3 +96,5 @@ Patient records stayed in the authorized BigQuery project and local process memo
 ## Subsequent patient-aware validation
 
 The profile intervals and original row-split/bootstrap results above are historical comparisons. Additional patient-cluster intervals (500 prespecified draws), risk/AME intervals and a patient-disjoint holdout are documented in [patient-aware validation](PATIENT_AWARE_VALIDATION.md). Full-data Firth points and original primary/cohort/exposure specifications remain unchanged.
+
+The later [complete notebook rerun](NOTEBOOK_RUN_VALIDATION.md) rebuilt all five tables again and records their current expiration timestamps. The initial reconstruction times above are historical evidence.

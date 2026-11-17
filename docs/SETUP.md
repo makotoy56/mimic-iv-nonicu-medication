@@ -8,10 +8,10 @@ The repository uses uv with Python 3.12. The project metadata is stored in `pypr
 
 ```bash
 uv sync
-uv run python -m ipykernel install --user --name mimic-portfolio --display-name "Python (mimic-portfolio)"
+uv run python -m ipykernel install --user --name mimic-iv-nonicu-medication-py312 --display-name "Python (MIMIC non-ICU .venv)"
 ```
 
-The notebook metadata points to the `mimic-portfolio` kernel name. A repository-local `.venv/` is ignored by git and may be created by `uv sync`; do not commit virtual environment contents. Existing local virtual environments do not need to be deleted for this workflow.
+Select this repository’s `.venv/bin/python` in VS Code. A shared `mimic-portfolio` registration may point to an older environment; the optional registration above uses a project-specific name. A repository-local `.venv/` is ignored by git and may be created by `uv sync`; do not commit virtual environment contents. Existing local virtual environments do not need to be deleted for this workflow.
 
 To add or update Python dependencies, use `uv add` from the repository root so `pyproject.toml` and `uv.lock` stay in sync.
 
@@ -27,13 +27,14 @@ The tracked CSV files under `python/outputs/` and `sas/outputs/` are aggregate v
 
 ## Notebook Execution
 
-The notebooks are ordered by analysis stage:
+Run in order: 00 → 01 → 02 → 03a → 03b → 04a → 04b → 05, using the repository `.venv` and a fresh kernel for each notebook.
 
-1. `01_cohort.ipynb` through `03b_describe_analysis_dataset.ipynb` build and inspect the analysis dataset.
-2. `04a_unadjusted_outcomes.ipynb` and `04b_multivariable_outcomes.ipynb` generate the primary Python outputs and README figures.
-3. `05_sas_python_validation.ipynb` compares exported aggregate Python and SAS outputs.
+1. `00_setup.ipynb` validates the interpreter, existing ADC and source access.
+2. `01_cohort.ipynb` through `03b_describe_analysis_dataset.ipynb` build and inspect the analysis tables.
+3. `04a_unadjusted_outcomes.ipynb` and `04b_multivariable_outcomes.ipynb` generate aggregate analyses and figures.
+4. `05_sas_python_validation.ipynb` compares Python outputs with existing SAS aggregates.
 
-Most notebooks depend on upstream tables or exported artifacts. Rerun them selectively rather than treating the repository as a single push-button pipeline.
+A complete Run All rerun rebuilds five derived tables and overwrites aggregate CSVs and figures. Back up local working changes first and close notebook editors before an external execution to avoid save conflicts. Selective reruns require the upstream tables or exports. See the [complete execution record](NOTEBOOK_RUN_VALIDATION.md).
 
 ## Figure Refresh Workflow
 
@@ -47,10 +48,10 @@ To keep diffs reviewable:
 
 - Keep concise summary tables when they help portfolio readability.
 - Avoid committing large embedded image outputs when the same figure is exported under `assets/`.
-- Clear execution counts before committing notebooks.
+- Retain local executed outputs; the Git clean filter strips outputs and execution counts from staged notebook contents.
 - Do not commit local warnings, credentials, patient-level extracts, or SAS logs.
 
-The current notebooks preserve summary-level outputs but avoid large embedded figure blobs and execution-count churn.
+Local saved notebooks retain executed outputs and figures. The Git clean filter strips outputs and execution counts from committed notebooks; aggregate CSVs, curated figures and execution evidence remain reviewable.
 
 ## BigQuery sandbox table expiration and reconstruction
 

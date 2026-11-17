@@ -1,0 +1,278 @@
+{
+  "started_utc": "2026-11-17T15:57:44.899157+00:00",
+  "completed_utc": "2026-11-17T16:29:41.738430+00:00",
+  "execution": "Sequential; new repository Python kernel for each notebook; allow_errors=False",
+  "python": "3.12.13",
+  "packages": {
+    "pandas": "3.0.3",
+    "numpy": "2.4.6",
+    "scipy": "1.17.1",
+    "statsmodels": "0.14.6",
+    "scikit-learn": "1.9.0",
+    "firthmodels": "0.8.2",
+    "nbclient": "0.11.0",
+    "nbformat": "5.10.4"
+  },
+  "total_code_cells": 100,
+  "runtime_error_outputs": 0,
+  "notebooks": [
+    {
+      "notebook": "00_setup.ipynb",
+      "code_cells": 5,
+      "executed_code_cells": 5,
+      "status": "passed",
+      "elapsed_seconds": 3.95,
+      "started_utc": "2026-11-17T15:57:44.914889+00:00",
+      "completed_utc": "2026-11-17T15:57:48.866513+00:00",
+      "error_outputs": 0,
+      "source_sha256": "5898ef3a4e05521f4f844fa6089ee8256064fdbf89505ca3900b1d51defcdae5"
+    },
+    {
+      "notebook": "01_cohort.ipynb",
+      "code_cells": 17,
+      "executed_code_cells": 17,
+      "status": "passed",
+      "elapsed_seconds": 417.87,
+      "started_utc": "2026-11-17T15:57:48.989757+00:00",
+      "completed_utc": "2026-11-17T16:04:46.872260+00:00",
+      "error_outputs": 0,
+      "source_sha256": "090b95bf836ccf7da32f8b68ebf9196c63873d709adff1ec491081bbc2c001ae"
+    },
+    {
+      "notebook": "02_exposure.ipynb",
+      "code_cells": 10,
+      "executed_code_cells": 10,
+      "status": "passed",
+      "elapsed_seconds": 173.59,
+      "started_utc": "2026-11-17T16:04:46.988255+00:00",
+      "completed_utc": "2026-11-17T16:07:40.576573+00:00",
+      "error_outputs": 0,
+      "source_sha256": "78334fd948be345399dda5daea590c4676c06c6416dde2897d9e5bc472901501"
+    },
+    {
+      "notebook": "03a_validate_input_tables.ipynb",
+      "code_cells": 5,
+      "executed_code_cells": 5,
+      "status": "passed",
+      "elapsed_seconds": 135.25,
+      "started_utc": "2026-11-17T16:07:40.695434+00:00",
+      "completed_utc": "2026-11-17T16:09:55.942825+00:00",
+      "error_outputs": 0,
+      "source_sha256": "7f5c39f54d3c7fa0e812feeea60f632d48754bce2f22c134e30ccfe532d17d05"
+    },
+    {
+      "notebook": "03b_describe_analysis_dataset.ipynb",
+      "code_cells": 12,
+      "executed_code_cells": 12,
+      "status": "passed",
+      "elapsed_seconds": 138.09,
+      "started_utc": "2026-11-17T16:09:56.058951+00:00",
+      "completed_utc": "2026-11-17T16:12:14.145943+00:00",
+      "error_outputs": 0,
+      "source_sha256": "8246442a4899909bcba7756347844179050956792c48ed6bdcdbfe5608c8fd45"
+    },
+    {
+      "notebook": "04a_unadjusted_outcomes.ipynb",
+      "code_cells": 12,
+      "executed_code_cells": 12,
+      "status": "passed",
+      "elapsed_seconds": 122.93,
+      "started_utc": "2026-11-17T16:12:14.263213+00:00",
+      "completed_utc": "2026-11-17T16:14:17.192053+00:00",
+      "error_outputs": 0,
+      "source_sha256": "a96422c5a6d7f89efe633473fa4e587c176cba02422f73bb773af75ce6586491"
+    },
+    {
+      "notebook": "04b_multivariable_outcomes.ipynb",
+      "code_cells": 24,
+      "executed_code_cells": 24,
+      "status": "passed",
+      "elapsed_seconds": 922.4,
+      "started_utc": "2026-11-17T16:14:17.328680+00:00",
+      "completed_utc": "2026-11-17T16:29:39.739905+00:00",
+      "error_outputs": 0,
+      "source_sha256": "af0b24b21d74ac6a9a1390948bbe89de1f51f0a13dbe4d080fefb88d626d45f5"
+    },
+    {
+      "notebook": "05_sas_python_validation.ipynb",
+      "code_cells": 15,
+      "executed_code_cells": 15,
+      "status": "passed",
+      "elapsed_seconds": 1.77,
+      "started_utc": "2026-11-17T16:29:39.856772+00:00",
+      "completed_utc": "2026-11-17T16:29:41.626010+00:00",
+      "error_outputs": 0,
+      "source_sha256": "232fa346d333894855a5afbdfcad6046a793e4d33cdb18c523d3bad9ee4f9491"
+    }
+  ],
+  "rebuilt_tables": {
+    "dataset_default_expiration_days": 60,
+    "tables": [
+      {
+        "table": "base_admissions",
+        "rows": 546028,
+        "expiration_utc": "2027-01-16T15:57:54.766000+00:00",
+        "columns": 19
+      },
+      {
+        "table": "base_admissions_racegrp",
+        "rows": 546028,
+        "expiration_utc": "2027-01-16T16:00:07.591000+00:00",
+        "columns": 21
+      },
+      {
+        "table": "nonicu_admissions",
+        "rows": 460786,
+        "expiration_utc": "2027-01-16T16:02:35.107000+00:00",
+        "columns": 21
+      },
+      {
+        "table": "exposure_raas_early",
+        "rows": 460786,
+        "expiration_utc": "2027-01-16T16:04:52.978000+00:00",
+        "columns": 6
+      },
+      {
+        "table": "analysis_dataset",
+        "rows": 460786,
+        "expiration_utc": "2027-01-16T16:05:25.421000+00:00",
+        "columns": 25
+      }
+    ],
+    "integrity": {
+      "admissions": 460786,
+      "unique_admissions": 460786,
+      "patients": 191775,
+      "missing_identifiers": 0,
+      "exposed_admissions": 56825,
+      "deaths": 2326,
+      "exposure_mismatches": 0,
+      "females_unexposed": 218834,
+      "females_exposed": 27549,
+      "males_unexposed": 185127,
+      "males_exposed": 29276,
+      "recorded_deaths_without_deathtime": 2,
+      "discharge_before_admission": 96,
+      "icu_matches": 0
+    }
+  },
+  "model_checks": {
+    "primary_mle_converged": false,
+    "primary_mle_iterations": 35,
+    "all_four_sensitivity_mle_converged": false,
+    "all_five_firth_inference_valid": true,
+    "firth_bootstrap_successful": {
+      "Primary cohort": 500,
+      "Original condition": 500,
+      "Original condition + proxy": 500,
+      "24h landmark": 500,
+      "24h landmark + proxy": 500
+    },
+    "risk_bootstrap_successful": 500,
+    "legacy_admission_bootstrap_successful": 200,
+    "patient_holdout_overlap": 0,
+    "sas_comparison_summary": [
+      {
+        "stage": "04a unadjusted outcomes",
+        "comparison_rows": 14,
+        "failed_rows": 0
+      },
+      {
+        "stage": "04b multivariable model",
+        "comparison_rows": 125,
+        "failed_rows": 35
+      }
+    ],
+    "sas_unexpected_failed_terms": 0,
+    "sas_session_rerun": false
+  },
+  "current_mle_diagnostics": [
+    {
+      "model": "Original condition",
+      "cohort_n": 460350,
+      "n": 460350,
+      "dropped_numeric": 0,
+      "deaths": 1890,
+      "invalid_outcome": 0,
+      "OR": 0.3612497538,
+      "CI_lower": 0.3036527003,
+      "CI_upper": 0.4297718562,
+      "p_value": 1.484345979e-30,
+      "converged": false,
+      "inference_valid": false,
+      "iterations": 35,
+      "warnings": "ConvergenceWarning",
+      "fit_error": ""
+    },
+    {
+      "model": "Original condition + proxy",
+      "cohort_n": 460350,
+      "n": 460350,
+      "dropped_numeric": 0,
+      "deaths": 1890,
+      "invalid_outcome": 0,
+      "OR": 0.3865166834,
+      "CI_lower": 0.3247491097,
+      "CI_upper": 0.4600325054,
+      "p_value": 1.018010504e-26,
+      "converged": false,
+      "inference_valid": false,
+      "iterations": 35,
+      "warnings": "ConvergenceWarning",
+      "fit_error": ""
+    },
+    {
+      "model": "24h landmark",
+      "cohort_n": 342519,
+      "n": 342519,
+      "dropped_numeric": 0,
+      "deaths": 1769,
+      "invalid_outcome": 0,
+      "OR": 0.3550750914,
+      "CI_lower": 0.2963624725,
+      "CI_upper": 0.4254193167,
+      "p_value": 2.974750697e-29,
+      "converged": false,
+      "inference_valid": false,
+      "iterations": 35,
+      "warnings": "ConvergenceWarning",
+      "fit_error": ""
+    },
+    {
+      "model": "24h landmark + proxy",
+      "cohort_n": 342519,
+      "n": 342519,
+      "dropped_numeric": 0,
+      "deaths": 1769,
+      "invalid_outcome": 0,
+      "OR": 0.3872847917,
+      "CI_lower": 0.324223588,
+      "CI_upper": 0.4626113443,
+      "p_value": 1.30391599e-25,
+      "converged": false,
+      "inference_valid": false,
+      "iterations": 35,
+      "warnings": "ConvergenceWarning",
+      "fit_error": ""
+    }
+  ],
+  "current_legacy_discrimination": {
+    "roc_auc": 0.8524190763263433,
+    "pr_auc": 0.10496406476958814
+  },
+  "current_cohort_counts": {
+    "admissions": 460786,
+    "deaths": 2326,
+    "original_landmark_n": 460350,
+    "corrected_landmark_n": 342519,
+    "corrected_landmark_deaths": 1769
+  },
+  "library_warnings": [
+    {
+      "category": "UserWarning",
+      "message": "BigQuery Storage module not found, fetch data with the REST endpoint instead.",
+      "occurrences": 20,
+      "effect": "Optional fast reader unavailable; REST fallback completed successfully."
+    }
+  ]
+}

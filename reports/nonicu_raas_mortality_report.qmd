@@ -249,6 +249,8 @@ For complete environment and reproducibility details, see [REPRODUCIBILITY.md](h
 
 MIMIC-IV and PhysioNet access, Google Cloud authentication, BigQuery access, and local SAS paths are configured outside the repository.
 
+A complete 00–05 rerun executed all eight notebooks sequentially with fresh repository Python kernels: 100 code cells completed with zero runtime error outputs. Local outputs were saved; Git retains the existing output-stripping policy. Model convergence and historical SAS discrepancy checks remain separate from runtime success. [Full execution and source-hash record](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/NOTEBOOK_RUN_VALIDATION.md).
+
 ## Conclusion
 
 Documented early inpatient RAAS prescription exposure was associated with lower in-hospital mortality in this adult non-ICU MIMIC-IV cohort after adjustment for measured covariates. The association was also presented on the absolute risk scale, where the difference in adjusted predicted mortality risk was small in percentage-point terms and varied by age.

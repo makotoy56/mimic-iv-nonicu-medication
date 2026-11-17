@@ -67,11 +67,7 @@ git config filter.nbstripout.extrakeys 'metadata.kernelspec metadata.language_in
 uv run nbstripout --status
 ```
 
-To verify notebooks are clean before committing:
-
-```bash
-uv run nbstripout --verify notebooks/*.ipynb
-```
+Before committing, verify that staged notebook blobs contain no outputs or execution counts. The clean filter applies to Git contents while local executed notebooks retain their saved results.
 
 ## Major Analytical Libraries
 
@@ -129,10 +125,11 @@ The project targets Python 3.12 with `requires-python = ">=3.12,<3.13"` and `.py
 3. If needed, register the notebook kernel:
 
    ```bash
-   uv run python -m ipykernel install --user --name mimic-portfolio --display-name "Python (mimic-portfolio)"
+   uv run python -m ipykernel install --user --name mimic-iv-nonicu-medication-py312 --display-name "Python (MIMIC non-ICU .venv)"
    ```
 
-4. Run the notebooks in workflow order:
+4. Select the repository `.venv` and run with a fresh kernel for each notebook:
+   - `notebooks/00_setup.ipynb`
    - `notebooks/01_cohort.ipynb`
    - `notebooks/02_exposure.ipynb`
    - `notebooks/03a_validate_input_tables.ipynb`
@@ -152,3 +149,7 @@ The project targets Python 3.12 with `requires-python = ">=3.12,<3.13"` and `.py
 The independent-admission profile intervals and historical MLE/SAS outputs are distinct from the added patient-cluster bootstrap intervals. Patient-disjoint discrimination and bootstrap details are documented in [patient-aware validation](docs/PATIENT_AWARE_VALIDATION.md). Quarto post-render now synchronizes referenced canonical images from `assets/` to `docs/assets/` and rejects missing local resources.
 
 After rendering, run `.venv/bin/python scripts/test_report_consistency.py` to compare current report/narrative values with aggregate CSVs and verify synchronized images. After deployment, run `.venv/bin/python scripts/check_public_report.py` to check live HTML bytes and linked same-site resources.
+
+## Complete workflow verification
+
+The [complete 00–05 execution record](docs/NOTEBOOK_RUN_VALIDATION.md) and aggregate JSON receipt document eight sequential fresh-kernel runs, source hashes, table expirations and statistical status. Runtime success is recorded separately from historical MLE nonconvergence and SAS comparison flags.

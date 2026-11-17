@@ -818,6 +818,7 @@ Source tables to analysis dataset lineage. <a href="../assets/nonicu_table_linea
 <p>Reproducibility was addressed by separating cohort construction, exposure definition, model estimation, figure generation, and SAS-Python validation into version-controlled workflow steps. The rendered report is supported by notebooks, SQL definitions, aggregate validation outputs, and exported figures, while patient-level MIMIC-IV data remain outside the repository.</p>
 <p>For complete environment and reproducibility details, see <a href="https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/REPRODUCIBILITY.md">REPRODUCIBILITY.md</a>.</p>
 <p>MIMIC-IV and PhysioNet access, Google Cloud authentication, BigQuery access, and local SAS paths are configured outside the repository.</p>
+<p>A complete 00–05 rerun executed all eight notebooks sequentially with fresh repository Python kernels: 100 code cells completed with zero runtime error outputs. Local outputs were saved; Git retains the existing output-stripping policy. Model convergence and historical SAS discrepancy checks remain separate from runtime success. <a href="https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/NOTEBOOK_RUN_VALIDATION.md">Full execution and source-hash record</a>.</p>
 </section>
 <section id="conclusion" class="level2" data-number="14">
 <h2 data-number="14" class="anchored" data-anchor-id="conclusion"><span class="header-section-number">14</span> Conclusion</h2>

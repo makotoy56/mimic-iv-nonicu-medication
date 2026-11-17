@@ -67,7 +67,7 @@ quarto render reports/nonicu_raas_mortality_report.qmd
 .venv/bin/python scripts/check_public_report.py  # after Pages deployment
 ```
 
-Quarto post-render copies referenced canonical images into `docs/assets/` and rejects broken local resources. Live checks compare the deployed HTML bytes and fetch every same-site linked resource. Existing user edits to `python/outputs/python_logistic_parameters.csv` are protected and excluded from this commit. SAS was not rerun and its artifacts were not overwritten; historical MLE agreement does not validate Firth or bootstrap inference.
+Quarto post-render copies referenced canonical images into `docs/assets/` and rejects broken local resources. Live checks compare the deployed HTML bytes and fetch every same-site linked resource. The legacy MLE CSV is regenerated during full workflow runs and remains explicitly diagnostic; local working changes are backed up before rerunning. SAS was not rerun and its artifacts were not overwritten; historical MLE agreement does not validate Firth or bootstrap inference.
 
 Firth and patient resampling do not remove unmeasured confounding, timing/eligibility selection or selection from excluding any ICU stay during the entire admission. The primary cohort still includes observation/day-case categories and its original timestamp inconsistencies; the landmark rules explicitly exclude inconsistent eligibility records. No patient-level data, identifiers, credentials or compressed covariate patterns are saved or published.
 

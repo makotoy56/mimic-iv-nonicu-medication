@@ -123,6 +123,7 @@ Exposure is based on inpatient prescription records. It does not confirm medicat
 
 ## Explore The Project
 
+- [00 setup and source-access checks](notebooks/00_setup.ipynb)
 - [01 cohort construction](notebooks/01_cohort.ipynb) and [short notes](docs/01_cohort_SHORT.md)
 - [02 exposure definition](notebooks/02_exposure.ipynb) and [short notes](docs/02_exposure_SHORT.md)
 - [03a input table validation](notebooks/03a_validate_input_tables.ipynb) and [short notes](docs/03a_validate_input_tables_SHORT.md)
@@ -148,6 +149,8 @@ Exposure is based on inpatient prescription records. It does not confirm medicat
 The workflow uses version-controlled notebooks, SQL scripts, SAS programs, and aggregate validation CSVs. No patient-level data are included in this repository. See [Setup and reproducibility](docs/SETUP.md) for the uv-managed Python environment and notebook hygiene workflow.
 
 For complete environment and reproducibility details, see [REPRODUCIBILITY.md](REPRODUCIBILITY.md).
+
+The latest [complete 00–05 execution record](docs/NOTEBOOK_RUN_VALIDATION.md) confirms eight sequential fresh-kernel runs and zero runtime error outputs. Statistical convergence and SAS discrepancy checks are recorded separately; the historical MLE remains nonconverged.
 
 Validation scope:
 
