@@ -126,3 +126,10 @@ assert comparison.loc["24h landmark + proxy", "n"] == comparison.loc["24h landma
 assert comparison.loc["Original condition", "cohort_n"] - comparison.loc["24h landmark", "cohort_n"] == int(early.sum())
 assert integration["df_lm"]["dischtime"].gt(base + pd.Timedelta(hours=24)).all()
 print("PASS: full original/corrected ordinary/proxy comparison and primary presentation integration")
+
+
+# Failed convergence must skip the historical-figure export and allow later cells.
+figure_cell = next("".join(c["source"]) for c in notebook["cells"]
+                   if c["cell_type"] == "code" and "Landmark figure not refreshed:" in "".join(c["source"]))
+exec(figure_cell, {"compare_raw": pd.DataFrame({"inference_valid": [False, False, False]})})
+print("PASS: unconverged real-data state skips figure export without stopping subsequent cells")

@@ -2,11 +2,13 @@
 
 ## Interpretation
 
+**Real-data rerun (2026-11-17):** The unchanged primary and all four original/corrected sensitivity OR fits failed convergence at 35 iterations. Their point outputs and nominal intervals are provisional diagnostics, not validated inference. An admission-type category has 7,170 admissions with zero deaths, consistent with a separation problem. See [real-data validation](24H_LANDMARK_VALIDATION.md).
+
 Documented early inpatient RAAS prescription exposure was associated with lower in-hospital mortality in this adult non-ICU MIMIC-IV cohort after multivariable adjustment. The association was present on both the relative scale, using odds ratios, and the absolute scale, using differences in model-predicted risk.
 
 The absolute-risk framing is important because the baseline event rate in this non-ICU cohort is low. A percentage-point difference in adjusted predicted risk is more directly interpretable for clinical analytics and outcomes research audiences than an odds ratio alone.
 
-The 24-hour landmark bias-reduction sensitivity estimate (OR 0.36, 95% CI 0.30-0.43) and landmark-plus-proxy estimate (OR 0.39, 95% CI 0.32-0.46) remained directionally consistent with the primary estimate. These analyses address one timing-related bias concern but do not establish causality.
+The corrected landmark cohort requires confirmed survival and continued hospitalization beyond 24 hours and contains 342,519 admissions/1,769 deaths. The ordinary/proxy OR outputs were 0.355/0.382, but both fits failed convergence. These results do not establish inferential robustness or causality, and historical OR figures have not been refreshed.
 
 ## Observational Design
 

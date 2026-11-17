@@ -25,7 +25,7 @@ The emphasis is on reproducible clinical analytics: cohort construction, exposur
 
 The results remain hypothesis-generating. The design estimates associations after adjustment for measured covariates; it does not establish treatment effectiveness.
 
-The primary adjusted exposure OR was 0.318 (95% CI 0.269-0.376), and the fitted absolute-risk model produced an average adjusted predicted mortality difference of -0.3797 percentage points. The historical 24-hour landmark OR was 0.36 and the landmark-plus-proxy OR was 0.39; these precede the eligibility correction and await real-data recalculation. These directionally consistent estimates remain observational and may reflect treatment eligibility, confounding by indication, early clinical stability, clinician prescribing behavior, and unmeasured clinical severity.
+The primary adjusted exposure OR was 0.318 (95% CI 0.269-0.376), and the fitted absolute-risk model produced an average adjusted predicted mortality difference of -0.3797 percentage points. Real-data recalculation returned corrected landmark ordinary/proxy OR diagnostics of 0.355/0.382; the primary and all sensitivity fits failed convergence, so their intervals remain provisional. These directionally consistent estimates remain observational and may reflect treatment eligibility, confounding by indication, early clinical stability, clinician prescribing behavior, and unmeasured clinical severity.
 
 ## Reproducible Workflow
 
@@ -142,21 +142,23 @@ Admission-type coefficients in the exported model output have very wide interval
 
 ## Sensitivity Analyses
 
-**Landmark correction status (2026-11-17):** The 24-hour eligibility rule has been corrected in the notebook, but real-data recalculation is pending because the configured analysis table is unavailable. The landmark ORs and figure below are historical outputs of the previous condition, which could retain early live discharges; they are not estimates from the corrected cohort. See [validation and rerun notes](../docs/24H_LANDMARK_VALIDATION.md).
+**Real-data recalculation (2026-11-17):** The analysis table has been rebuilt and verified. The corrected cohort contains 342,519 admissions and 1,769 deaths, compared with 460,350 admissions and 1,890 deaths under the original condition. The unchanged unpenalized primary and all four sensitivity fits failed to converge at the existing 35-iteration limit. ORs/intervals are provisional diagnostic outputs, not validated inference. Existing OR figures are historical and were not refreshed. See [validation results](../docs/24H_LANDMARK_VALIDATION.md).
 
-The historical 24-hour landmark analysis was performed as a bias-reduction sensitivity analysis. It evaluated whether the prescription-exposure association was directionally stable after excluding admissions with recorded death during the first 24 hours. A second landmark model added admission source as a proxy for baseline severity.
+The corrected sensitivity cohort requires confirmed survival and continued hospitalization beyond 24 hours, excluding death/discharge exactly at the boundary and records with missing or inconsistent eligibility information. A second model adds the unchanged admission-source proxy. The image below is retained only as a historical artifact; it has not been refreshed with unconverged results.
 
 Source notebook: [04b_multivariable_outcomes.ipynb](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/notebooks/04b_multivariable_outcomes.ipynb).
 
 ![Sensitivity analysis odds ratios for documented early inpatient RAAS prescription exposure.](../assets/landmark_sensitivity_summary.png){fig-alt="Primary and 24-hour landmark odds ratios for documented early inpatient RAAS prescription exposure" width="80%"}
 
-| Model | Exposure OR | 95% CI | Purpose |
-| --- | ---: | ---: | --- |
-| Primary adjusted model | 0.32 | 0.27, 0.38 | Main association estimate |
-| 24-hour landmark model | 0.36 | 0.30, 0.43 | Bias-reduction check excluding recorded deaths during the first 24 hours |
-| 24-hour landmark plus proxy model | 0.39 | 0.32, 0.46 | Adds admission-source proxy for baseline severity context |
+| Model | Admissions | Deaths | OR diagnostic | Nominal 95% CI | Converged |
+| --- | ---: | ---: | ---: | --- | --- |
+| Primary adjusted | 460,786 | 2,326 | 0.318 | 0.269–0.376 | No |
+| Original landmark condition | 460,350 | 1,890 | 0.361 | 0.304–0.430 | No |
+| Original + admission-source proxy | 460,350 | 1,890 | 0.387 | 0.325–0.460 | No |
+| Corrected 24-hour landmark | 342,519 | 1,769 | 0.355 | 0.296–0.425 | No |
+| Corrected + admission-source proxy | 342,519 | 1,769 | 0.382 | 0.319–0.457 | No |
 
-The sensitivity estimates remained directionally consistent with the primary model, but they do not eliminate residual confounding, resolve all treatment-eligibility or early-stability bias, or convert the analysis into a causal design.
+All unpenalized fits reached the existing 35-iteration limit without convergence. The nominal confidence intervals above are diagnostic outputs, not validated inference. There were no numeric-covariate exclusions in the sensitivity fits. The ordinary/proxy models therefore have equal admission counts. No covariates or fitting defaults were changed. Admission-type diagnostics identified 7,170 ambulatory-observation admissions with zero deaths, consistent with a separation problem requiring a separate modeling decision.
 
 ## Absolute Risk Interpretation
 

@@ -20,22 +20,23 @@ These unadjusted comparisons are descriptive only and should not be interpreted 
 
 After adjustment for age, gender, race group, admission type, insurance category, and calendar period, documented early inpatient RAAS prescription exposure was associated with lower odds of in-hospital mortality.
 
-The primary model estimated:
+The unchanged primary fit returned the following diagnostics, with failed convergence (not validated inference):
 
 - Exposure coefficient: -1.146
 - Adjusted odds ratio: 0.32
 - 95% confidence interval: 0.27-0.38
 - p-value: approximately 6.42e-41
 
-**Landmark correction status (2026-11-17):** The 24-hour eligibility rule has been corrected in the notebook, but real-data recalculation is pending because the configured analysis table is unavailable. The landmark ORs and figure below are historical outputs of the previous condition, which could retain early live discharges; they are not estimates from the corrected cohort. See [validation and rerun notes](24H_LANDMARK_VALIDATION.md).
+**Real-data recalculation (2026-11-17):** The analysis table has been rebuilt and verified. The corrected cohort contains 342,519 admissions and 1,769 deaths, compared with 460,350 admissions and 1,890 deaths under the original condition. The unchanged unpenalized primary and all four sensitivity fits failed to converge at the existing 35-iteration limit. ORs/intervals are provisional diagnostic outputs, not validated inference. Existing OR figures are historical and were not refreshed. See [validation results](24H_LANDMARK_VALIDATION.md).
 
-Historical estimates from the previous condition, including an admission-source proxy model:
+| Condition | Model admissions | Deaths | OR diagnostic | Nominal 95% CI | Converged |
+| --- | ---: | ---: | ---: | --- | --- |
+| Original condition | 460,350 | 1,890 | 0.361 | 0.304–0.430 | No |
+| Original + admission-source proxy | 460,350 | 1,890 | 0.387 | 0.325–0.460 | No |
+| Corrected 24-hour landmark | 342,519 | 1,769 | 0.355 | 0.296–0.425 | No |
+| Corrected + admission-source proxy | 342,519 | 1,769 | 0.382 | 0.319–0.457 | No |
 
-- Primary model exposure OR: 0.32 (95% CI 0.27-0.38)
-- 24-hour landmark exposure OR: 0.36 (95% CI 0.30-0.43)
-- 24-hour landmark plus proxy exposure OR: 0.39 (95% CI 0.32-0.46)
-
-The sensitivity estimates remained directionally consistent with the primary estimate. They address one timing-related bias concern but do not eliminate residual confounding or establish causality.
+Numerical covariate exclusions were zero in all four fits. Nominal intervals from unconverged fits must not be interpreted as validated inference. Existing covariates and estimator defaults were retained; no alternative estimator was silently substituted.
 
 ## Absolute Risk Interpretation
 

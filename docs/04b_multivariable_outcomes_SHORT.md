@@ -53,11 +53,11 @@ Statistical uncertainty for marginal effects was quantified using nonparametric 
 
 The corrected 24-hour landmark analysis requires confirmed survival and continued hospitalization strictly beyond admission + 24 hours. Death or discharge exactly at 24 hours is excluded. Missing/invalid admission or discharge times, missing death times in hospital deaths, contradictory death flags/times, and deaths outside the admission interval are excluded with explicit counts. A consistent live discharge may have no death time. Subsequent in-hospital mortality is modeled with the same covariates and the unchanged 0–<24-hour prescription exposure.
 
-**Landmark correction status (2026-11-17):** The 24-hour eligibility rule has been corrected in the notebook, but real-data recalculation is pending because the configured analysis table is unavailable. The landmark ORs and figure below are historical outputs of the previous condition, which could retain early live discharges; they are not estimates from the corrected cohort. See [validation and rerun notes](24H_LANDMARK_VALIDATION.md).
+**Real-data recalculation (2026-11-17):** The analysis table has been rebuilt and verified. The corrected cohort contains 342,519 admissions and 1,769 deaths, compared with 460,350 admissions and 1,890 deaths under the original condition. The unchanged unpenalized primary and all four sensitivity fits failed to converge at the existing 35-iteration limit. ORs/intervals are provisional diagnostic outputs, not validated inference. Existing OR figures are historical and were not refreshed. See [validation results](24H_LANDMARK_VALIDATION.md).
 
 The primary and landmark exposure OR/95% CI are reported side-by-side in the notebook comparison table; interpret any attenuation or shift in magnitude from that table.
 As an added proxy for baseline severity, admission source (`admission_location`) was included in a 24-hour landmark refit.
-In the historical run using the previous condition, the exposure OR attenuated toward the null from the primary model (0.32) to the 24-hour landmark model (0.36), and further with the proxy model (0.39). Directional consistency does not establish causality.
+The original-condition ordinary/proxy OR diagnostics were 0.361/0.387; the corrected-condition diagnostics were 0.355/0.382. All four fits and the primary fit failed convergence. These point outputs do not validate confidence intervals or establish robustness.
 
 ## Key Results
 Documented early inpatient RAAS prescription exposure was consistently associated with lower in-hospital mortality after multivariable adjustment.
@@ -70,7 +70,7 @@ Documented early inpatient RAAS prescription exposure was consistently associate
 ## Interpretation
 These findings demonstrate how marginal effects and risk differences can complement odds ratios by providing clinically interpretable estimates on the absolute risk scale.
 
-The observational design precludes causal conclusions. The corrected landmark estimates remain to be calculated; treatment eligibility, confounding by indication, early clinical stability, clinician prescribing behavior, and unmeasured severity may still affect the estimates.
+The observational design precludes causal conclusions. The corrected landmark outputs have been recalculated but remain provisional because of nonconvergence; treatment eligibility, confounding by indication, early clinical stability, clinician prescribing behavior, and unmeasured severity may still affect the estimates.
 This notebook illustrates a transparent and reproducible approach to multivariable outcome modeling and uncertainty quantification in large clinical datasets.
 
 ---

@@ -1,0 +1,8 @@
+reason,admissions,flagged_deaths,unknown_expire_flag,retained_by_original
+included,342519,1769,0,342519
+discharge_at_or_before_24h,117637,0,0,117637
+discharge_before_admission,96,23,0,73
+death_after_discharge,122,122,0,119
+death_at_or_before_24h,404,404,0,0
+death_before_admission,6,6,0,0
+death_flag_without_deathtime,2,2,0,2

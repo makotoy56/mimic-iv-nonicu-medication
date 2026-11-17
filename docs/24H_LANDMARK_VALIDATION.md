@@ -1,47 +1,94 @@
-# 24-hour landmark correction: validation and recalculation status
+# 24-hour landmark correction: real-data validation
 
-## Scope
+## Reconstruction on 2026-11-17
 
-The correction is confined to the 24-hour sensitivity analysis in `notebooks/04b_multivariable_outcomes.ipynb`. The primary models, documented prescription exposure at 0–<24 hours after admission, the exclusion of any ICU use over the entire admission, and the existing adjustment variables are unchanged. The additional model still adds only `admission_location`, filling its missing values with `Unknown` as before. Missing numeric covariates are dropped separately in each sensitivity-model specification.
+All five derived tables were reconstructed from the existing MIMIC-IV v3.1 SQL. The project uses the free BigQuery sandbox: attempting to remove expiration failed because billing is not enabled. Following the user's choice, billing was left unchanged and the tables were set to expire within 60 days. The dataset default remains 60 days. See [Google's sandbox specification](https://docs.cloud.google.com/bigquery/docs/sandbox).
 
-Eligibility requires admission and discharge times, `dischtime > admittime + 24 hours`, and a consistent expiration flag and death time. Survivors require flag 0 with no recorded death time. Deaths require flag 1 with `admittime + 24 hours < deathtime <= dischtime`. Death and discharge exactly at the landmark are excluded. Missing or unparseable admission/discharge times, invalid flags, missing death times for hospital deaths, a survival flag with a recorded death time, and deaths outside the admission interval are explicitly excluded. A missing death time in an otherwise consistent live discharge is expected and does not itself cause exclusion.
+This is reconstruction from source, not recovery of a historical snapshot. Earlier tables may have expired; their exact deletion history has not been established.
 
-The outcome is subsequent in-hospital mortality among these eligible admissions. This selected observational cohort does not resolve unmeasured confounding, repeated-admission dependence, or every timing-related bias.
+| Derived table | Rows | Expiration (UTC) |
+| --- | --- | --- |
+| analysis_dataset | 460,786 | 2027-01-16T11:48:16.966000+00:00 |
+| base_admissions | 546,028 | 2027-01-16T11:44:56.933000+00:00 |
+| base_admissions_racegrp | 546,028 | 2027-01-16T11:48:01.543000+00:00 |
+| exposure_raas_early | 460,786 | 2027-01-16T11:48:12.014000+00:00 |
+| nonicu_admissions | 460,786 | 2027-01-16T11:48:07.270000+00:00 |
 
-## Diagnostics and model comparison
+## Actual schema and cohort validation
 
-`classify_landmark` generates two aggregate tables:
+The rebuilt analysis table has 25 columns. `admittime`, `dischtime` and `deathtime` are `DATETIME`; `hospital_expire_flag` is `INTEGER`. The SQL retains these fields through `b.*`/`c.*`; the notebook checks the actual schema before `SELECT *`.
 
-- Overlapping diagnostic counts for the entire input and admissions retained by the original condition, including temporally valid early live discharges without a contradictory death record, unknown/inconsistent death timing, missing discharge times, and exact 24-hour boundaries.
-- Mutually exclusive counts assigning the first applicable exclusion reason in the code's displayed order; these include an `included` row and sum to all input admissions. Recorded death flags and unknown/invalid expiration flags are counted separately. Diagnostics may overlap and must not be summed.
+There are 460,786 unique admission IDs and 191,775 distinct patients. Aggregate checks found no missing identifiers, invalid/missing adult age, invalid exposure flags, inconsistency between any-RAAS and ACEi/ARB flags, or matches to ICU stays over the entire admission. The earlier aggregate results were reproduced: 56,825 exposed admissions/149 deaths and 403,961 unexposed admissions/2,177 deaths.
 
-`landmark_model_comparison` reports the original and corrected conditions, each with and without the admission-source proxy. It reports eligible cohort size, model size after numerical-covariate exclusions, deaths, exposure OR/95% CI, convergence, iterations, warning categories and fit failures separately. An invalid/unknown outcome retained by the original condition is reported as a fit failure, rather than coded as survival or silently removed. The same unpenalized statsmodels Logit estimator, optimizer defaults and iteration limit are retained; a failed fit is reported rather than replaced by another estimator. The primary model is included in the separate presentation table without changing its fit.
+The primary models, prescription exposure at 0–<24 hours, entire-stay non-ICU definition, and adjustment variables were retained. The proxy model still adds only `admission_location`, with missing values represented by `Unknown` as before.
 
-Convergence failures and non-finite exposure intervals block the figure export. A finite exposure interval and optimizer convergence do not constitute a complete model adequacy assessment; inspect warning categories before interpreting results.
+## Eligibility and diagnostic counts
 
-## Validation performed on 2026-11-17
+Eligibility requires valid admission/discharge times, discharge strictly after admission + 24 hours, and consistent expiration flags/death times. Survivors require flag 0 and no death time. Deaths require flag 1 and `admission + 24 hours < deathtime <= dischtime`. Death/discharge exactly at 24 hours and unknown/inconsistent eligibility information are excluded rather than coded as survival.
 
-The existing SSD repository was confirmed as `makotoy56/mimic-iv-nonicu-medication`, at baseline commit `7c5147d`, with a clean working tree before edits. A separate Documents/Codex copy with 12 pre-existing modified files was left untouched. The SSD repository's existing Python environment was used (Python 3.12.13, pandas 3.0.3, NumPy 2.4.6, statsmodels 0.14.6).
+Early live-discharge diagnostics require valid temporal order and no contradictory death record. Diagnostic categories can overlap and must not be summed.
 
-Run the synthetic checks from the repository root:
+| Overlapping diagnostic | Entire input | Retained by original |
+| --- | --- | --- |
+| live_discharge_at_or_before_24h | 117,637 | 117,637 |
+| live_discharge_exactly_24h | 120 | 120 |
+| discharge_before_admission | 96 | 73 |
+| death_after_discharge | 141 | 119 |
+| death_before_admission | 10 | 0 |
+| death_exactly_24h | 0 | 0 |
+| missing_admittime | 0 | 0 |
+| missing_dischtime | 0 | 0 |
+| death_flag_without_deathtime | 2 | 2 |
+| survival_flag_with_deathtime | 0 | 0 |
+| invalid_or_missing_expire_flag | 0 | 0 |
+
+The following first-applicable-reason counts are mutually exclusive, include eligible admissions, and sum to 460,786. Recorded deaths and invalid/unknown outcome flags are counted separately; there were zero invalid/unknown flags in this input.
+
+| First applicable reason | Admissions | Recorded deaths | Retained by original |
+| --- | --- | --- | --- |
+| included | 342,519 | 1,769 | 342,519 |
+| discharge_at_or_before_24h | 117,637 | 0 | 117,637 |
+| discharge_before_admission | 96 | 23 | 73 |
+| death_after_discharge | 122 | 122 | 119 |
+| death_at_or_before_24h | 404 | 404 | 0 |
+| death_before_admission | 6 | 6 | 0 |
+| death_flag_without_deathtime | 2 | 2 | 2 |
+
+The original condition retained 460,350 admissions/1,890 deaths; the correction retains 342,519 admissions/1,769 deaths, removing 117,831 admissions and 121 deaths. Independent BigQuery aggregate SQL exactly reproduced Python counts, including 48,416 exposed admissions/129 deaths and 294,103 unexposed admissions/1,640 deaths in the corrected cohort.
+
+## Model diagnostics: nonconvergence remains unresolved
+
+The unchanged unpenalized statsmodels Logit/default optimizer and 35-iteration limit were used. **None of the five fits converged. The nominal confidence intervals below are diagnostic outputs, not validated inference.** No covariate, category handling, penalty, optimizer or iteration-limit change was made to obtain a different result.
+
+| Condition/model | Admissions | Deaths | OR output | Nominal 95% CI | Converged |
+| --- | --- | --- | --- | --- | --- |
+| Primary | 460,786 | 2,326 | 0.318 | 0.269–0.376 | No |
+| Original condition | 460,350 | 1,890 | 0.361 | 0.304–0.430 | No |
+| Original condition + proxy | 460,350 | 1,890 | 0.387 | 0.325–0.460 | No |
+| 24h landmark | 342,519 | 1,769 | 0.355 | 0.296–0.425 | No |
+| 24h landmark + proxy | 342,519 | 1,769 | 0.382 | 0.319–0.457 | No |
+
+Ordinary/proxy specifications have identical model counts and dropped zero numeric-covariate-missing rows. All four sensitivity fits recorded `ConvergenceWarning` and 35 iterations. The unchanged primary cell suppresses warning messages, but its `mle_retvals['converged']` was explicitly checked and was false.
+
+An aggregate check found 7,170 `AMBULATORY OBSERVATION` admissions with zero deaths, consistent with a separation problem in the unpenalized model. This is a diagnostic finding, not a completed remedy. Changing estimation/category handling requires a separate modeling decision under the requirement to preserve the primary specification. Existing OR figures remain historical and were not overwritten with unconverged results. A skipped export now allows later notebook prediction/bootstrap sections to continue.
+
+## Full primary prediction/risk rerun
+
+The existing separate sklearn discrimination and unweighted risk models were rerun. ROC AUC was 0.854487, PR AUC 0.115764, predicted mortality 0.573332% without exposure versus 0.193605% with exposure, and AME −0.379727 percentage points. These reproduce the earlier rounded summaries. The classification and full-cohort risk models used 55 and 13 iterations, respectively. All 200 bootstrap refits completed with the existing seed 42 and 200-replicate specification. These separate penalized prediction models do not repair the unpenalized OR fits. No SAS session was rerun and no SAS-generated artifacts were overwritten.
+
+## Reproduction and evidence
 
 ```bash
+# Synthetic boundary/model/failed-figure-export checks
 .venv/bin/python scripts/test_landmark_sensitivity.py
+# Read-only validation of reconstruction SQL and scan volume
+.venv/bin/python scripts/rebuild_analysis_tables.py
+# Recreate missing tables only, with 60-day sandbox expiration
+.venv/bin/python scripts/rebuild_analysis_tables.py --execute
 ```
 
-The test executes the actual classifier/refit functions extracted from the notebook. It covers early and exact-boundary live discharges/deaths, events just after 24 hours, death at discharge, missing/invalid timestamps and flags, inconsistent death records, non-default indices, timezone normalization, input immutability and missing required columns. Synthetic ordinary/proxy fits verify missing-numeric-covariate counts, OR interval ordering and convergence reporting. A singular fit verifies explicit failure reporting. Synthetic estimates are not clinical findings and are not exported.
+The helper never replaces an existing table, changes billing, or displays patient rows. The initial full-pipeline dry run estimated 921,440,830 bytes. The baseline SSD working tree was clean at commit `05c178b`; the separate Documents/Codex copy's 12 existing modifications were left untouched.
 
-The public SQL selects `admittime`, `dischtime`, `deathtime` and `hospital_expire_flag` into `base_admissions`; subsequent `b.*`/`c.*` selections preserve them through the non-ICU cohort and analysis table. The notebook still uses `SELECT *`, now preceded by an explicit check of required fields in the actual BigQuery schema.
+Aggregate-only evidence is saved under `python/outputs/landmark_diagnostics.csv`, `landmark_exclusions.csv`, `landmark_model_comparison.csv`, and `landmark_cohort_counts.csv`. Notebook functions were tested directly on synthetic boundary cases, missing/invalid times and flags, timezone/index behavior, ordinary/proxy refits, singular fits, invalid-outcome handling and figure-export skipping. Real-data selection was also checked independently in BigQuery SQL.
 
-**Real-data limitation:** existing authentication reached BigQuery, but `mimic-iv-portfolio.nonicu_raas.analysis_dataset` returned 404. Listing tables in the existing `nonicu_raas` dataset returned none. The two local CSVs under `data/interim` are aggregate baseline summaries and do not contain the required admission/death/discharge fields. Consequently the actual analysis-table schema, issue counts, eligible/model counts, deaths, corrected ORs/95% CIs and real-data convergence could not be verified. No source tables were recreated and no substitute patient dataset was used.
-
-Existing numeric estimates (including landmark OR 0.36 and proxy OR 0.39), exported figures and rendered HTML have not been recalculated or overwritten. Related source summaries identify the landmark estimates as historical pending recalculation. Do not interpret these historical values as results of the corrected definition.
-
-## Authorized local rerun when the analysis table is available
-
-1. Restore the existing authorized analysis table through the established local workflow. Confirm all four landmark fields in the schema output, without displaying patient rows.
-2. Run notebook loading/preparation and the existing primary statsmodels model, then the landmark classifier, diagnostics and comparison cells. Review missingness, exact boundaries, exclusive reasons and the original-versus-corrected cohort/model counts.
-3. Review each ordinary/proxy model's deaths, convergence, warning categories and OR/95% CI. Do not silently change adjustment variables, missing-value rules or fitting algorithms to obtain convergence.
-4. Only after real-data verification, export the corrected aggregate figure and synchronize the numerical summaries/report. Any existing rendered HTML remains historical until deliberately regenerated from validated source results.
-
-Patient-level data, identifiers and credentials must remain within the authorized environment. The committed notebook/test changes contain code and synthetic inputs, not patient records or new clinical estimates.
+Patient records stayed in the authorized BigQuery project and local process memory. Only aggregate outputs are saved or published; notebook outputs and execution counts are stripped by the existing Git filter. No patient-level local extracts, identifiers or credentials are added to the repository.

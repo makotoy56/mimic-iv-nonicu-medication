@@ -51,3 +51,19 @@ To keep diffs reviewable:
 - Do not commit local warnings, credentials, patient-level extracts, or SAS logs.
 
 The current notebooks preserve summary-level outputs but avoid large embedded figure blobs and execution-count churn.
+
+## BigQuery sandbox table expiration and reconstruction
+
+The existing project uses the free BigQuery sandbox, which enforces automatic table expiration after 60 days. Disabling expiration requires leaving sandbox mode; billing settings are not changed by this repository. See [Google's sandbox documentation](https://docs.cloud.google.com/bigquery/docs/sandbox).
+
+If the notebook reports that `nonicu_raas.analysis_dataset` does not exist, recreate missing tables from the unchanged public SQL. This helper verifies the full source query with a dry run, keeps existing tables, and creates only missing tables with an explicit 60-day expiration. It never replaces existing tables or prints patient rows.
+
+```bash
+# Read-only validation of source access and estimated scan volume
+.venv/bin/python scripts/rebuild_analysis_tables.py
+
+# Create missing tables only, retaining sandbox expiration
+.venv/bin/python scripts/rebuild_analysis_tables.py --execute
+```
+
+This restores five derived tables from authorized MIMIC-IV v3.1 sources. It is reconstruction from source, not recovery of an old deleted table snapshot. Review aggregate cohort checks and model convergence after reconstruction; successful table creation alone does not validate statistical inference. The 2026-11-17 reconstruction and rerun results are recorded in [landmark validation](24H_LANDMARK_VALIDATION.md).

@@ -78,4 +78,4 @@ The SAS-Python validation workflow compares exported aggregate outputs from Pyth
 
 See [Validation notes](VALIDATION_NOTES.md) for scope and discrepancy details.
 
-**Landmark correction status (2026-11-17):** The 24-hour eligibility rule has been corrected in the notebook, but real-data recalculation is pending because the configured analysis table is unavailable. The landmark ORs and figure below are historical outputs of the previous condition, which could retain early live discharges; they are not estimates from the corrected cohort. See [validation and rerun notes](24H_LANDMARK_VALIDATION.md).
+**Real-data recalculation (2026-11-17):** The analysis table has been rebuilt and verified. The corrected cohort contains 342,519 admissions and 1,769 deaths, compared with 460,350 admissions and 1,890 deaths under the original condition. The unchanged unpenalized primary and all four sensitivity fits failed to converge at the existing 35-iteration limit. ORs/intervals are provisional diagnostic outputs, not validated inference. Existing OR figures are historical and were not refreshed. See [validation results](24H_LANDMARK_VALIDATION.md).

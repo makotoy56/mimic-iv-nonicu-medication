@@ -54,13 +54,15 @@ For clinical analytics, RWE, HEOR, and outcomes research teams, the portfolio va
 
 ## Key Findings
 
+**Inference status:** The 2026-11-17 rerun reproduced the primary outputs, but the unpenalized statsmodels models did not converge. Treat their ORs and confidence intervals as provisional diagnostics. The separate existing penalized prediction models and 200 bootstrap refits completed.
+
 - The analytic cohort included 460,786 adult non-ICU hospital admissions.
 - Documented inpatient RAAS prescription exposure within 24 hours occurred in 56,825 admissions, or 12.33% of the cohort.
 - Crude in-hospital mortality was lower among admissions with documented early RAAS prescription exposure than among admissions without it.
-- After multivariable adjustment, documented early RAAS prescription exposure was associated with lower odds of in-hospital mortality: OR 0.32 (95% CI 0.27-0.38).
+- The unchanged primary fit returned OR 0.32 (95% CI 0.27-0.38), with failed convergence; this interval is not validated inference.
 - The fitted absolute-risk model produced an average adjusted predicted mortality difference of -0.38 percentage points between the documented-exposure and no-exposure scenarios.
 - Age-specific adjusted analyses suggested larger absolute risk differences among older patients.
-- In the historical 24-hour sensitivity analysis (before the eligibility correction; recalculation pending), the exposure OR was 0.36 (95% CI 0.30-0.43); it was 0.39 (95% CI 0.32-0.46) after adding an admission-source proxy. These estimates remained directionally consistent with the primary result.
+- The corrected 24-hour cohort contains 342,519 admissions and 1,769 deaths. Its ordinary/proxy OR diagnostics were 0.355 and 0.382; both fits failed convergence. See the validation table for the original-condition comparison.
 
 **Reviewer interpretation:** The OR of approximately 0.32 and the model-predicted mortality difference are observational associations, not evidence that RAAS inhibitors caused lower mortality. Treatment eligibility, confounding by indication, early clinical stability, clinician prescribing behavior, and unmeasured clinical severity may affect the estimates. The landmark analyses address one timing-related bias concern but do not establish causality.
 
@@ -84,9 +86,9 @@ After multivariable adjustment, the difference in model-predicted mortality risk
 
 ### 24-Hour Landmark Sensitivity Analysis
 
-**Landmark correction status (2026-11-17):** The 24-hour eligibility rule has been corrected in the notebook, but real-data recalculation is pending because the configured analysis table is unavailable. The landmark ORs and figure below are historical outputs of the previous condition, which could retain early live discharges; they are not estimates from the corrected cohort. See [validation and rerun notes](docs/24H_LANDMARK_VALIDATION.md).
+**Real-data recalculation (2026-11-17):** The analysis table has been rebuilt and verified. The corrected cohort contains 342,519 admissions and 1,769 deaths, compared with 460,350 admissions and 1,890 deaths under the original condition. The unchanged unpenalized primary and all four sensitivity fits failed to converge at the existing 35-iteration limit. ORs/intervals are provisional diagnostic outputs, not validated inference. Existing OR figures are historical and were not refreshed. See [validation results](docs/24H_LANDMARK_VALIDATION.md).
 
-The historical 24-hour analysis excluded recorded deaths before a full exposure-classification opportunity, but could retain early live discharges. The corrected rule requires confirmed survival and continued hospitalization beyond 24 hours. Its OR of 0.36, and the admission-source proxy model OR of 0.39, remained directionally consistent with the primary OR of 0.32. This sensitivity analysis does not eliminate residual confounding or establish causality.
+The corrected rule requires confirmed survival and continued hospitalization beyond 24 hours. It removes 117,637 temporally valid early live discharges retained by the original condition, plus separately counted inconsistent records. The image below predates this correction; all unpenalized fits require resolution of nonconvergence before a corrected figure is published.
 
 <img src="assets/landmark_sensitivity_summary.png" alt="Primary and 24-hour landmark odds ratios for documented early inpatient RAAS prescription exposure" width="760">
 
