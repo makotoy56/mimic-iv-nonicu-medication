@@ -60,7 +60,7 @@ For clinical analytics, RWE, HEOR, and outcomes research teams, the portfolio va
 - After multivariable adjustment, documented early RAAS prescription exposure was associated with lower odds of in-hospital mortality: OR 0.32 (95% CI 0.27-0.38).
 - The fitted absolute-risk model produced an average adjusted predicted mortality difference of -0.38 percentage points between the documented-exposure and no-exposure scenarios.
 - Age-specific adjusted analyses suggested larger absolute risk differences among older patients.
-- In a 24-hour landmark bias-reduction sensitivity analysis, the exposure OR was 0.36 (95% CI 0.30-0.43); it was 0.39 (95% CI 0.32-0.46) after adding an admission-source proxy. These estimates remained directionally consistent with the primary result.
+- In the historical 24-hour sensitivity analysis (before the eligibility correction; recalculation pending), the exposure OR was 0.36 (95% CI 0.30-0.43); it was 0.39 (95% CI 0.32-0.46) after adding an admission-source proxy. These estimates remained directionally consistent with the primary result.
 
 **Reviewer interpretation:** The OR of approximately 0.32 and the model-predicted mortality difference are observational associations, not evidence that RAAS inhibitors caused lower mortality. Treatment eligibility, confounding by indication, early clinical stability, clinician prescribing behavior, and unmeasured clinical severity may affect the estimates. The landmark analyses address one timing-related bias concern but do not establish causality.
 
@@ -84,7 +84,9 @@ After multivariable adjustment, the difference in model-predicted mortality risk
 
 ### 24-Hour Landmark Sensitivity Analysis
 
-The 24-hour landmark analysis was performed as a bias-reduction sensitivity analysis addressing deaths before a full exposure-classification opportunity. Its OR of 0.36, and the admission-source proxy model OR of 0.39, remained directionally consistent with the primary OR of 0.32. This sensitivity analysis does not eliminate residual confounding or establish causality.
+**Landmark correction status (2026-11-17):** The 24-hour eligibility rule has been corrected in the notebook, but real-data recalculation is pending because the configured analysis table is unavailable. The landmark ORs and figure below are historical outputs of the previous condition, which could retain early live discharges; they are not estimates from the corrected cohort. See [validation and rerun notes](docs/24H_LANDMARK_VALIDATION.md).
+
+The historical 24-hour analysis excluded recorded deaths before a full exposure-classification opportunity, but could retain early live discharges. The corrected rule requires confirmed survival and continued hospitalization beyond 24 hours. Its OR of 0.36, and the admission-source proxy model OR of 0.39, remained directionally consistent with the primary OR of 0.32. This sensitivity analysis does not eliminate residual confounding or establish causality.
 
 <img src="assets/landmark_sensitivity_summary.png" alt="Primary and 24-hour landmark odds ratios for documented early inpatient RAAS prescription exposure" width="760">
 

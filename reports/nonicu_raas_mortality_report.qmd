@@ -25,7 +25,7 @@ The emphasis is on reproducible clinical analytics: cohort construction, exposur
 
 The results remain hypothesis-generating. The design estimates associations after adjustment for measured covariates; it does not establish treatment effectiveness.
 
-The primary adjusted exposure OR was 0.318 (95% CI 0.269-0.376), and the fitted absolute-risk model produced an average adjusted predicted mortality difference of -0.3797 percentage points. The 24-hour landmark OR was 0.36 and the landmark-plus-proxy OR was 0.39. These directionally consistent estimates remain observational and may reflect treatment eligibility, confounding by indication, early clinical stability, clinician prescribing behavior, and unmeasured clinical severity.
+The primary adjusted exposure OR was 0.318 (95% CI 0.269-0.376), and the fitted absolute-risk model produced an average adjusted predicted mortality difference of -0.3797 percentage points. The historical 24-hour landmark OR was 0.36 and the landmark-plus-proxy OR was 0.39; these precede the eligibility correction and await real-data recalculation. These directionally consistent estimates remain observational and may reflect treatment eligibility, confounding by indication, early clinical stability, clinician prescribing behavior, and unmeasured clinical severity.
 
 ## Reproducible Workflow
 
@@ -142,7 +142,9 @@ Admission-type coefficients in the exported model output have very wide interval
 
 ## Sensitivity Analyses
 
-The 24-hour landmark analysis was performed as a bias-reduction sensitivity analysis. It evaluated whether the prescription-exposure association was directionally stable after excluding admissions with recorded death during the first 24 hours. A second landmark model added admission source as a proxy for baseline severity.
+**Landmark correction status (2026-11-17):** The 24-hour eligibility rule has been corrected in the notebook, but real-data recalculation is pending because the configured analysis table is unavailable. The landmark ORs and figure below are historical outputs of the previous condition, which could retain early live discharges; they are not estimates from the corrected cohort. See [validation and rerun notes](../docs/24H_LANDMARK_VALIDATION.md).
+
+The historical 24-hour landmark analysis was performed as a bias-reduction sensitivity analysis. It evaluated whether the prescription-exposure association was directionally stable after excluding admissions with recorded death during the first 24 hours. A second landmark model added admission source as a proxy for baseline severity.
 
 Source notebook: [04b_multivariable_outcomes.ipynb](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/notebooks/04b_multivariable_outcomes.ipynb).
 

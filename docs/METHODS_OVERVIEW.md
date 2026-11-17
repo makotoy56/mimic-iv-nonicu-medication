@@ -66,7 +66,7 @@ Bootstrap resampling is used in the notebook to quantify uncertainty for selecte
 
 ## Sensitivity And Bias Checks
 
-The multivariable notebook includes a 24-hour landmark bias-reduction sensitivity analysis. It restricts the cohort to admissions with no recorded death or with recorded death more than 24 hours after admission, then refits the same core model. An additional landmark model includes admission source as a proxy for baseline severity.
+The multivariable notebook includes a 24-hour landmark bias-reduction sensitivity analysis. The corrected rule requires valid admission/discharge times, discharge strictly after admission + 24 hours, and consistent survival/death records. Live discharges require a zero expiration flag and no death time; hospital deaths require a death time strictly after the landmark and no later than discharge. Death or discharge exactly at 24 hours, unknown hospital-death timing, and inconsistent records are excluded with reason counts before the same core model is refitted. An additional landmark model includes admission source as a proxy for baseline severity.
 
 These sensitivity analyses do not establish causality or remove all potential bias. Residual confounding by indication, treatment eligibility, early clinical stability, comorbidity burden, acute severity, prescribing behavior, and unmeasured clinical context may remain.
 
@@ -77,3 +77,5 @@ The models treat admissions as observations and do not account for within-patien
 The SAS-Python validation workflow compares exported aggregate outputs from Python notebooks and SAS programs. It is designed to check reproducibility of selected outputs, not to introduce a new clinical estimand.
 
 See [Validation notes](VALIDATION_NOTES.md) for scope and discrepancy details.
+
+**Landmark correction status (2026-11-17):** The 24-hour eligibility rule has been corrected in the notebook, but real-data recalculation is pending because the configured analysis table is unavailable. The landmark ORs and figure below are historical outputs of the previous condition, which could retain early live discharges; they are not estimates from the corrected cohort. See [validation and rerun notes](24H_LANDMARK_VALIDATION.md).

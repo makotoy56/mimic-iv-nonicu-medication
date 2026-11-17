@@ -27,7 +27,9 @@ The primary model estimated:
 - 95% confidence interval: 0.27-0.38
 - p-value: approximately 6.42e-41
 
-The notebook also reports a 24-hour landmark bias-reduction sensitivity analysis and an additional landmark model with an admission-source proxy:
+**Landmark correction status (2026-11-17):** The 24-hour eligibility rule has been corrected in the notebook, but real-data recalculation is pending because the configured analysis table is unavailable. The landmark ORs and figure below are historical outputs of the previous condition, which could retain early live discharges; they are not estimates from the corrected cohort. See [validation and rerun notes](24H_LANDMARK_VALIDATION.md).
+
+Historical estimates from the previous condition, including an admission-source proxy model:
 
 - Primary model exposure OR: 0.32 (95% CI 0.27-0.38)
 - 24-hour landmark exposure OR: 0.36 (95% CI 0.30-0.43)
