@@ -7,10 +7,13 @@ Notebook-generated figures are written to stable paths under `assets/`. Rerunnin
 | Figure | Primary use | Exporting notebook | Output path |
 | --- | --- | --- |
 | Unadjusted in-hospital mortality by documented early inpatient RAAS prescription exposure | README and Quarto report | `notebooks/04a_unadjusted_outcomes.ipynb` | `assets/unadjusted_mortality_by_raas.png` |
-| Age-specific difference in adjusted predicted mortality risk | README and Quarto report | `notebooks/04b_multivariable_outcomes.ipynb` | `assets/absolute_risk_difference_plot.png` |
-| Adjusted odds ratio plot | Quarto report | `notebooks/04b_multivariable_outcomes.ipynb` | `assets/adjusted_odds_ratio_plot.png` |
+| Historical admission-bootstrap age-specific risk difference | Audit archive | `notebooks/04b_multivariable_outcomes.ipynb` | `assets/absolute_risk_difference_plot.png` |
+| Historical nonconverged MLE odds ratio plot | Quarto historical diagnostic section | `notebooks/04b_multivariable_outcomes.ipynb` | `assets/adjusted_odds_ratio_plot.png` |
 | Adjusted predicted mortality by age | Quarto report | `notebooks/04b_multivariable_outcomes.ipynb` | `assets/predicted_mortality_by_age.png` |
-| 24-hour landmark bias-reduction sensitivity summary | README and Quarto report | `notebooks/04b_multivariable_outcomes.ipynb` | `assets/landmark_sensitivity_summary.png` |
+| Historical unpenalized landmark summary | Audit only; no refresh when MLE fails | `notebooks/04b_multivariable_outcomes.ipynb` | `assets/landmark_sensitivity_summary.png` |
+| Firth sensitivity with independent-admission profile intervals | Supplementary comparison | `notebooks/04b_multivariable_outcomes.ipynb` | `assets/firth_landmark_sensitivity.png` |
+| Firth sensitivity with patient-cluster bootstrap intervals | Current README and Quarto report | `notebooks/04b_multivariable_outcomes.ipynb` | `assets/firth_landmark_patient_bootstrap.png` |
+| Age-specific typical-profile risk difference with patient-cluster intervals | Current README and Quarto report | `notebooks/04b_multivariable_outcomes.ipynb` | `assets/absolute_risk_difference_patient_bootstrap.png` |
 | Baseline characteristics summary | Supplemental portfolio visual | `notebooks/03b_describe_analysis_dataset.ipynb` | `assets/baseline_characteristics_summary.png` |
 | SAS-Python validation summary | Supplemental validation visual | `notebooks/05_sas_python_validation.ipynb` | `assets/sas_python_validation_summary.png` |
 
@@ -25,7 +28,8 @@ The README emphasizes the clinical result flow rather than validation visuals, s
 1. Run the relevant notebook from the repository root or from the `notebooks/` directory.
 2. The notebook resolves the project root, creates `assets/` if needed, and saves the figure using the stable filename above.
 3. For the manually curated lineage SVG, update the source figure outside the public repository and copy the refreshed SVG to `assets/nonicu_table_lineage_construction.svg`.
-4. Because the README and Quarto report reference stable paths, the visuals update after refreshed assets are committed and the report is rendered.
+4. Run `quarto render reports/nonicu_raas_mortality_report.qmd`. The post-render helper copies each referenced canonical image into `docs/assets/` for GitHub Pages and rejects missing images or broken relative resources. Commit both the canonical images and synchronized public copies with the rendered HTML.
+5. After Pages deployment, run `scripts/check_public_report.py` to verify the live HTML and referenced images/links return HTTP 200. A successful Pages build alone does not prove the image URLs work.
 
 ## Data Protection
 

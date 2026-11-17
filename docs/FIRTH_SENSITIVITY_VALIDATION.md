@@ -14,7 +14,7 @@ All five designs have full column rank, with 25 parameters including intercept i
 
 ## Real-data results on 2026-11-17
 
-All five Firth fits converged in 14–15 iterations. Exposure ORs/profile bounds were finite and ordered; no warnings were recorded. Independent adjusted-score maxima were between 1.2e-9 and 6.3e-9, below the validation threshold 1e-5. All model admission/death counts exactly match the corresponding earlier fits; no numeric-covariate exclusions occurred.
+All five Firth fits converged in 13–15 iterations. Exposure ORs/profile bounds were finite and ordered; no warnings were recorded. Independent adjusted-score maxima were between 1.2e-9 and 6.3e-9, below the validation threshold 1e-5. All model admission/death counts exactly match the corresponding earlier fits; no numeric-covariate exclusions occurred.
 
 | Firth sensitivity model | Admissions | Deaths | OR | 95% penalized profile CI | Iterations |
 | --- | ---: | ---: | ---: | --- | ---: |
@@ -26,7 +26,7 @@ All five Firth fits converged in 14–15 iterations. Exposure ORs/profile bounds
 
 The model-level numerical checks passed; this is not a general claim of model adequacy, causal identification or validated clinical prediction. Intervals still assume independent admissions and do not account for a patient's repeated admissions. Unmeasured severity, treatment eligibility and prescribing behavior remain limitations.
 
-The new figure `assets/firth_landmark_sensitivity.png` is explicitly labeled as supplementary Firth inference and shows only these profile intervals. Original OR assets are retained unchanged for audit. The notebook adds new cells after the existing landmark export; every prior cell source is preserved.
+The new figure `assets/firth_landmark_sensitivity.png` is explicitly labeled as supplementary Firth inference and shows only these profile intervals. Original OR assets are retained unchanged for audit. The notebook retains the original model-fitting specifications and audit outputs. Narrative corrections and export guards identify failed MLE inference; added cells provide Firth and patient-aware validation.
 
 ## Local computation and checks
 
@@ -49,3 +49,7 @@ uv sync
 ```
 
 Adding the Firth dependency changed no existing locked package versions. Runtime validation used the existing Python 3.12.13 environment, NumPy 2.4.6, SciPy 1.17.1 and scikit-learn 1.9.0. Only the new pinned package was added. The aggregate outputs are in `python/outputs/firth_model_comparison.csv`; historical MLE outputs remain in `landmark_model_comparison.csv`. No SAS session was rerun; its existing MLE validation artifacts were preserved and do not independently validate Firth inference.
+
+## Subsequent patient-aware validation
+
+The profile intervals and original row-split/bootstrap results above are historical comparisons. Additional patient-cluster intervals (500 prespecified draws), risk/AME intervals and a patient-disjoint holdout are documented in [patient-aware validation](PATIENT_AWARE_VALIDATION.md). Full-data Firth points and original primary/cohort/exposure specifications remain unchanged.

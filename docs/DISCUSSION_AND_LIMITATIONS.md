@@ -2,13 +2,13 @@
 
 ## Interpretation
 
-**Separation-robust supplement (2026-11-17):** The original unpenalized primary/sensitivity fits remain nonconverged and are retained for audit. An explicit Firth/Jeffreys-penalized sensitivity analysis, using the same admissions, exposure and adjustment variables, converged for all five comparisons. Its 95% intervals use penalized profile likelihood; numerical rank, profile bounds and independent adjusted-score checks passed. This changes the estimator, not the original primary fit or the separate prediction/risk model. See [Firth validation](FIRTH_SENSITIVITY_VALIDATION.md).
+**Patient-aware update (2026-11-17):** Current uncertainty summaries use 500 prespecified patient-cluster bootstrap draws, carrying all eligible admissions per sampled patient. Firth point estimates and all exposure/cohort/adjustment definitions are unchanged. Historical admission-independent profile intervals remain available separately. See [patient-aware validation](PATIENT_AWARE_VALIDATION.md).
 
 Documented early inpatient RAAS prescription exposure was associated with lower in-hospital mortality in this adult non-ICU MIMIC-IV cohort after multivariable adjustment. The association was present on both the relative scale, using odds ratios, and the absolute scale, using differences in model-predicted risk.
 
 The absolute-risk framing is important because the baseline event rate in this non-ICU cohort is low. A percentage-point difference in adjusted predicted risk is more directly interpretable for clinical analytics and outcomes research audiences than an odds ratio alone.
 
-The corrected landmark cohort requires confirmed survival and continued hospitalization beyond 24 hours and contains 342,519 admissions/1,769 deaths. The supplementary Firth ordinary/proxy ORs were 0.356/0.382, with 95% penalized profile intervals 0.296–0.425 and 0.317–0.455. These fits converged without removing adjustment categories. The estimator differs from the original MLE; it does not establish causality or correct repeated-admission dependence. Historical MLE OR assets are retained unchanged, and the new Firth figure is explicitly labeled.
+The corrected landmark cohort requires confirmed survival and continued hospitalization beyond 24 hours and contains 342,519 admissions/1,769 deaths. The supplementary Firth ordinary/proxy ORs were 0.356/0.382, with 95% patient-cluster intervals 0.292–0.423 and 0.315–0.453. These fits converged without removing adjustment categories. The estimator differs from the original MLE; the Firth estimator alone does not correct repeated-admission dependence, which is addressed separately by patient-cluster resampling. Neither establishes causality. Historical MLE OR assets are retained unchanged, and the new Firth figure is explicitly labeled.
 
 ## Observational Design
 
@@ -30,7 +30,7 @@ The exposure definition uses inpatient prescription records with a recorded star
 
 Restricting exposure to the first 24 hours improves temporal clarity but does not fully eliminate immortal-time bias or reverse-causation concerns.
 
-The analytic unit is the hospital admission (`hadm_id`), and patients may contribute multiple admissions. The models treat admissions as observations and do not account for within-patient correlation across repeat admissions.
+The analytic unit is the hospital admission (`hadm_id`), and patients may contribute multiple admissions. Historical profile intervals treated admissions as independent. Added patient-cluster resampling carries all eligible admissions of each sampled patient and supplies current OR/risk/AME intervals. Added discrimination evaluation holds out entire patients. These procedures address dependence and train/test overlap separately, while leaving residual confounding unresolved.
 
 ## Outcome And Generalizability
 
@@ -41,3 +41,11 @@ MIMIC-IV reflects care delivered within its source health system and time period
 ## Practical Value
 
 The main value of the project is methodological and operational: it demonstrates a reproducible EHR-based clinical analytics workflow with transparent definitions, multivariable modeling, absolute risk interpretation, and SAS/Python validation. The results should be treated as association evidence that could motivate more rigorous causal designs or prospective clinical questions.
+
+## Selection and temporal data quality
+
+The cohort includes hospital observation/day-case admission categories; it is not a strict inpatient-only filter. Excluding ICU use over the entire stay conditions on post-admission events and may induce selection bias. Constructing that cohort before calculating the exposure flag does not make eligibility statistically independent of exposure or severity. The original primary cohort retains 96 admission/discharge timestamp inversions, while the corrected landmark analysis excludes inconsistent records. These choices and limitations are explicit; no cohort rule was silently changed.
+
+Age-specific curves are main-effects model predictions at a typical mean covariate profile. Their absolute differences can vary with age without an exposure-by-age interaction; they are not formal evidence of effect modification.
+
+The 500-draw percentile bootstrap intervals have Monte Carlo variability; passing the numerical fit checks does not demonstrate nominal coverage or model correctness. The patient-disjoint split is a single internal holdout, not external validation or evidence that model performance improved.

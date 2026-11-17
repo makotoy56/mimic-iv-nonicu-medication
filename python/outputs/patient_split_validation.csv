@@ -1,0 +1,3 @@
+validation,seed,train_admissions,test_admissions,train_patients,test_patients,overlapping_patients,test_deaths,test_prevalence,roc_auc,pr_auc,iterations,warnings
+Admission-random reference,42,368628,92158,168826,65745,42796,465,0.005045682414982964,0.8575756125894156,0.1069148605148819,59,
+Patient-disjoint holdout,42,368309,92477,153420,38355,0,468,0.0050607178001016466,0.8606351264596654,0.11760717130315294,73,

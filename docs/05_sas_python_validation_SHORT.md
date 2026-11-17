@@ -1,5 +1,7 @@
 # 05 - SAS-Python Reproducibility Validation
 
+**Inference status (2026-11-17):** The historical unpenalized Python primary/sensitivity models have certified separation and failed convergence. Agreement of exported OR/CI/p-value diagnostics with historical SAS output does not supply a finite full-model MLE or validate those nominal intervals. SAS was not rerun for the supplementary Firth or patient-cluster analyses; these are documented separately in [patient-aware validation](PATIENT_AWARE_VALIDATION.md).
+
 
 Full notebook:
 [05. SAS-Python Cross-Platform Validation](../notebooks/05_sas_python_validation.ipynb)

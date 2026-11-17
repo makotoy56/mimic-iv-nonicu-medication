@@ -92,3 +92,7 @@ The helper never replaces an existing table, changes billing, or displays patien
 Aggregate-only evidence is saved under `python/outputs/landmark_diagnostics.csv`, `landmark_exclusions.csv`, `landmark_model_comparison.csv`, and `landmark_cohort_counts.csv`. Notebook functions were tested directly on synthetic boundary cases, missing/invalid times and flags, timezone/index behavior, ordinary/proxy refits, singular fits, invalid-outcome handling and figure-export skipping. Real-data selection was also checked independently in BigQuery SQL.
 
 Patient records stayed in the authorized BigQuery project and local process memory. Only aggregate outputs are saved or published; notebook outputs and execution counts are stripped by the existing Git filter. No patient-level local extracts, identifiers or credentials are added to the repository.
+
+## Subsequent patient-aware validation
+
+The profile intervals and original row-split/bootstrap results above are historical comparisons. Additional patient-cluster intervals (500 prespecified draws), risk/AME intervals and a patient-disjoint holdout are documented in [patient-aware validation](PATIENT_AWARE_VALIDATION.md). Full-data Firth points and original primary/cohort/exposure specifications remain unchanged.

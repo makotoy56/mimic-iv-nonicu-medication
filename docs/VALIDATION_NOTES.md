@@ -1,5 +1,7 @@
 # Validation Notes
 
+**Inference status (2026-11-17):** The historical unpenalized Python primary/sensitivity models have certified separation and failed convergence. Agreement of exported OR/CI/p-value diagnostics with historical SAS output does not supply a finite full-model MLE or validate those nominal intervals. SAS was not rerun for the supplementary Firth or patient-cluster analyses; these are documented separately in [patient-aware validation](PATIENT_AWARE_VALIDATION.md).
+
 ## Scope
 
 The SAS-Python validation workflow checks whether selected aggregate outputs can be reproduced across two analytic platforms. It is a reproducibility exercise, not a separate clinical analysis.
@@ -40,7 +42,7 @@ The validation notebook standardizes variable names and compares coefficients, c
 
 The multivariable model includes admission type categories with sparse cells and a rare outcome. These terms are sensitive to implementation details in logistic regression software, especially around intercept handling, reference categories, separation-like behavior, and convergence.
 
-The exposure term is stable across the exported Python and SAS logistic outputs:
+The exposure-term diagnostic values agree across the exported Python and SAS outputs:
 
 - Python exposure OR: 0.3178484462
 - SAS exposure OR: 0.3178484462

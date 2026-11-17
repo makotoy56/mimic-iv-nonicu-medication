@@ -54,15 +54,15 @@ For clinical analytics, RWE, HEOR, and outcomes research teams, the portfolio va
 
 ## Key Findings
 
-**Inference status:** The historical unpenalized primary/sensitivity fits have separation and remain nonconverged. The newly added Firth sensitivity fits all converged, with profile-likelihood intervals. They are supplementary estimates, not a relabeling of the original primary model. The separate existing prediction/risk model is unchanged.
+**Inference status:** Historical unpenalized primary/sensitivity fits have separation and remain nonconverged audit outputs. Supplementary Firth fits all converged. Current intervals below resample patients to account for repeated admissions; the original profile intervals are retained separately. Discrimination and absolute risks use separate L2 models.
 
 - The analytic cohort included 460,786 adult non-ICU hospital admissions.
 - Documented inpatient RAAS prescription exposure within 24 hours occurred in 56,825 admissions, or 12.33% of the cohort.
 - Crude in-hospital mortality was lower among admissions with documented early RAAS prescription exposure than among admissions without it.
-- The Firth sensitivity fit on the primary cohort returned OR 0.319 (95% profile CI 0.269–0.376). The original unpenalized primary output remains historical and nonconverged.
-- The fitted absolute-risk model produced an average adjusted predicted mortality difference of -0.38 percentage points between the documented-exposure and no-exposure scenarios.
-- Age-specific adjusted analyses suggested larger absolute risk differences among older patients.
-- The corrected 24-hour cohort contains 342,519 admissions and 1,769 deaths. Its Firth ordinary/proxy ORs were 0.356 (95% profile CI 0.296–0.425) and 0.382 (0.317–0.455); both fits converged.
+- The Firth sensitivity fit on the primary cohort returned OR 0.319 (95% patient-cluster CI 0.267–0.380). The original unpenalized primary output remains historical and nonconverged.
+- The unweighted L2 risk model produced AME -0.3797 percentage points (95% patient-cluster CI -0.4201 to -0.3407).
+- Age-specific predictions at a typical mean covariate profile showed larger absolute contrasts at older ages; no exposure-by-age interaction was fitted.
+- The corrected 24-hour cohort contains 342,519 admissions and 1,769 deaths. Its Firth ordinary/proxy ORs were 0.356 (95% patient-cluster CI 0.292–0.423) and 0.382 (0.315–0.453); both fits converged.
 
 **Reviewer interpretation:** The OR of approximately 0.32 and the model-predicted mortality difference are observational associations, not evidence that RAAS inhibitors caused lower mortality. Treatment eligibility, confounding by indication, early clinical stability, clinician prescribing behavior, and unmeasured clinical severity may affect the estimates. The landmark analyses address one timing-related bias concern but do not establish causality.
 
@@ -80,17 +80,28 @@ Observed in-hospital mortality was lower among admissions with documented early 
 
 ### Adjusted Absolute Risk Interpretation
 
-After multivariable adjustment, the difference in model-predicted mortality risk remained small in percentage-point terms and varied by age group.
+The unweighted L2 model contrasts exposure scenarios at a typical mean covariate profile. The intervals below resample entire patients; age-varying absolute contrasts are not a formal interaction test.
 
-<img src="assets/absolute_risk_difference_plot.png" alt="Age-specific difference in adjusted predicted mortality risk" width="760">
+<img src="assets/absolute_risk_difference_patient_bootstrap.png" alt="Age-specific typical-profile risk differences with 95 percent patient-cluster bootstrap intervals" width="760">
 
 ### 24-Hour Landmark Sensitivity Analysis
 
-**Separation-robust supplement (2026-11-17):** The original unpenalized primary/sensitivity fits remain nonconverged and are retained for audit. An explicit Firth/Jeffreys-penalized sensitivity analysis, using the same admissions, exposure and adjustment variables, converged for all five comparisons. Its 95% intervals use penalized profile likelihood; numerical rank, profile bounds and independent adjusted-score checks passed. This changes the estimator, not the original primary fit or the separate prediction/risk model. See [Firth validation](docs/FIRTH_SENSITIVITY_VALIDATION.md).
+**Patient-aware update (2026-11-17):** Current uncertainty summaries use 500 prespecified patient-cluster bootstrap draws, carrying all eligible admissions per sampled patient. Firth point estimates and all exposure/cohort/adjustment definitions are unchanged. Historical admission-independent profile intervals remain available separately. See [patient-aware validation](docs/PATIENT_AWARE_VALIDATION.md).
+
+The full-data Firth point fits passed convergence, rank, profile-bound and independent adjusted-score checks. The new figure uses patient-cluster percentile intervals; [original profile figure](assets/firth_landmark_sensitivity.png) and [Firth numerical validation](docs/FIRTH_SENSITIVITY_VALIDATION.md) remain available.
 
 The corrected rule requires confirmed survival and continued hospitalization beyond 24 hours, removing 117,637 early live discharges plus separately counted inconsistent records. The figure below explicitly uses the supplementary Firth estimator. Historical unpenalized OR assets are retained unchanged for audit.
 
-<img src="assets/firth_landmark_sensitivity.png" alt="Supplementary Firth odds ratios with 95 percent penalized profile intervals" width="760">
+<img src="assets/firth_landmark_patient_bootstrap.png" alt="Supplementary Firth odds ratios with 95 percent patient-cluster bootstrap intervals" width="760">
+
+### Patient-Disjoint Discrimination
+
+| Validation | Train / test admissions | Test deaths | Overlapping patients | ROC AUC | PR AUC |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Admission-random reference | 368,628 / 92,158 | 465 | 42,796 | 0.857576 | 0.106915 |
+| Patient-disjoint holdout | 368,309 / 92,477 | 468 | 0 | 0.860635 | 0.117607 |
+
+The additional patient-disjoint holdout has zero train/test patient overlap. Scaling and categorical encoding are fitted on training data only. These are single splits with different case mixes, so their metric difference is not evidence of improved model performance. See [patient-aware validation](docs/PATIENT_AWARE_VALIDATION.md).
 
 ## Study Snapshot
 
@@ -98,13 +109,14 @@ The corrected rule requires confirmed survival and continued hospitalization bey
 | --- | --- |
 | Data | MIMIC-IV v3.1 hospital admissions |
 | Design | Retrospective observational cohort study |
-| Population | Adult inpatient admissions excluding ICU stays |
+| Population | Adult hospital admissions, including observation categories, excluding any ICU stay |
 | Analytic unit | Hospital admission (`hadm_id`); patients may contribute multiple admissions |
 | Exposure | Documented inpatient ACE inhibitor or ARB prescription with recorded start time from admission through less than 24 hours |
 | Primary outcome | In-hospital mortality |
-| Primary model | Multivariable logistic regression |
+| Original primary model | Unpenalized multivariable logistic regression; nonconverged audit output |
+| Supplementary OR estimator | Firth logistic regression; patient-cluster bootstrap intervals |
 | Absolute risk estimand | Adjusted predicted risks and average marginal effects |
-| Validation | SAS-Python comparison of exported unadjusted and logistic model outputs |
+| Validation | Patient-cluster uncertainty and patient-disjoint holdout; historical SAS-Python aggregate agreement |
 | Tools | BigQuery SQL, Python, Jupyter, SAS |
 
 Exposure is based on inpatient prescription records. It does not confirm medication administration and does not directly capture outpatient chronic use, adherence, dose, treatment indication, or duration.

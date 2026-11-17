@@ -31,7 +31,7 @@ The workflow is organized as an admission-level clinical analytics pipeline. The
    - `notebooks/03b_describe_analysis_dataset.ipynb`
 4. **Unadjusted analysis**: crude mortality proportions and unadjusted odds ratios are summarized.
    - `notebooks/04a_unadjusted_outcomes.ipynb`
-5. **Primary statistical analysis**: multivariable logistic regression estimates adjusted odds ratios, adjusted predicted risks, and average marginal effects.
+5. **Statistical analysis**: historical unpenalized OR fits remain nonconverged audit diagnostics. Supplementary Firth fits provide finite adjusted ORs; a separate unweighted L2 model provides adjusted risks and average marginal effects.
    - `notebooks/04b_multivariable_outcomes.ipynb`
 6. **Sensitivity analysis**: 24-hour landmark and admission-source proxy sensitivity models are evaluated in the multivariable outcomes workflow.
    - `notebooks/04b_multivariable_outcomes.ipynb`
@@ -48,7 +48,7 @@ The workflow is organized as an admission-level clinical analytics pipeline. The
 
 ## Environment Summary
 
-- **Python environment**: The repository now uses uv with Python 3.12, as documented in `docs/SETUP.md`. Project dependencies are specified in `pyproject.toml` and locked in `uv.lock`; they include pandas, NumPy, statsmodels, scikit-learn, matplotlib, and Google BigQuery client libraries.
+- **Python environment**: The repository now uses uv with Python 3.12, as documented in `docs/SETUP.md`. Project dependencies are specified in `pyproject.toml` and locked in `uv.lock`; they include pandas, NumPy, statsmodels, firthmodels, scikit-learn, matplotlib, and Google BigQuery client libraries.
 
 - **SAS environment**: SAS® OnDemand for Academics was used for SAS validation workflows. The exact SAS maintenance release was not pinned in the repository.
 - **Quarto version**: 1.9.38 detected locally with `quarto --version`. Quarto configuration is stored in `_quarto.yml`, including output to `docs/` and a post-render normalization script.
@@ -81,7 +81,9 @@ The project dependency metadata indicates use of:
 - NumPy
 - matplotlib
 - statsmodels
+- firthmodels (pinned supplementary estimator)
 - scikit-learn
+- SciPy (same-objective numerical fallback)
 - google-cloud-bigquery
 - google-auth
 - db-dtypes
@@ -98,11 +100,13 @@ This project was developed using an AI-assisted workflow that included ChatGPT a
 The project includes `pyproject.toml` and `uv.lock`. Direct dependencies retain the lower bounds from the original `requirements.txt`; the resolved transitive environment is captured in `uv.lock`.
 
 ```text
+firthmodels==0.8.2
 pandas>=2.0
 numpy>=1.24
 matplotlib>=3.7
 statsmodels>=0.14
 scikit-learn>=1.3
+scipy>=1.10
 google-cloud-bigquery[pandas]>=3.0
 google-auth>=2.0
 db-dtypes>=1.0
@@ -129,7 +133,6 @@ The project targets Python 3.12 with `requires-python = ">=3.12,<3.13"` and `.py
    ```
 
 4. Run the notebooks in workflow order:
-   - `notebooks/00_setup.ipynb`
    - `notebooks/01_cohort.ipynb`
    - `notebooks/02_exposure.ipynb`
    - `notebooks/03a_validate_input_tables.ipynb`
@@ -145,3 +148,7 @@ The project targets Python 3.12 with `requires-python = ">=3.12,<3.13"` and `.py
    ```
 
 7. Review the rendered report at `docs/reports/nonicu_raas_mortality_report.html`.
+
+The independent-admission profile intervals and historical MLE/SAS outputs are distinct from the added patient-cluster bootstrap intervals. Patient-disjoint discrimination and bootstrap details are documented in [patient-aware validation](docs/PATIENT_AWARE_VALIDATION.md). Quarto post-render now synchronizes referenced canonical images from `assets/` to `docs/assets/` and rejects missing local resources.
+
+After rendering, run `.venv/bin/python scripts/test_report_consistency.py` to compare current report/narrative values with aggregate CSVs and verify synchronized images. After deployment, run `.venv/bin/python scripts/check_public_report.py` to check live HTML bytes and linked same-site resources.

@@ -1,0 +1,6 @@
+model,n,patients,deaths,bootstrap_requested,bootstrap_successful,master_seed,resample_seed,CI_lower,CI_upper,ci_method,interval_available,recovered_newton_fits,resamples_with_unobserved_levels,maximum_unobserved_levels,failure_counts
+Primary cohort,460786,191775,2326,500,500,42,42,0.26674106877129916,0.3800052400800276,patient-cluster percentile bootstrap,True,5,0,0,{}
+Original condition,460350,191591,1890,500,500,42,43,0.30261792080988104,0.42561164268983376,patient-cluster percentile bootstrap,True,1,0,0,{}
+Original condition + proxy,460350,191591,1890,500,500,42,43,0.3234084319146407,0.45633509431138763,patient-cluster percentile bootstrap,True,22,188,1,{}
+24h landmark,342519,153041,1769,500,500,42,44,0.292353257290005,0.42273421560727403,patient-cluster percentile bootstrap,True,7,0,0,{}
+24h landmark + proxy,342519,153041,1769,500,500,42,44,0.31453414686690306,0.4533283173957325,patient-cluster percentile bootstrap,True,5,173,1,{}

@@ -8,7 +8,7 @@ Cohort construction, exposure definition, baseline covariate assembly, and outco
 
 ## Cohort Definition
 
-The cohort includes adult inpatient admissions from MIMIC-IV after excluding admissions associated with at least one ICU stay. The fixed non-ICU cohort is constructed upstream before exposure definition or outcome modeling.
+The cohort includes adult hospital admissions (including observation categories) from MIMIC-IV after excluding admissions associated with at least one ICU stay. The fixed non-ICU cohort is constructed upstream before exposure definition or outcome modeling.
 
 The final analytic cohort contains 460,786 adult non-ICU hospital admissions.
 
@@ -54,6 +54,15 @@ Categorical variables are one-hot encoded with explicit handling of missing valu
 
 ## Primary Analysis
 
+| Component | Estimator / data | Interpretation and uncertainty |
+| --- | --- | --- |
+| Historical primary OR output | Unpenalized statsmodels Logit, full cohort | Separated/nonconverged; diagnostic archive only |
+| Supplementary adjusted ORs | Firth/Jeffreys logistic regression, same covariates and cohort variants | Profile intervals assume admission independence; additional patient-cluster intervals resample entire patients |
+| Discrimination | Class-balanced L2 sklearn logistic regression, training data only | Patient-disjoint holdout ROC/PR AUC; admission-row split retained as reference |
+| Average risks / AME / age contrasts | Unweighted L2 sklearn logistic regression, full cohort | AME averages observed covariates; age curves use a typical mean profile; patient-cluster bootstrap intervals |
+
+The main-effects model has no exposure-by-age interaction. Age-varying absolute contrasts should not be called a formal test of interaction or effect heterogeneity.
+
 The primary clinical analysis is multivariable logistic regression estimating the association between documented early inpatient RAAS prescription exposure and in-hospital mortality. Results are summarized using:
 
 - Logistic regression coefficients
@@ -62,7 +71,7 @@ The primary clinical analysis is multivariable logistic regression estimating th
 - Average marginal effects
 - Age-specific adjusted risk differences
 
-Bootstrap resampling is used in the notebook to quantify uncertainty for selected marginal-effect estimates.
+Historical admission-level bootstrap intervals apply only to age-specific typical-profile contrasts. The additional patient-cluster bootstrap supplies AME/predicted-risk and Firth OR intervals. Age curves fix other covariates at means; they are not marginal standardization or a formal exposure-by-age interaction test.
 
 ## Sensitivity And Bias Checks
 
@@ -70,7 +79,7 @@ The multivariable notebook includes a 24-hour landmark bias-reduction sensitivit
 
 These sensitivity analyses do not establish causality or remove all potential bias. Residual confounding by indication, treatment eligibility, early clinical stability, comorbidity burden, acute severity, prescribing behavior, and unmeasured clinical context may remain.
 
-The models treat admissions as observations and do not account for within-patient correlation across multiple qualifying admissions.
+Historical models/profile intervals treat admissions as independent. Added patient-cluster bootstrap intervals resample patients with all eligible admissions. Added discrimination validation holds entire patients out; these are separate corrections for inference and train/test overlap.
 
 ## Validation Workflow
 
@@ -78,6 +87,6 @@ The SAS-Python validation workflow compares exported aggregate outputs from Pyth
 
 See [Validation notes](VALIDATION_NOTES.md) for scope and discrepancy details.
 
-**Separation-robust supplement (2026-11-17):** The original unpenalized primary/sensitivity fits remain nonconverged and are retained for audit. An explicit Firth/Jeffreys-penalized sensitivity analysis, using the same admissions, exposure and adjustment variables, converged for all five comparisons. Its 95% intervals use penalized profile likelihood; numerical rank, profile bounds and independent adjusted-score checks passed. This changes the estimator, not the original primary fit or the separate prediction/risk model. See [Firth validation](FIRTH_SENSITIVITY_VALIDATION.md).
+**Patient-aware update (2026-11-17):** Current uncertainty summaries use 500 prespecified patient-cluster bootstrap draws, carrying all eligible admissions per sampled patient. Firth point estimates and all exposure/cohort/adjustment definitions are unchanged. Historical admission-independent profile intervals remain available separately. See [patient-aware validation](PATIENT_AWARE_VALIDATION.md).
 
 The supplementary Firth estimator uses a Jeffreys-information penalty and 95% penalized profile-likelihood intervals. All original adjustment categories are retained, including the zero-event admission-type category. Age centering/scaling is an invertible numerical transformation; exact frequency compression of duplicate design/outcome rows does not remove admissions. The original unpenalized primary fit and separate sklearn risk model are preserved.

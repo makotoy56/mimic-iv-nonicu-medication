@@ -2,7 +2,7 @@
 title: "Documented Early Inpatient RAAS Prescription Exposure and In-Hospital Mortality in Adult Non-ICU Admissions"
 subtitle: "A MIMIC-IV Clinical Data Analytics and Real-World Evidence Portfolio Report"
 author: "Makoto Yoshida, PhD"
-date: "2026-05-29"
+date: "2026-11-17"
 format:
   html:
     toc: true
@@ -25,13 +25,13 @@ The emphasis is on reproducible clinical analytics: cohort construction, exposur
 
 The results remain hypothesis-generating. The design estimates associations after adjustment for measured covariates; it does not establish treatment effectiveness.
 
-The primary adjusted exposure OR was 0.318 (95% CI 0.269-0.376), and the fitted absolute-risk model produced an average adjusted predicted mortality difference of -0.3797 percentage points. The original primary/sensitivity MLE fits have separation and remain nonconverged. An added Firth sensitivity analysis converged for all five comparisons; corrected landmark ordinary/proxy ORs were 0.356 (95% profile CI 0.296–0.425) and 0.382 (0.317–0.455). This changes the estimator while preserving the original primary fit. These directionally consistent estimates remain observational and may reflect treatment eligibility, confounding by indication, early clinical stability, clinician prescribing behavior, and unmeasured clinical severity.
+The original unpenalized primary/sensitivity fits have separation and remain nonconverged audit outputs. Supplementary Firth fits all converged; corrected landmark ordinary/proxy ORs were 0.356 (95% patient-cluster CI 0.292–0.423) and 0.382 (0.315–0.453). The separate unweighted L2 risk model returned AME -0.3797 percentage points (95% patient-cluster CI -0.4201 to -0.3407). Patient-disjoint discrimination and patient-cluster intervals are added validations; cohort/exposure definitions and full-data point estimates are preserved. All estimates remain observational.
 
 ## Reproducible Workflow
 
 The workflow separates data construction, model estimation, visualization, and validation. The analytic sequence starts with an adult hospital admission cohort, excludes ICU-associated admissions, classifies documented ACE inhibitor or ARB prescription exposure from records with start times within 24 hours, fits adjusted outcome models, and validates selected aggregate outputs across Python and SAS.
 
-The key design choice is that the fixed non-ICU cohort is constructed before exposure definition or outcome modeling. This keeps cohort eligibility independent of prescription-exposure status and makes the downstream descriptive, adjusted, absolute-risk, and validation outputs traceable to one admission-level analysis table.
+The key design choice is that the fixed non-ICU cohort is constructed before exposure definition or outcome modeling. The SQL eligibility rule does not use the prescription-exposure flag, and downstream outputs are traceable to one admission-level table. Excluding ICU use over the entire admission can still condition on post-admission events; this procedural ordering does not establish statistical independence or remove selection bias.
 
 <figure class="figure">
   <a href="../assets/workflow_diagram.svg" target="_blank" rel="noopener">
@@ -53,7 +53,7 @@ The lineage figure separates native MIMIC-IV source tables from SQL-derived, pro
 
 ## Cohort And Exposure
 
-The analytic cohort contained 460,786 adult non-ICU hospital admissions. Documented inpatient RAAS prescription exposure within 24 hours was observed in 56,825 admissions, or 12.33% of the cohort. The unit of analysis was the hospital admission (`hadm_id`); the cohort was not restricted to one admission per patient, so patients could contribute multiple admissions.
+The analytic cohort contained 460,786 adult non-ICU hospital admissions. Documented inpatient RAAS prescription exposure within 24 hours was observed in 56,825 admissions, or 12.33% of the cohort. The cohort includes observation/day-case categories and is not a strict inpatient-only filter. The unit of analysis was the hospital admission (`hadm_id`); the cohort was not restricted to one admission per patient, so patients could contribute multiple admissions.
 
 Source notebooks: [01_cohort.ipynb](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/notebooks/01_cohort.ipynb) and [02_exposure.ipynb](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/notebooks/02_exposure.ipynb).
 
@@ -67,6 +67,8 @@ Source notebooks: [01_cohort.ipynb](https://github.com/makotoy56/mimic-iv-nonicu
 | Overall in-hospital mortality | 0.50% |
 
 ## Baseline Characteristics
+
+The full historical cohort includes 96 admission/discharge timestamp inversions (23 death flags). The primary cohort was retained as specified; those records are excluded by the corrected landmark rules. Full-cohort LOS summaries therefore include this timestamp-quality limitation.
 
 The baseline table summarizes the existing Table 1-style outputs. The main imbalance relevant to interpretation is age: exposed admissions were substantially older than unexposed admissions, reinforcing the need for adjusted outcome modeling.
 
@@ -87,6 +89,15 @@ Source notebook and supporting documentation: [03b_describe_analysis_dataset.ipy
 | Concurrent documented early ACE inhibitor and ARB prescription exposure | 0.00 | 0.008 | Rare combined early exposure |
 
 ## Endpoint And Model Specification
+
+| Component | Estimator / data | Interpretation and uncertainty |
+| --- | --- | --- |
+| Historical primary OR output | Unpenalized statsmodels Logit, full cohort | Separated/nonconverged; diagnostic archive only |
+| Supplementary adjusted ORs | Firth/Jeffreys logistic regression, same covariates and cohort variants | Profile intervals assume admission independence; additional patient-cluster intervals resample entire patients |
+| Discrimination | Class-balanced L2 sklearn logistic regression, training data only | Patient-disjoint holdout ROC/PR AUC; admission-row split retained as reference |
+| Average risks / AME / age contrasts | Unweighted L2 sklearn logistic regression, full cohort | AME averages observed covariates; age curves use a typical mean profile; patient-cluster bootstrap intervals |
+
+The main-effects model has no exposure-by-age interaction. Age-varying absolute contrasts should not be called a formal test of interaction or effect heterogeneity.
 
 The primary endpoint was in-hospital mortality, defined by `hospital_expire_flag`. The primary model was a multivariable logistic regression adjusted for age, gender, race group, admission type, insurance category, and admission calendar period.
 
@@ -115,18 +126,18 @@ Source notebook and supporting documentation: [04a_unadjusted_outcomes.ipynb](ht
 
 ![Observed in-hospital mortality proportion by documented early inpatient RAAS prescription-exposure group.](../assets/unadjusted_mortality_by_raas.png){fig-alt="Bar chart comparing unadjusted in-hospital mortality by documented early inpatient RAAS prescription exposure" width="80%"}
 
-## Multivariable Logistic Regression
+## Historical Unpenalized Model Diagnostics
 
-The primary adjusted model estimated lower odds of in-hospital mortality among admissions with documented early inpatient RAAS prescription exposure after adjustment for measured demographic and admission-related covariates.
+**This historical MLE fit did not converge and has separation. Its table below is retained for audit; nominal intervals and p-values are not validated inference. Current finite estimates are from the explicitly supplementary Firth fits, with patient-aware intervals reported separately.**
 
 Source notebook and supporting documentation: [04b_multivariable_outcomes.ipynb](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/notebooks/04b_multivariable_outcomes.ipynb) and [04b_multivariable_outcomes_SHORT.md](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/04b_multivariable_outcomes_SHORT.md).
 
-The selected coefficient table summarizes key parameters from the primary adjusted logistic regression model. The table emphasizes the exposure term and representative adjusted covariates; it is not a causal effect table.
+The selected coefficient table records historical diagnostic output from the nonconverged unpenalized model. The table emphasizes the exposure term and representative adjusted covariates; it is not a causal effect table.
 
-| Term | Coefficient | 95% CI for coefficient | Adjusted OR | 95% CI for OR | p-value |
+| Term | Coefficient | Nominal coefficient CI | Diagnostic OR | Nominal OR CI | Historical Wald p-value |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | Documented early inpatient RAAS prescription exposure | -1.146 | -1.314, -0.978 | 0.318 | 0.269, 0.376 | 6.42e-41 |
-| Age | 0.065 | 0.062, 0.069 | 1.067 | 1.064, 1.071 | 0 |
+| Age | 0.065 | 0.062, 0.069 | 1.067 | 1.064, 1.071 | Underflow in historical output |
 | Male gender | 0.190 | 0.107, 0.274 | 1.210 | 1.112, 1.315 | 8.59e-06 |
 | Black race group | -0.534 | -0.756, -0.313 | 0.586 | 0.470, 0.731 | 2.27e-06 |
 | Hispanic race group | -0.721 | -1.022, -0.419 | 0.486 | 0.360, 0.658 | 2.84e-06 |
@@ -134,7 +145,7 @@ The selected coefficient table summarizes key parameters from the primary adjust
 | Other insurance | 2.683 | 2.492, 2.874 | 14.628 | 12.089, 17.702 | 2.14e-167 |
 | Anchor year 2020-2022 | 0.416 | 0.269, 0.564 | 1.517 | 1.308, 1.758 | 3.22e-08 |
 
-The OR of 0.318 is an observational association, not evidence that RAAS inhibitors caused lower mortality. Treatment eligibility, confounding by indication, early clinical stability, prescribing behavior, and unmeasured clinical severity may influence the estimate.
+The historical OR output of 0.318 is not a completed converged MLE result and must not be used to claim significance or treatment effectiveness. Treatment eligibility, confounding by indication, early clinical stability, prescribing behavior, and unmeasured clinical severity may influence the estimate.
 
 ![Historical unpenalized primary OR output; this fit did not converge.](../assets/adjusted_odds_ratio_plot.png){fig-alt="Forest plot of adjusted odds ratios for documented early inpatient RAAS prescription exposure and measured covariates" width="90%"}
 
@@ -142,13 +153,23 @@ Admission-type coefficients in the exported model output have very wide interval
 
 ## Sensitivity Analyses
 
-**Separation-robust supplement (2026-11-17):** The original unpenalized primary/sensitivity fits remain nonconverged and are retained for audit. An explicit Firth/Jeffreys-penalized sensitivity analysis, using the same admissions, exposure and adjustment variables, converged for all five comparisons. Its 95% intervals use penalized profile likelihood; numerical rank, profile bounds and independent adjusted-score checks passed. This changes the estimator, not the original primary fit or the separate prediction/risk model. See [Firth validation](../docs/FIRTH_SENSITIVITY_VALIDATION.md).
+**Patient-aware update (2026-11-17):** Current uncertainty summaries use 500 prespecified patient-cluster bootstrap draws, carrying all eligible admissions per sampled patient. Firth point estimates and all exposure/cohort/adjustment definitions are unchanged. Historical admission-independent profile intervals remain available separately. See [patient-aware validation](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/PATIENT_AWARE_VALIDATION.md).
 
 The corrected sensitivity cohort requires confirmed survival and continued hospitalization beyond 24 hours, excluding exact-boundary and inconsistent records. The new figure and table below use the explicitly supplementary Firth estimator. They do not replace the original unpenalized primary fit or the separate risk-estimation model.
 
 Source notebook: [04b_multivariable_outcomes.ipynb](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/notebooks/04b_multivariable_outcomes.ipynb).
 
-![Supplementary Firth sensitivity analysis with 95% penalized profile-likelihood intervals.](../assets/firth_landmark_sensitivity.png){fig-alt="Supplementary Firth exposure odds ratios and 95 percent penalized profile intervals" width="80%"}
+![Supplementary Firth point estimates with 95% patient-cluster percentile bootstrap intervals.](../assets/firth_landmark_patient_bootstrap.png){fig-alt="Firth exposure odds ratios with patient-cluster bootstrap intervals" width="80%"}
+
+| Firth sensitivity model | Admissions | Patients | Deaths | OR | 95% patient-cluster CI | Accepted / requested |
+| --- | ---: | ---: | ---: | ---: | --- | ---: |
+| Primary cohort | 460,786 | 191,775 | 2,326 | 0.319 | 0.267–0.380 | 500/500 |
+| Original condition | 460,350 | 191,591 | 1,890 | 0.362 | 0.303–0.426 | 500/500 |
+| Original condition + proxy | 460,350 | 191,591 | 1,890 | 0.388 | 0.323–0.456 | 500/500 |
+| 24h landmark | 342,519 | 153,041 | 1,769 | 0.356 | 0.292–0.423 | 500/500 |
+| 24h landmark + proxy | 342,519 | 153,041 | 1,769 | 0.382 | 0.315–0.453 | 500/500 |
+
+The following original profile intervals assume independent admissions and are retained as a secondary comparison. [Original profile figure](../assets/firth_landmark_sensitivity.png).
 
 | Firth sensitivity model | Admissions | Deaths | OR | 95% profile CI | Converged |
 | --- | ---: | ---: | ---: | --- | --- |
@@ -158,7 +179,16 @@ Source notebook: [04b_multivariable_outcomes.ipynb](https://github.com/makotoy56
 | 24h landmark | 342,519 | 1,769 | 0.356 | 0.296–0.425 | Yes |
 | 24h landmark + proxy | 342,519 | 1,769 | 0.382 | 0.317–0.455 | Yes |
 
-All five Firth fits converged in 14–15 iterations. Exposure profile bounds were finite and independent adjusted-score checks were below 1e-5. A separation certificate was found for every corresponding unpenalized design, explaining why additional MLE iterations do not provide a finite full-model solution. Cohort definitions, exposure, adjustment categories and model admission counts were unchanged. Original MLE diagnostic outputs are retained in the validation files.
+All five Firth fits converged in 13–15 iterations. Exposure profile bounds were finite and independent adjusted-score checks were below 1e-5. A separation certificate was found for every corresponding unpenalized design, explaining why additional MLE iterations do not provide a finite full-model solution. Cohort definitions, exposure, adjustment categories and model admission counts were unchanged. Original MLE diagnostic outputs are retained in the validation files.
+
+## Patient-Disjoint Discrimination
+
+| Validation | Train / test admissions | Test deaths | Overlapping patients | ROC AUC | PR AUC |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Admission-random reference | 368,628 / 92,158 | 465 | 42,796 | 0.857576 | 0.106915 |
+| Patient-disjoint holdout | 368,309 / 92,477 | 468 | 0 | 0.860635 | 0.117607 |
+
+A patient-disjoint 80/20 patient holdout (seed 42) has zero patient overlap. The same class-balanced L2 classifier specification is used; its scaler and categorical encoder are learned on training data only. The admission-random reference is a new deterministic-order calculation, distinct from the historical unordered-row AUC. A single split does not provide external validation, and the different case mixes preclude a claim that group splitting improved performance.
 
 ## Absolute Risk Interpretation
 
@@ -168,17 +198,17 @@ Source notebook: [04b_multivariable_outcomes.ipynb](https://github.com/makotoy56
 
 ![Adjusted predicted in-hospital mortality by age and documented early inpatient RAAS prescription-exposure status. Predicted mortality increased with age in both groups, while the documented-exposure scenario had lower adjusted predicted mortality across the plotted age range.](../assets/predicted_mortality_by_age.png){fig-alt="Adjusted predicted mortality curves by age and documented early inpatient RAAS prescription exposure" width="90%"}
 
-Because this is an observational model-based estimate, the curves should be interpreted as adjusted predicted probabilities under the fitted model, not as causal treatment effects. The figure is useful for communicating how the modeled association varies across age.
+Because this is an observational model-based estimate, the curves should be interpreted as adjusted predicted probabilities under the fitted model, not as causal treatment effects. The age curves hold other covariates at a typical mean profile. No exposure-by-age interaction was fitted; variation in absolute contrasts is a model implication, not a formal interaction test.
 
-| Adjusted risk estimand | Estimate |
-| --- | ---: |
-| Average predicted mortality risk without documented early prescription exposure | 0.5733% |
-| Average predicted mortality risk with documented early prescription exposure | 0.1936% |
-| Difference in average adjusted predicted risk | -0.38 percentage points |
+| Unweighted L2 risk estimand | Estimate | 95% patient-cluster CI |
+| --- | ---: | --- |
+| Mean predicted risk: no exposure | 0.5733 % | 0.5487 to 0.5991 % |
+| Mean predicted risk: exposure | 0.1936 % | 0.1596 to 0.2239 % |
+| Average marginal effect (difference) | -0.3797 percentage points | -0.4201 to -0.3407 percentage points |
 
-![Age-specific difference in adjusted predicted risk by documented early inpatient RAAS prescription exposure.](../assets/absolute_risk_difference_plot.png){fig-alt="Plot of age-specific differences in adjusted predicted mortality risk by documented early inpatient RAAS prescription exposure" width="90%"}
+![Age-specific typical-profile risk difference with 95% patient-cluster intervals, from the separate unweighted L2 risk model.](../assets/absolute_risk_difference_patient_bootstrap.png){fig-alt="Age-specific typical-profile risk difference with patient-cluster intervals" width="90%"}
 
-The age-specific figure shows why absolute risk reporting matters: the same relative association can correspond to different absolute differences across the age distribution.
+The current risk/AME table and age-contrast figure use 500 prespecified patient-cluster draws. The full risk fitting procedure is repeated with frequency-weighted scaling and fitting. Firth bootstrap refits that trigger Newton warnings must pass the same-objective numerical recovery and independent score checks; accepted/recovered/failed counts are documented. Failed draws are counted, never silently replaced; intervals require at least 95% successful draws. The 500-draw percentile endpoints retain Monte Carlo error. [Full patient-aware validation](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/PATIENT_AWARE_VALIDATION.md).
 
 ## SAS-Python Validation
 
@@ -203,13 +233,13 @@ Observed differences for some sparse admission-type terms are validation diagnos
 
 ## Interpretation Boundary
 
-The primary adjusted association was directionally consistent across the main model and the reported sensitivity analyses, and the prescription-exposure term was stable across Python and SAS validation outputs. The analysis remains observational.
+The finite supplementary Firth estimates and the separate L2 risk contrasts were directionally consistent. Historical Python/SAS MLE agreement reproduces diagnostic numbers; it does not establish MLE convergence or independently validate Firth/cluster-bootstrap inference. The analysis remains observational.
 
 The main sources of potential bias are residual confounding by indication, unmeasured comorbidity burden, acute physiologic severity, outpatient medication history, prescribing behavior, medication discontinuation, dose, duration, adherence, and selection effects related to early survival and treatment eligibility.
 
 Exposure was based on inpatient prescription records. It did not directly measure outpatient chronic RAAS inhibitor use, medication adherence before admission, confirmed inpatient administration, dose, treatment indication, or duration of therapy. The outcome was limited to in-hospital mortality.
 
-The unit of analysis was the hospital admission (`hadm_id`), and patients could contribute multiple admissions. The models treated admissions as observations and did not account for within-patient correlation across repeat admissions.
+The unit of analysis is the hospital admission (`hadm_id`). Historical profile intervals assumed independent admissions. Added patient-cluster bootstrap intervals and patient-disjoint evaluation address repeated admissions separately. These changes do not remove residual confounding or the selection induced by excluding any ICU stay over the entire admission.
 
 ## Reproducibility And Governance
 
