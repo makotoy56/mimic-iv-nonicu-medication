@@ -42,7 +42,9 @@ For a quick review:
 
 ## Workflow
 
-![Analysis workflow](assets/workflow_diagram.svg)
+![Separate association and prediction-time workflows](assets/workflow_diagram.svg)
+
+The original association branch and additional 04c prediction branch use different cohorts and estimands. Firth provides supplementary ORs; a separate unweighted L2 model provides risks/AME. Prediction eligibility uses information through each prediction time and retains later ICU transfers.
 
 For the detailed source-table-to-analysis-dataset lineage, see the [Quarto HTML report section on source tables and project-created analysis tables](https://makotoy56.github.io/mimic-iv-nonicu-medication/reports/nonicu_raas_mortality_report.html#source-tables-to-analysis-dataset).
 

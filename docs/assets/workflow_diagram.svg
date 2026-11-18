@@ -1,87 +1,68 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="560" viewBox="0 0 1440 560" role="img" aria-labelledby="title desc">
-  <title id="title">End-to-end MIMIC-IV non-ICU RAAS medication analysis workflow</title>
-  <desc id="desc">Workflow from MIMIC-IV data through BigQuery cohort construction, adult non-ICU admissions, early RAAS exposure definition, covariate and outcome assembly, unadjusted outcomes, multivariable logistic regression, absolute risk and marginal effects, Python numerical validation, and cautious observational interpretation.</desc>
-  <defs>
-    <style>
-      .bg { fill: #f8fafc; }
-      .step { fill: #ffffff; stroke: #1d4ed8; stroke-width: 2.2; }
-      .analysis { fill: #eff6ff; stroke: #2563eb; stroke-width: 2.2; }
-      .validation { fill: #ecfdf5; stroke: #059669; stroke-width: 2.2; }
-      .interpretation { fill: #fff7ed; stroke: #ea580c; stroke-width: 2.2; }
-      .title { fill: #0f172a; font: 700 25px Arial, sans-serif; }
-      .subtitle { fill: #475569; font: 16px Arial, sans-serif; }
-      .label { fill: #0f172a; font: 700 17px Arial, sans-serif; }
-      .small { fill: #475569; font: 14px Arial, sans-serif; }
-      .arrow { stroke: #64748b; stroke-width: 2.8; fill: none; marker-end: url(#arrowhead); }
-    </style>
-    <marker id="arrowhead" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
-      <path d="M0,0 L12,4 L0,8 Z" fill="#64748b" />
-    </marker>
-  </defs>
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="940" viewBox="0 0 1440 940" role="img" aria-labelledby="title desc">
+<title id="title">MIMIC-IV RAAS portfolio: separate association and prediction-time workflows</title>
+<desc id="desc">The original association branch excludes ICU use over the entire admission and uses supplementary Firth odds ratios, separate unweighted L2 risk and marginal-effect estimates, and separate retrospective discrimination. The additional 04c prediction branch defines ward-confirmed eligibility at admission or 24 hours, retains later ICU transfers and evaluates subsequent in-hospital death. Prescription records do not confirm administration.</desc>
+<defs><style>
+.bg{fill:#f8fafc}.panel{fill:#fff;stroke-width:2}.box{stroke-width:2}
+text{font-family:Arial,sans-serif;fill:#0f172a;text-anchor:middle}
+.title{font-size:28px;font-weight:700}.header{font-size:23px;font-weight:700}
+.label{font-size:21px;font-weight:700}.body{font-size:18px}.small{font-size:17px;fill:#475569}
+.arrow{stroke:#64748b;stroke-width:2.5;fill:none;marker-end:url(#arrowhead)}
+</style><marker id="arrowhead" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0 L10 4 L0 8 Z" fill="#64748b"/></marker></defs>
+<rect class="bg" width="1440" height="940"/>
 
-  <rect class="bg" x="0" y="0" width="1440" height="560" />
-  <text class="title" x="52" y="52">Early RAAS Exposure and Non-ICU Mortality</text>
-  <text class="subtitle" x="52" y="80">Reproducible EHR-based real-world evidence workflow using MIMIC-IV, Python and BigQuery SQL</text>
-
-  <rect class="step" x="52" y="126" width="160" height="104" rx="14" />
-  <text class="label" x="91" y="166">MIMIC-IV</text>
-  <text class="small" x="82" y="193">hospital EHR data</text>
-
-  <path class="arrow" d="M212 178 H248" />
-  <rect class="step" x="248" y="126" width="188" height="104" rx="14" />
-  <text class="label" x="286" y="160">BigQuery SQL</text>
-  <text class="small" x="283" y="187">cohort construction</text>
-  <text class="small" x="293" y="207">reproducible tables</text>
-
-  <path class="arrow" d="M436 178 H472" />
-  <rect class="step" x="472" y="126" width="170" height="104" rx="14" />
-  <text class="label" x="512" y="160">Adult non-ICU</text>
-  <text class="label" x="523" y="181">admissions</text>
-  <text class="small" x="515" y="207">inpatient cohort</text>
-
-  <path class="arrow" d="M642 178 H678" />
-  <rect class="step" x="678" y="126" width="200" height="104" rx="14" />
-  <text class="label" x="727" y="158">Early RAAS</text>
-  <text class="label" x="713" y="180">exposure definition</text>
-  <text class="small" x="727" y="207">ACEi / ARB in 24h</text>
-
-  <path class="arrow" d="M878 178 H914" />
-  <rect class="step" x="914" y="126" width="212" height="104" rx="14" />
-  <text class="label" x="951" y="158">Covariate and</text>
-  <text class="label" x="951" y="180">outcome assembly</text>
-  <text class="small" x="969" y="207">mortality endpoint</text>
-
-  <path class="arrow" d="M1020 230 V286" />
-  <rect class="analysis" x="914" y="286" width="212" height="104" rx="14" />
-  <text class="label" x="960" y="320">Unadjusted</text>
-  <text class="label" x="971" y="342">outcomes</text>
-  <text class="small" x="971" y="368">descriptive rates</text>
-
-  <path class="arrow" d="M914 338 H878" />
-  <rect class="analysis" x="678" y="286" width="200" height="104" rx="14" />
-  <text class="label" x="722" y="320">Multivariable</text>
-  <text class="label" x="708" y="342">logistic regression</text>
-  <text class="small" x="723" y="368">adjusted OR model</text>
-
-  <path class="arrow" d="M678 338 H642" />
-  <rect class="analysis" x="472" y="286" width="170" height="104" rx="14" />
-  <text class="label" x="503" y="320">Absolute risk</text>
-  <text class="label" x="494" y="342">marginal effects</text>
-  <text class="small" x="505" y="368">risk differences</text>
-
-  <path class="arrow" d="M472 338 H436" />
-  <rect class="validation" x="248" y="286" width="188" height="104" rx="14" />
-  <text class="label" x="342" y="320" text-anchor="middle">Python</text>
-  <text class="label" x="342" y="342" text-anchor="middle">validation</text>
-  <text class="small" x="342" y="368" text-anchor="middle">patient-aware checks</text>
-
-  <path class="arrow" d="M248 338 H212" />
-  <rect class="interpretation" x="52" y="286" width="160" height="104" rx="14" />
-  <text class="label" x="89" y="318">Cautious</text>
-  <text class="label" x="64" y="340">observational</text>
-  <text class="label" x="76" y="362">interpretation</text>
-
-  <text class="subtitle" x="52" y="450">Primary clinical model: multivariable logistic regression with adjusted predicted risks and average marginal effects.</text>
-  <text class="subtitle" x="52" y="480">Validation notebooks compare selected aggregate outputs; they do not define a new clinical analysis.</text>
-  <text class="subtitle" x="52" y="510">Interpretation remains hypothesis-generating: observational associations cannot establish causality, and residual confounding may remain.</text>
+<text class="title" x="720" y="44">MIMIC-IV RAAS portfolio: two distinct analysis branches</text>
+<text class="body" x="720" y="78">BigQuery SQL + Python | Admission-level analysis with patient-aware evaluation</text>
+<rect class="box" x="40" y="110" width="1360" height="100" rx="12" fill="#eff6ff" stroke="#2563eb"/>
+<text class="label" x="720" y="141">Authorized MIMIC-IV v3.1 → adult base_admissions</text>
+<text class="body" x="720" y="171">Base: admissions + patients; branch-specific reads: icustays, prescriptions, transfers and POE</text>
+<text class="small" x="720" y="195">Adult hospital admissions include observation categories; patient-level inputs remain private</text>
+<path class="arrow" d="M370 210 V270"/>
+<path class="arrow" d="M1070 210 V270"/>
+<rect class="panel" x="40" y="270" width="660" height="550" rx="12" fill="#fff" stroke="#2563eb"/>
+<rect class="panel" x="740" y="270" width="660" height="550" rx="12" fill="#fff" stroke="#059669"/>
+<text class="header" x="370" y="306">Original association analyses: 01–04b</text>
+<text class="header" x="1070" y="306">Additional prediction-time evaluation: 04c</text>
+<path class="arrow" d="M370 440 V460 H212.5 V480"/>
+<path class="arrow" d="M370 460 H527.5 V480"/>
+<path class="arrow" d="M670 385 H685 V630 H370 V650" stroke-dasharray="6 5"/>
+<path class="arrow" d="M1070 440 V480"/>
+<path class="arrow" d="M1070 610 V650"/>
+<rect class="box" x="70" y="330" width="600" height="110" rx="12" fill="#eff6ff" stroke="#2563eb"/>
+<text class="label" x="370" y="361">Original cohort: no ICU stay over the entire admission</text>
+<text class="body" x="370" y="391">ACEi/ARB prescription start: 0–&lt;24h; crude rates in 04a</text>
+<text class="body" x="370" y="419">04b also applies the separate 24h landmark association rule</text>
+<rect class="box" x="70" y="480" width="285" height="130" rx="12" fill="#f8fafc" stroke="#64748b"/>
+<text class="label" x="212.5" y="513">Supplementary Firth</text>
+<text class="body" x="212.5" y="542">Adjusted odds ratios</text>
+<text class="small" x="212.5" y="571">Original + landmark cohorts</text>
+<text class="small" x="212.5" y="597">Patient-cluster intervals</text>
+<rect class="box" x="385" y="480" width="285" height="130" rx="12" fill="#f8fafc" stroke="#64748b"/>
+<text class="label" x="527.5" y="513">Separate unweighted L2</text>
+<text class="body" x="527.5" y="542">Risks, AME, age contrasts</text>
+<text class="small" x="527.5" y="571">Typical-profile age curves</text>
+<text class="small" x="527.5" y="597">Patient-cluster intervals</text>
+<rect class="box" x="70" y="650" width="600" height="125" rx="12" fill="#f8fafc" stroke="#64748b"/>
+<text class="label" x="370" y="682">Separate retrospective discrimination (04b)</text>
+<text class="body" x="370" y="710">Class-balanced L2; patient-disjoint holdout</text>
+<text class="small" x="370" y="738">First 24h records and early deaths retained; no fixed prediction time</text>
+<text class="small" x="370" y="762">These AUCs do not describe admission-time or 24h prognosis</text>
+<text class="small" x="370" y="803">Unpenalized MLE: separated/nonconverged audit outputs only</text>
+<rect class="box" x="770" y="330" width="600" height="110" rx="12" fill="#ecfdf5" stroke="#059669"/>
+<text class="label" x="1070" y="361">At admission / +24h: alive, hospitalized, confirmed ward</text>
+<text class="body" x="1070" y="391">No ICU entry up to that time; later ICU transfers retained</text>
+<text class="small" x="1070" y="419">Uncertain location/timing excluded; no later-ward backfill</text>
+<rect class="box" x="770" y="480" width="600" height="130" rx="12" fill="#ecfdf5" stroke="#059669"/>
+<text class="label" x="1070" y="513">Time-specific predictors</text>
+<text class="body" x="1070" y="542">Reconstructed age + recorded sex</text>
+<text class="body" x="1070" y="571">24h companion: time-verified RAAS prescription record</text>
+<text class="small" x="1070" y="597">Prescribed start 0–&lt;24h AND linked POE order time ≤24h</text>
+<rect class="box" x="770" y="650" width="600" height="125" rx="12" fill="#ecfdf5" stroke="#059669"/>
+<text class="label" x="1070" y="682">Unweighted L2; training-only preprocessing</text>
+<text class="body" x="1070" y="710">Patient-disjoint holdout; ROC/AP, Brier and calibration</text>
+<text class="body" x="1070" y="738">Outcome: subsequent in-hospital death through discharge</text>
+<text class="small" x="1070" y="762">Held-out-patient intervals conditional on trained models</text>
+<text class="small" x="1070" y="803">Sparse admission holdout: bootstrap intervals withheld</text>
+<text class="label" x="720" y="860">Interpretation boundaries</text>
+<text class="body" x="720" y="889">Prescription records do not confirm administration. Associations do not establish treatment effects.</text>
+<text class="small" x="720" y="918">Different cohorts and estimands; internal retrospective evaluation does not establish prospective or external validity.</text>
 </svg>

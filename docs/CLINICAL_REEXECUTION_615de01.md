@@ -40,3 +40,7 @@ The clean baseline working tree was recorded before execution. The 23 pre-existi
 Quarto generation, resource/aggregate consistency checks, deployment and live visual inspection are distinct release checks. A public HTTPS visual inspection of baseline 615de01 confirmed the relevant inference/discrimination/risk sections; the prior file:// restriction was not bypassed. Release status for the updated page must be confirmed after publication.
 
 Machine-readable evidence: `python/outputs/clinical_reexecution_615de01.json` and `prediction_time_execution.json`. No prospective/external clinical validation is claimed.
+
+## Subsequent figure-label update
+
+The later presentation update changes only the 04a mortality plotting cell and the manually maintained workflow diagram. That cell was selectively rerun from the public aggregate mortality CSV; current plot labels describe prescription records rather than administration. The original source-hash and full-Run-All evidence above applies to its recorded snapshot. No exposure/cohort/model definition or aggregate estimate changed; see [figure reproduction notes](FIGURE_REPRODUCIBILITY.md#presentation-update-2026-11-18).
