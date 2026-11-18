@@ -1,6 +1,6 @@
 {
-  "started_utc": "2026-11-18T11:20:37.473796+00:00",
-  "completed_utc": "2026-11-18T11:22:44.009639+00:00",
+  "started_utc": "2026-11-18T15:31:00.698635+00:00",
+  "completed_utc": "2026-11-18T15:33:10.132563+00:00",
   "design": "Additional admission/24h internal prediction evaluation; independent of original 04b cohort/estimates",
   "outcome": "Death strictly after prediction time and no later than recorded hospital discharge; variable hospital-stay horizon",
   "split_seed": 42,
@@ -10,21 +10,21 @@
   "queries": {
     "query_sha256": "524b307d9fbc1515aa2d949883f046c719a0c937c749485e8396b6570fabf989",
     "dry_run_bytes": 3282848727,
-    "retrieval_job_id": "47e2c1d6-04e1-4f7c-b1dc-30d8252313a0",
+    "retrieval_job_id": "0048cf03-7522-4701-951b-2a3eeb8d3a6a",
     "retrieval_bytes_processed": 0,
     "sql_python_eligibility_checks": [
       {
         "prediction_hours": 0,
         "admissions": 719,
         "deaths": 11,
-        "job_id": "b8bae783-7a22-4b0e-9bf3-1dee162f02c1",
+        "job_id": "4dbd0eb8-e51d-4bcf-b69a-8fddfff072cf",
         "bytes_processed": 0
       },
       {
         "prediction_hours": 24,
         "admissions": 336372,
         "deaths": 3457,
-        "job_id": "e606a24b-bc4e-40b8-ac0f-8e808ea0fcc3",
+        "job_id": "865edf33-0ec8-466c-a835-87f276660b8b",
         "bytes_processed": 0
       }
     ],
@@ -33,7 +33,7 @@
       "prediction_points_checked": 1184,
       "mismatches": 0,
       "sampling": "deterministic admission hash modulo 1000 = 0",
-      "job_id": "1911288a-97d3-4f9f-9be1-b3f7666ef82c",
+      "job_id": "c4ac3aa6-7879-449f-9963-1606a8654a04",
       "bytes_processed": 0,
       "row_exports": false
     },
@@ -210,9 +210,9 @@
     }
   ],
   "packages": {
-    "pandas": "3.0.3",
-    "numpy": "2.4.6",
-    "scikit-learn": "1.9.0",
+    "pandas": "2.3.3",
+    "numpy": "2.2.6",
+    "scikit-learn": "1.8.0",
     "statsmodels": "0.14.6"
   },
   "source_sha256": {
