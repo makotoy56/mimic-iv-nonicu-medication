@@ -20,11 +20,11 @@ All results in this notebook are descriptive only and are not interpreted causal
   (constructed in `03_build_analysis_dataset.sql`)
 
 The study population includes adult (≥18 years) non-ICU hospital admissions.
-Each hospital admission is an analysis observation. Patients may contribute multiple qualifying admissions, and within-patient correlation is not modeled.
+Each hospital admission is an analysis observation. Patients may contribute multiple qualifying admissions. This descriptive notebook does not model within-patient correlation; 04b separately uses patient-cluster uncertainty and patient-disjoint retrospective discrimination.
 
 ## Exposure and Outcome Definitions
 
-- **Exposure**: Documented early inpatient RAAS prescription exposure, defined from ACE inhibitor or ARB prescription records with start times within 24 hours of admission (`raas_any_early`, binary). This does not confirm administration.
+- **Exposure**: Documented early inpatient RAAS prescription exposure, defined from ACE inhibitor or ARB prescription records with start times from admission through less than 24 hours (`raas_any_early`, binary). This does not confirm administration.
 - **Outcome**: In-hospital mortality, defined using the hospital expiration flag (`hospital_expire_flag`).
 
 ## Descriptive Analyses
@@ -59,7 +59,11 @@ Adjusted outcome modeling and absolute effect estimation are presented in the su
 
 This notebook does not create new BigQuery tables. It exports the current aggregate summary to `python/outputs/unadjusted_outcomes.csv` and generates descriptive figures for interpretation and documentation.
 
-Results from this notebook inform the interpretation of adjusted analyses but are not used directly for modeling.
+Results from this notebook inform the original association analyses. Their entire-stay non-ICU cohort differs from the additional ward-confirmed prediction-time cohorts in [04c SHORT](04c_prediction_time_evaluation_SHORT.md).
+
+## Current execution (2026-11-18)
+
+This notebook was reexecuted successfully with a fresh repository kernel. The [current execution record](CLINICAL_REEXECUTION_615de01.md) covers 8 notebooks / 93 code cells with zero runtime error outputs, connected BigQuery checks and preserved original association estimates. Runtime success is distinct from the nonconverged MLE diagnostics in 04b.
 
 ---
 ## Next Step

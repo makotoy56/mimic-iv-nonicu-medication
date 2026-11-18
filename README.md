@@ -157,7 +157,7 @@ Exposure is based on inpatient prescription records. It does not confirm medicat
 - [03b analysis dataset description](notebooks/03b_describe_analysis_dataset.ipynb) and [short notes](docs/03b_describe_analysis_dataset_SHORT.md)
 - [04a unadjusted outcomes](notebooks/04a_unadjusted_outcomes.ipynb) and [short notes](docs/04a_unadjusted_outcomes_SHORT.md)
 - [04b multivariable outcomes](notebooks/04b_multivariable_outcomes.ipynb) and [short notes](docs/04b_multivariable_outcomes_SHORT.md)
-- [04c additional prediction-time evaluation](notebooks/04c_prediction_time_evaluation.ipynb) and [protocol/results](docs/PREDICTION_TIME_VALIDATION.md)
+- [04c additional prediction-time evaluation](notebooks/04c_prediction_time_evaluation.ipynb), [short notes](docs/04c_prediction_time_evaluation_SHORT.md), and [protocol/results](docs/PREDICTION_TIME_VALIDATION.md)
 - [BigQuery SQL](sql/) and [infrastructure sanity check](scripts/validation_checklist.py)
 
 ## Detailed Documentation

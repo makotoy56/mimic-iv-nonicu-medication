@@ -6,7 +6,7 @@ Full notebook:
 
 ## Overview
 
-This notebook constructs the foundational adult, non-ICU hospital admission cohort used throughout the analysis pipeline.
+This notebook constructs the foundational adult, non-ICU hospital admission cohort used in the original association-analysis pipeline (02–04b).
 The objective is to define a clean, admission-level cohort prior to any exposure or outcome modeling, ensuring a transparent and reproducible cohort selection process.
 
 ## Data Sources
@@ -43,24 +43,28 @@ This notebook materializes the following tables in the `mimic-iv-portfolio.nonic
   Intermediate table with collapsed race categories.
 
 - **nonicu_admissions**  
-  Final non-ICU admission-level cohort used for all downstream analyses.
+  Final non-ICU admission-level cohort for the original association analyses (02–04b); any ICU stay over the entire admission is excluded.
 
 ## Downstream Use
 
 The `nonicu_admissions` table serves as the fixed cohort input for:
 - Documented early inpatient RAAS prescription-exposure definition (02)
-- Construction of the unified analysis dataset (03a)
+- Construction of the unified analysis dataset (02, followed by read-only validation in 03a)
 - Baseline characteristic summaries (03b)
 - Unadjusted outcome analyses (04a)
 - Multivariable and adjusted outcome modeling (04b)
 
-Downstream notebooks load these tables in read-only mode and do not modify cohort inclusion criteria.
+Notebooks 03a–04b read the constructed tables without rewriting them; 04b separately applies its documented landmark eligibility filters. The additional prediction-time branch in 04c starts from `base_admissions` and native location/order records, not `nonicu_admissions`. It defines eligibility at each prediction instant and retains later ICU transfers; see [04c SHORT](04c_prediction_time_evaluation_SHORT.md).
 
 ## Notes
 
 - No exposure definitions or outcome modeling are performed in this notebook.
 - All cohort construction steps are implemented entirely in SQL.
 - This separation of cohort definition from modeling supports reproducibility, auditability, and clear data provenance.
+
+## Current execution (2026-11-18)
+
+This notebook was reexecuted successfully with a fresh repository kernel. The [current execution record](CLINICAL_REEXECUTION_615de01.md) covers 8 notebooks / 93 code cells with zero runtime error outputs, connected BigQuery checks and preserved original association estimates. Runtime success is distinct from the nonconverged MLE diagnostics in 04b.
 
 ---
 ## Next Step

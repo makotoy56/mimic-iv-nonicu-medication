@@ -56,7 +56,11 @@ The validated tables serve as stable inputs for subsequent notebooks, including:
 - Unadjusted outcome analyses (04a)
 - Multivariable and marginal-effect outcome modeling (04b)
 
-This step ensures that all downstream analyses operate on a consistent, verified analytic dataset.
+These checks cover the original association branch (03b–04b). The analysis table was constructed upstream in notebook 02 via `sql/03_build_analysis_dataset.sql`; 03a is read-only. The separate 04c prediction branch performs its own time-specific eligibility and native-transfer checks; see [04c SHORT](04c_prediction_time_evaluation_SHORT.md).
+
+## Current execution (2026-11-18)
+
+This notebook was reexecuted successfully with a fresh repository kernel. The [current execution record](CLINICAL_REEXECUTION_615de01.md) covers 8 notebooks / 93 code cells with zero runtime error outputs, connected BigQuery checks and preserved original association estimates. Runtime success is distinct from the nonconverged MLE diagnostics in 04b.
 
 ---
 ## Next Step

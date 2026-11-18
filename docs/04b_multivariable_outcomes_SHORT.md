@@ -16,7 +16,7 @@ Documented early inpatient RAAS prescription exposure is defined as any ACE inhi
 The primary outcome is in-hospital mortality, defined by the hospital expiration flag.
 
 ## Methods
-A multivariable logistic regression model was fitted, adjusting for:
+The original unpenalized logistic fits remain separated/nonconverged diagnostics. Supplementary Firth fits estimate adjusted ORs; a separate unweighted L2 model estimates risks/AME. These association models adjust for:
 - Age
 - Sex
 - Race group
@@ -25,7 +25,7 @@ A multivariable logistic regression model was fitted, adjusting for:
 - Calendar period of admission
 
 Categorical variables were one-hot encoded with explicit handling of missing values.
-Model performance was evaluated using ROC AUC and precision–recall AUC.
+A separate class-balanced L2 classifier evaluates internal retrospective discrimination with ROC AUC and precision–recall average precision. These metrics do not validate the Firth OR or risk/AME estimators, and they are distinct from 04c prediction-time performance.
 
 ### Feature Construction (Model Inputs)
 The modeling matrix is defined explicitly as:
@@ -37,12 +37,13 @@ Categorical variables are one-hot encoded and concatenated with `exposure` and `
 
 Outcome handling is separated from features: `hospital_expire_flag` is used only to construct `outcome` and is not included in `feature_cols`.
 
-**Implemented guard (leakage prevention)**
-The notebook blocks post-outcome columns from modeling features:
+**Implemented forbidden-column check**
+The notebook blocks the following outcome/post-admission columns from modeling features. This static check alone does not establish prediction-time feature availability:
 ```python
 forbidden_cols = {"hosp_los", "dischtime", "deathtime", "hospital_expire_flag", "outcome"}
 assert forbidden_cols.isdisjoint(feature_cols)
 ```
+The additional 04c evaluation separately addresses time-specific eligibility and information boundaries.
 
 To improve interpretability beyond odds ratios, results were summarized using:
 - Average marginal effects (AME)
@@ -60,12 +61,14 @@ As an added proxy for baseline severity, admission source (`admission_location`)
 The original unpenalized outputs remain nonconverged. In the additional Firth analysis, original-condition ordinary/proxy ORs were 0.362/0.388; corrected-condition ORs were 0.356/0.382. All five full-data Firth fits converged; historical profile intervals and added patient-cluster intervals are explicitly distinguished. The full table and independent numerical checks are in the Firth validation note.
 
 ## Key Results
+The original cohort contains 460,786 admissions / 2,326 deaths; the corrected 24h association cohort contains 342,519 / 1,769. Entire-stay ICU exclusion, exposure and adjustment variables are unchanged. Corrected-landmark Firth ordinary/proxy ORs are 0.356/0.382.
+
 Documented early inpatient RAAS prescription exposure was consistently associated with lower in-hospital mortality after multivariable adjustment.
 
 - Supplementary Firth primary-cohort OR 0.319 (95% patient-cluster CI 0.267–0.380); historical unpenalized OR output is nonconverged.
 - On the absolute risk scale, the fitted model produced an average adjusted predicted mortality difference of approximately -0.38 percentage points between the documented-exposure and no-exposure scenarios.
-- Adjusted predicted mortality increased with age in both exposure groups, but the difference in adjusted predicted risk widened among older patients.
-- Newly computed AME -0.3797 percentage points (95% patient-cluster CI -0.4201 to -0.3407); current age-contrast intervals also resample patients.
+- Adjusted predicted mortality increased with age at a typical mean covariate profile. Absolute contrasts widened among older patients; no exposure-by-age interaction was fitted or formally tested.
+- Unweighted L2 AME -0.3797 percentage points (95% patient-cluster CI -0.4201 to -0.3407); current age-contrast intervals also resample patients.
 
 ## Interpretation
 These findings demonstrate how marginal effects and risk differences can complement odds ratios by providing clinically interpretable estimates on the absolute risk scale.
@@ -73,13 +76,7 @@ These findings demonstrate how marginal effects and risk differences can complem
 The observational design precludes causal conclusions. The added Firth sensitivity estimates address separation, while the original unpenalized outputs remain nonconverged; treatment eligibility, confounding by indication, early clinical stability, clinician prescribing behavior, and unmeasured severity may still affect the estimates.
 This notebook illustrates a transparent and reproducible approach to multivariable outcome modeling and uncertainty quantification in large clinical datasets.
 
----
-## Next Step
-
-Proceed to:
-- [Current Python workflow validation](PYTHON_WORKFLOW_VALIDATION.md)
-
-This next notebook/document briefly describes the next workflow step.
+## Retrospective Discrimination
 
 | Validation | Train / test admissions | Test deaths | Overlapping patients | ROC AUC | PR AUC |
 | --- | ---: | ---: | ---: | ---: | ---: |
@@ -87,3 +84,9 @@ This next notebook/document briefly describes the next workflow step.
 | Patient-disjoint holdout | 368,309 / 92,477 | 468 | 0 | 0.860635 | 0.117607 |
 
 The patient-disjoint holdout is an internal evaluation of retrospective discrimination on the full admission cohort. It uses prescription records from 0–<24 hours while including deaths within 24 hours, and applies no 24-hour survival/continued-hospitalization eligibility filter. There is no fixed clinical prediction time or prospective prediction horizon: ROC AUC 0.860635 and PR AUC 0.117607 do not describe admission-time or 24-hour prognostic performance. Patient separation and train-only preprocessing address patient overlap and preprocessing leakage, not temporal feature availability. The 24-hour landmark association analyses separately require confirmed survival and continued hospitalization strictly beyond 24 hours and evaluate subsequent in-hospital death; they use a different eligible cohort. Different split case mixes do not demonstrate performance improvement. The current figures and full fitting diagnostics are described in [patient-aware validation](PATIENT_AWARE_VALIDATION.md).
+
+## Current execution and next step
+
+The 2026-11-18 real-data rerun preserved the original estimates. Across 00–04c, all 8 notebooks / 93 code cells completed without runtime error. Original MLE nonconvergence remains explicit; all five Firth point fits passed numerical checks and their patient-cluster bootstrap sets accepted 500/500 draws, as did the risk bootstrap. See the [current execution record](CLINICAL_REEXECUTION_615de01.md). The older [8063e91 execution note](PYTHON_WORKFLOW_VALIDATION.md) is historical.
+
+Proceed to [04c - Separate prediction-time evaluation (SHORT)](04c_prediction_time_evaluation_SHORT.md). It uses ward-confirmed admission/24h cohorts, retains later ICU transfers and follows subsequent in-hospital death through discharge. Its AUCs cannot reuse the retrospective values above. Admission-time performance is too sparsely observed for reliable validation; see the separate summary for its withheld intervals.

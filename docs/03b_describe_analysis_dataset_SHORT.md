@@ -18,7 +18,7 @@ No outcome models or causal inference are performed in this notebook.
 - Project: mimic-iv-portfolio
 - Input table:
   - nonicu_raas.analysis_dataset  
-    (constructed in 03a via SQL-based preprocessing)
+    (constructed in notebook 02 via `sql/03_build_analysis_dataset.sql`; 03a validates inputs without creating tables)
 
 Each row represents a unique non-ICU hospital admission.
 
@@ -34,7 +34,7 @@ Documented early inpatient RAAS prescription exposure was observed in 12.33% of 
 
 ## Exposure Definition
 
-Documented early inpatient RAAS prescription exposure was defined from prescription records with start times within 24 hours for:
+Documented early inpatient RAAS prescription exposure was defined from prescription records with `admittime <= starttime < admittime + 24 hours` for:
 - ACE inhibitors, or
 - Angiotensin receptor blockers (ARBs)
 
@@ -90,7 +90,11 @@ This notebook produces descriptive baseline summaries used as inputs for subsequ
 - Group-level baseline summary statistics
 - Categorical distribution tables for exploratory assessment
 
-These outputs support interpretation of adjusted outcome models and marginal effect estimates in downstream notebooks (04a, 04b).
+These summaries support the original 04a/04b association analyses. They do not describe the separate ward-confirmed admission/24h prediction cohorts in [04c SHORT](04c_prediction_time_evaluation_SHORT.md). Hospital length of stay is a whole-admission descriptive measure, not an admission-time predictor.
+
+## Current execution (2026-11-18)
+
+This notebook was reexecuted successfully with a fresh repository kernel. The [current execution record](CLINICAL_REEXECUTION_615de01.md) covers 8 notebooks / 93 code cells with zero runtime error outputs, connected BigQuery checks and preserved original association estimates. Runtime success is distinct from the nonconverged MLE diagnostics in 04b.
 
 ---
 ## Next Step

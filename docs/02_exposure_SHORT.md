@@ -82,13 +82,17 @@ These checks confirm complete alignment between the non-ICU cohort and exposure 
 
 ## Downstream Use
 
-The `analysis_dataset` table produced in this notebook serves as the sole input for subsequent analyses, including:
+The `analysis_dataset` table produced in this notebook is the analysis input for the original association branch, including:
 
 - Baseline characteristic summaries (03b)  
 - Unadjusted outcome analyses (04a)  
 - Multivariable and adjusted outcome modeling (04b)  
 
-Downstream notebooks load these tables in read-only mode and do not modify exposure definitions or cohort inclusion criteria, ensuring reproducibility and transparent data provenance.
+Downstream association notebooks read these tables without changing the exposure definition; 04b separately applies its documented landmark eligibility filters. The additional 04c prediction branch uses the adult base and native transfer/order records. Its 24h companion requires both an early prescription start and a linked POE order time by 24h, so it does not reuse this exposure flag as evidence of information available at prediction time. See [04c SHORT](04c_prediction_time_evaluation_SHORT.md).
+
+## Current execution (2026-11-18)
+
+This notebook was reexecuted successfully with a fresh repository kernel. The [current execution record](CLINICAL_REEXECUTION_615de01.md) covers 8 notebooks / 93 code cells with zero runtime error outputs, connected BigQuery checks and preserved original association estimates. Runtime success is distinct from the nonconverged MLE diagnostics in 04b.
 
 ---
 ## Next Step
