@@ -20,7 +20,7 @@ For a portfolio-style clinical analytics report presenting the study background,
 
 ➡️ [View the Quarto HTML report](https://makotoy56.github.io/mimic-iv-nonicu-medication/reports/nonicu_raas_mortality_report.html)
 
-This README provides the repository overview and technical navigation.
+This README provides the repository overview and technical navigation. The current [reproducible portfolio scope](docs/REPRODUCIBLE_SCOPE.md) covers BigQuery and Python notebooks 00–04b.
 
 ## Reviewer Path
 
@@ -37,7 +37,7 @@ For a quick review:
 - Reproducible cohort, exposure, covariate, and outcome construction in BigQuery SQL
 - Transparent documented inpatient prescription-exposure definition using ACE inhibitor and ARB records with start times within 24 hours of admission
 - Multivariable logistic regression with odds ratios, adjusted risks, and average marginal effects
-- Cross-platform validation of selected unadjusted and logistic model outputs
+- Numerical checks, patient-cluster uncertainty, and patient-disjoint prediction evaluation
 - Clear separation between clinical analysis, validation artifacts, and compliance-safe repository contents
 
 ## Workflow
@@ -50,7 +50,7 @@ For the detailed source-table-to-analysis-dataset lineage, see the [Quarto HTML 
 
 This project shows how clinical analytics teams can move from raw EHR tables to an auditable real-world evidence workflow. It emphasizes transparent cohort, exposure, covariate, and outcome definitions; multivariable regression; and absolute risk interpretation for findings that need to be understandable beyond a purely statistical audience.
 
-For clinical analytics, RWE, HEOR, and outcomes research teams, the portfolio value is the operational workflow: defensible data definitions, documented modeling choices, reproducible notebooks, and SAS/Python output checks. Limitations, including residual confounding and non-causal interpretation, are documented in the [discussion](docs/DISCUSSION_AND_LIMITATIONS.md).
+For clinical analytics, RWE, HEOR, and outcomes research teams, the portfolio value is the operational workflow: defensible data definitions, documented modeling choices, reproducible notebooks, and documented Python numerical checks. Limitations, including residual confounding and non-causal interpretation, are documented in the [discussion](docs/DISCUSSION_AND_LIMITATIONS.md).
 
 ## Key Findings
 
@@ -90,7 +90,7 @@ The unweighted L2 model contrasts exposure scenarios at a typical mean covariate
 
 The full-data Firth point fits passed convergence, rank, profile-bound and independent adjusted-score checks. The new figure uses patient-cluster percentile intervals; [original profile figure](assets/firth_landmark_sensitivity.png) and [Firth numerical validation](docs/FIRTH_SENSITIVITY_VALIDATION.md) remain available.
 
-The corrected rule requires confirmed survival and continued hospitalization beyond 24 hours, removing 117,637 early live discharges plus separately counted inconsistent records. The figure below explicitly uses the supplementary Firth estimator. Historical unpenalized OR assets are retained unchanged for audit.
+The corrected rule requires confirmed survival and continued hospitalization beyond 24 hours, removing 117,637 early live discharges plus separately counted inconsistent records. The figure below explicitly uses the supplementary Firth estimator. Historical nonconverged OR figures are excluded from the current public portfolio.
 
 <img src="assets/firth_landmark_patient_bootstrap.png" alt="Supplementary Firth odds ratios with 95 percent patient-cluster bootstrap intervals" width="760">
 
@@ -116,8 +116,8 @@ The additional patient-disjoint holdout has zero train/test patient overlap. Sca
 | Original primary model | Unpenalized multivariable logistic regression; nonconverged audit output |
 | Supplementary OR estimator | Firth logistic regression; patient-cluster bootstrap intervals |
 | Absolute risk estimand | Adjusted predicted risks and average marginal effects |
-| Validation | Patient-cluster uncertainty and patient-disjoint holdout; historical SAS-Python aggregate agreement |
-| Tools | BigQuery SQL, Python, Jupyter, SAS |
+| Validation | Patient-cluster uncertainty and patient-disjoint holdout |
+| Tools | BigQuery SQL, Python, Jupyter |
 
 Exposure is based on inpatient prescription records. It does not confirm medication administration and does not directly capture outpatient chronic use, adherence, dose, treatment indication, or duration.
 
@@ -130,8 +130,6 @@ Exposure is based on inpatient prescription records. It does not confirm medicat
 - [03b analysis dataset description](notebooks/03b_describe_analysis_dataset.ipynb) and [short notes](docs/03b_describe_analysis_dataset_SHORT.md)
 - [04a unadjusted outcomes](notebooks/04a_unadjusted_outcomes.ipynb) and [short notes](docs/04a_unadjusted_outcomes_SHORT.md)
 - [04b multivariable outcomes](notebooks/04b_multivariable_outcomes.ipynb) and [short notes](docs/04b_multivariable_outcomes_SHORT.md)
-- [05 SAS-Python reproducibility validation](notebooks/05_sas_python_validation.ipynb) and [short notes](docs/05_sas_python_validation_SHORT.md)
-- [SAS programs](sas/programs/) and [SAS workflow notes](sas/README.md)
 - [BigQuery SQL](sql/) and [infrastructure sanity check](scripts/validation_checklist.py)
 
 ## Detailed Documentation
@@ -141,26 +139,24 @@ Exposure is based on inpatient prescription records. It does not confirm medicat
 - [Results summary](docs/RESULTS_SUMMARY.md): concise findings without causal strengthening
 - [Discussion and limitations](docs/DISCUSSION_AND_LIMITATIONS.md): interpretation, residual confounding, and generalizability
 - [Setup and reproducibility](docs/SETUP.md): Python environment, notebook execution expectations, and hygiene guidance
-- [Validation notes](docs/VALIDATION_NOTES.md): Python/SAS validation scope and discrepancy notes
+- [Reproducible scope](docs/REPRODUCIBLE_SCOPE.md): current BigQuery/Python workflow and validation boundaries
 - [Figure reproducibility](docs/FIGURE_REPRODUCIBILITY.md): README figure export locations and refresh workflow
 
 ## Reproducibility And Validation
 
-The workflow uses version-controlled notebooks, SQL scripts, SAS programs, and aggregate validation CSVs. No patient-level data are included in this repository. See [Setup and reproducibility](docs/SETUP.md) for the uv-managed Python environment and notebook hygiene workflow.
+The workflow uses version-controlled notebooks, SQL scripts, and current aggregate Python outputs. No patient-level data are included in this repository. See [Setup and reproducibility](docs/SETUP.md) for the uv-managed Python environment and notebook hygiene workflow.
 
 For complete environment and reproducibility details, see [REPRODUCIBILITY.md](REPRODUCIBILITY.md).
 
-The latest [complete 00–05 execution record](docs/NOTEBOOK_RUN_VALIDATION.md) confirms eight sequential fresh-kernel runs and zero runtime error outputs. Statistical convergence and SAS discrepancy checks are recorded separately; the historical MLE remains nonconverged.
+The [current BigQuery/Python execution record](docs/PYTHON_WORKFLOW_VALIDATION.md) records the seven-notebook 00–04b workflow. Runtime success is separate from statistical convergence; the unpenalized MLE remains nonconverged. See the [reproducible portfolio scope](docs/REPRODUCIBLE_SCOPE.md).
 
 Validation scope:
 
 - `04b_multivariable_outcomes.ipynb` contains the primary clinical analysis: multivariable logistic regression and absolute risk estimation.
-- `05_sas_python_validation.ipynb` compares exported Python and SAS outputs; it is reproducibility validation, not a new clinical analysis.
-- SAS programs under `sas/programs/` generate comparison outputs under `sas/outputs/`.
 - Python validation artifacts are stored under `python/outputs/`.
 - `scripts/validation_checklist.py` performs lightweight BigQuery table-existence checks only; it does not validate table contents or statistical results.
 
-MIMIC-IV/PhysioNet access, Google Cloud authentication, BigQuery access, and local SAS paths are configured outside the repository.
+MIMIC-IV/PhysioNet access, Google Cloud authentication, BigQuery access, and local environment settings are configured outside the repository.
 
 ## Project Structure
 
@@ -171,7 +167,6 @@ mimic-iv-nonicu-medication/
 |-- notebooks/        # Stepwise analysis and validation notebooks
 |-- pyproject.toml    # uv project dependency metadata
 |-- python/outputs/   # Aggregate Python validation CSVs
-|-- sas/              # SAS workflow notes, programs, and aggregate validation outputs
 |-- scripts/          # Validation utilities
 |-- sql/              # BigQuery SQL for cohort/exposure construction
 |-- uv.lock           # uv-resolved dependency lockfile

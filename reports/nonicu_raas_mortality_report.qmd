@@ -2,7 +2,7 @@
 title: "Documented Early Inpatient RAAS Prescription Exposure and In-Hospital Mortality in Adult Non-ICU Admissions"
 subtitle: "A MIMIC-IV Clinical Data Analytics and Real-World Evidence Portfolio Report"
 author: "Makoto Yoshida, PhD"
-date: "2026-11-17"
+date: "2026-11-18"
 format:
   html:
     toc: true
@@ -21,7 +21,7 @@ execute:
 
 This report presents the analytic outputs from an admission-level observational study of documented inpatient renin-angiotensin-aldosterone system (RAAS) prescription exposure within the first 24 hours and in-hospital mortality among adult non-ICU admissions in MIMIC-IV v3.1.
 
-The emphasis is on reproducible clinical analytics: cohort construction, exposure definition, covariate handling, outcome modeling, absolute risk interpretation, and cross-platform validation using aggregate Python and SAS outputs already produced by the project.
+The emphasis is on reproducible clinical analytics: cohort construction, exposure definition, covariate handling, outcome modeling, absolute risk interpretation, and Python numerical checks and patient-aware evaluation.
 
 The results remain hypothesis-generating. The design estimates associations after adjustment for measured covariates; it does not establish treatment effectiveness.
 
@@ -29,7 +29,7 @@ The original unpenalized primary/sensitivity fits have separation and remain non
 
 ## Reproducible Workflow
 
-The workflow separates data construction, model estimation, visualization, and validation. The analytic sequence starts with an adult hospital admission cohort, excludes ICU-associated admissions, classifies documented ACE inhibitor or ARB prescription exposure from records with start times within 24 hours, fits adjusted outcome models, and validates selected aggregate outputs across Python and SAS.
+The workflow separates data construction, model estimation, visualization, and validation. The analytic sequence starts with an adult hospital admission cohort, excludes ICU-associated admissions, classifies documented ACE inhibitor or ARB prescription exposure from records with start times within 24 hours, fits adjusted outcome models, and checks aggregate outputs and numerical diagnostics in Python.
 
 The key design choice is that the fixed non-ICU cohort is constructed before exposure definition or outcome modeling. The SQL eligibility rule does not use the prescription-exposure flag, and downstream outputs are traceable to one admission-level table. Excluding ICU use over the entire admission can still condition on post-admission events; this procedural ordering does not establish statistical independence or remove selection bias.
 
@@ -126,30 +126,13 @@ Source notebook and supporting documentation: [04a_unadjusted_outcomes.ipynb](ht
 
 ![Observed in-hospital mortality proportion by documented early inpatient RAAS prescription-exposure group.](../assets/unadjusted_mortality_by_raas.png){fig-alt="Bar chart comparing unadjusted in-hospital mortality by documented early inpatient RAAS prescription exposure" width="80%"}
 
-## Historical Unpenalized Model Diagnostics
+## Unpenalized Model Diagnostics
 
-**This historical MLE fit did not converge and has separation. Its table below is retained for audit; nominal intervals and p-values are not validated inference. Current finite estimates are from the explicitly supplementary Firth fits, with patient-aware intervals reported separately.**
+The original unpenalized primary and four sensitivity models have separation and did not converge. Nominal intervals and p-values from these fits are not validated inference. Current finite OR summaries use the explicitly supplementary Firth fits, with patient-cluster intervals reported separately.
 
-Source notebook and supporting documentation: [04b_multivariable_outcomes.ipynb](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/notebooks/04b_multivariable_outcomes.ipynb) and [04b_multivariable_outcomes_SHORT.md](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/04b_multivariable_outcomes_SHORT.md).
+Notebook [04b_multivariable_outcomes.ipynb](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/notebooks/04b_multivariable_outcomes.ipynb) regenerates the [primary parameter diagnostics](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/python/outputs/mle_diagnostics.csv) and [five-model convergence comparison](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/python/outputs/landmark_model_comparison.csv). Historical nonconverged OR figures and the old coefficient display are excluded from the current report.
 
-The selected coefficient table records historical diagnostic output from the nonconverged unpenalized model. The table emphasizes the exposure term and representative adjusted covariates; it is not a causal effect table.
-
-| Term | Coefficient | Nominal coefficient CI | Diagnostic OR | Nominal OR CI | Historical Wald p-value |
-| --- | ---: | ---: | ---: | ---: | ---: |
-| Documented early inpatient RAAS prescription exposure | -1.146 | -1.314, -0.978 | 0.318 | 0.269, 0.376 | 6.42e-41 |
-| Age | 0.065 | 0.062, 0.069 | 1.067 | 1.064, 1.071 | Underflow in historical output |
-| Male gender | 0.190 | 0.107, 0.274 | 1.210 | 1.112, 1.315 | 8.59e-06 |
-| Black race group | -0.534 | -0.756, -0.313 | 0.586 | 0.470, 0.731 | 2.27e-06 |
-| Hispanic race group | -0.721 | -1.022, -0.419 | 0.486 | 0.360, 0.658 | 2.84e-06 |
-| Medicare insurance | -0.094 | -0.269, 0.080 | 0.910 | 0.764, 1.084 | 0.289 |
-| Other insurance | 2.683 | 2.492, 2.874 | 14.628 | 12.089, 17.702 | 2.14e-167 |
-| Anchor year 2020-2022 | 0.416 | 0.269, 0.564 | 1.517 | 1.308, 1.758 | 3.22e-08 |
-
-The historical OR output of 0.318 is not a completed converged MLE result and must not be used to claim significance or treatment effectiveness. Treatment eligibility, confounding by indication, early clinical stability, prescribing behavior, and unmeasured clinical severity may influence the estimate.
-
-![Historical unpenalized primary OR output; this fit did not converge.](../assets/adjusted_odds_ratio_plot.png){fig-alt="Forest plot of adjusted odds ratios for documented early inpatient RAAS prescription exposure and measured covariates" width="90%"}
-
-Admission-type coefficients in the exported model output have very wide intervals for some categories. These terms are retained as adjustment variables but are not interpreted as stable clinical findings.
+All original adjustment categories, including sparse admission types, are retained. The documented separation is a numerical/inferential limitation; the original model specification has not been changed to obtain convergence.
 
 ## Sensitivity Analyses
 
@@ -210,30 +193,13 @@ Because this is an observational model-based estimate, the curves should be inte
 
 The current risk/AME table and age-contrast figure use 500 prespecified patient-cluster draws. The full risk fitting procedure is repeated with frequency-weighted scaling and fitting. Firth bootstrap refits that trigger Newton warnings must pass the same-objective numerical recovery and independent score checks; accepted/recovered/failed counts are documented. Failed draws are counted, never silently replaced; intervals require at least 95% successful draws. The 500-draw percentile endpoints retain Monte Carlo error. [Full patient-aware validation](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/PATIENT_AWARE_VALIDATION.md).
 
-## SAS-Python Validation
+## Python Reproducibility Checks
 
-The validation workflow compares aggregate Python and SAS outputs. It is a reproducibility check, not a second clinical analysis and not a new estimand.
-
-Source notebook and supporting documentation: [05_sas_python_validation.ipynb](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/notebooks/05_sas_python_validation.ipynb), [05_sas_python_validation_SHORT.md](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/05_sas_python_validation_SHORT.md), and [VALIDATION_NOTES.md](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/VALIDATION_NOTES.md).
-
-The table below summarizes selected aggregate outputs used for cross-platform validation between Python and SAS.
-
-| Validation item | Python output | SAS output | Agreement |
-| --- | ---: | ---: | --- |
-| No documented early prescription-exposure admissions | 403,961 | 403,961 | Matched |
-| No documented early prescription-exposure deaths | 2,177 | 2,177 | Matched |
-| Documented early prescription-exposure admissions | 56,825 | 56,825 | Matched |
-| Documented early prescription-exposure deaths | 149 | 149 | Matched |
-| Exposure coefficient | -1.146180594 | -1.146180594 | Matched to displayed precision |
-| Exposure adjusted OR | 0.3178484462 | 0.3178484462 | Matched to displayed precision |
-| Exposure OR lower CI | 0.2687743071 | 0.2687743084 | Numerically equivalent after rounding |
-| Exposure OR upper CI | 0.3758827838 | 0.3758827820 | Numerically equivalent after rounding |
-
-Observed differences for some sparse admission-type terms are validation diagnostics for model implementation and sparse-category behavior. They should not be interpreted as new clinical findings.
+The public workflow covers BigQuery construction and Python analysis through notebook 04b. Numerical tests, fit diagnostics, patient-cluster resampling and patient-disjoint evaluation are documented in the [reproducible scope](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/REPRODUCIBLE_SCOPE.md). These checks do not establish causal validity.
 
 ## Interpretation Boundary
 
-The finite supplementary Firth estimates and the separate L2 risk contrasts were directionally consistent. Historical Python/SAS MLE agreement reproduces diagnostic numbers; it does not establish MLE convergence or independently validate Firth/cluster-bootstrap inference. The analysis remains observational.
+The finite supplementary Firth estimates and the separate L2 risk contrasts were directionally consistent. The original unpenalized MLE remains nonconverged; numerical agreement alone would not establish valid inference. The analysis remains observational.
 
 The main sources of potential bias are residual confounding by indication, unmeasured comorbidity burden, acute physiologic severity, outpatient medication history, prescribing behavior, medication discontinuation, dose, duration, adherence, and selection effects related to early survival and treatment eligibility.
 
@@ -243,16 +209,16 @@ The unit of analysis is the hospital admission (`hadm_id`). Historical profile i
 
 ## Reproducibility And Governance
 
-Reproducibility was addressed by separating cohort construction, exposure definition, model estimation, figure generation, and SAS-Python validation into version-controlled workflow steps. The rendered report is supported by notebooks, SQL definitions, aggregate validation outputs, and exported figures, while patient-level MIMIC-IV data remain outside the repository.
+Reproducibility was addressed by separating cohort construction, exposure definition, model estimation, figure generation, and Python numerical checks into version-controlled workflow steps. The rendered report is supported by notebooks, SQL definitions, aggregate validation outputs, and exported figures, while patient-level MIMIC-IV data remain outside the repository.
 
 For complete environment and reproducibility details, see [REPRODUCIBILITY.md](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/REPRODUCIBILITY.md).
 
-MIMIC-IV and PhysioNet access, Google Cloud authentication, BigQuery access, and local SAS paths are configured outside the repository.
+MIMIC-IV and PhysioNet access, Google Cloud authentication, BigQuery access, and local environment settings are configured outside the repository.
 
-A complete 00–05 rerun executed all eight notebooks sequentially with fresh repository Python kernels: 100 code cells completed with zero runtime error outputs. Local outputs were saved; Git retains the existing output-stripping policy. Model convergence and historical SAS discrepancy checks remain separate from runtime success. [Full execution and source-hash record](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/NOTEBOOK_RUN_VALIDATION.md).
+The current public 00–04b workflow is executed sequentially with fresh repository Python kernels. Local outputs are saved; Git retains the existing output-stripping policy. Model convergence is separate from runtime success. [Current execution and source-hash record](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/PYTHON_WORKFLOW_VALIDATION.md).
 
 ## Conclusion
 
 Documented early inpatient RAAS prescription exposure was associated with lower in-hospital mortality in this adult non-ICU MIMIC-IV cohort after adjustment for measured covariates. The association was also presented on the absolute risk scale, where the difference in adjusted predicted mortality risk was small in percentage-point terms and varied by age.
 
-The portfolio value of the project is the reproducible EHR clinical analytics workflow: transparent cohort and prescription-exposure definitions, multivariable modeling, absolute risk interpretation, cautious observational framing, a visible 24-hour landmark sensitivity analysis, and selected SAS-Python validation using aggregate outputs.
+The portfolio value of the project is the reproducible EHR clinical analytics workflow: transparent cohort and prescription-exposure definitions, multivariable modeling, absolute risk interpretation, cautious observational framing, a visible 24-hour landmark sensitivity analysis, and documented Python numerical checks using current aggregate outputs.

@@ -77,7 +77,7 @@ This notebook illustrates a transparent and reproducible approach to multivariab
 ## Next Step
 
 Proceed to:
-- [05 - SAS-Python Reproducibility Validation](05_sas_python_validation_SHORT.md)
+- [Current Python workflow validation](PYTHON_WORKFLOW_VALIDATION.md)
 
 This next notebook/document briefly describes the next workflow step.
 

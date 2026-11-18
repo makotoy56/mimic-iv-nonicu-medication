@@ -36,7 +36,6 @@ data/
 
 # Allow validation artifacts
 !python/outputs/*.csv
-!sas/outputs/*.csv
 
 # --- Jupyter ---
 .ipynb_checkpoints/
@@ -81,12 +80,6 @@ sas/outputs/*.rtf
 # Sensitive/local SAS inputs
 sas/inputs/*.csv
 
-# Keep SAS programs tracked
-!sas/programs/*.sas
-
-# Keep SAS documentation tracked
-!sas/docs/*.md
-
 # Optional:
 # Ignore PDFs by default
 *.pdf
@@ -99,3 +92,19 @@ sas/inputs/*.csv
 _site/
 **/_site/
 outputs/
+
+# Historical artifacts retained locally, outside the current public scope
+sas/
+/assets/adjusted_odds_ratio_plot.png
+/assets/landmark_sensitivity_summary.png
+/assets/sas_python_validation_summary.png
+/docs/05_sas_python_validation_SHORT.md
+/docs/NOTEBOOK_RUN_VALIDATION.md
+/docs/VALIDATION_NOTES.md
+/docs/assets/adjusted_odds_ratio_plot.png
+/docs/assets/landmark_sensitivity_summary.png
+/docs/assets/sas_python_validation_summary.png
+/notebooks/05_sas_python_validation.ipynb
+/python/outputs/notebook_execution_validation.json
+/python/outputs/python_logistic_parameters.csv
+/python/outputs/python_unadjusted_outcomes.csv

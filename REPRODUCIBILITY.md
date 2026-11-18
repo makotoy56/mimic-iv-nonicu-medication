@@ -4,13 +4,13 @@
 
 This project is a retrospective observational MIMIC-IV clinical analytics workflow evaluating whether documented inpatient RAAS prescription exposure within 24 hours of admission is associated with in-hospital mortality among adult non-ICU hospital admissions.
 
-The analytical purpose is to demonstrate reproducible EHR cohort construction, documented inpatient prescription-exposure classification, multivariable logistic regression, absolute risk interpretation, sensitivity analysis, SAS/Python validation, and Quarto-based clinical reporting. The findings are hypothesis-generating associations and are not causal treatment-effect estimates.
+The analytical purpose is to demonstrate reproducible EHR cohort construction, documented inpatient prescription-exposure classification, multivariable logistic regression, absolute risk interpretation, sensitivity analysis, Python numerical validation, and Quarto-based clinical reporting. The findings are hypothesis-generating associations and are not causal treatment-effect estimates.
 
 ## Data Source
 
 The analysis uses MIMIC-IV v3.1 hospital admission data distributed through PhysioNet and accessed through BigQuery.
 
-Patient-level MIMIC-IV source tables, patient-level derived analysis datasets, credentials, local SAS inputs, and local BigQuery configuration are not included in this repository. Reproduction requires independent PhysioNet/MIMIC approval, Google Cloud authentication, BigQuery access, and local SAS configuration if SAS validation is rerun.
+Patient-level MIMIC-IV source tables, patient-level derived analysis datasets, credentials and local BigQuery configuration are not included in this repository. Reproduction requires independent PhysioNet/MIMIC approval, Google Cloud authentication and BigQuery access.
 
 ## Analytical Workflow
 
@@ -35,12 +35,7 @@ The workflow is organized as an admission-level clinical analytics pipeline. The
    - `notebooks/04b_multivariable_outcomes.ipynb`
 6. **Sensitivity analysis**: 24-hour landmark and admission-source proxy sensitivity models are evaluated in the multivariable outcomes workflow.
    - `notebooks/04b_multivariable_outcomes.ipynb`
-7. **Validation**: exported aggregate Python outputs are compared with SAS-generated outputs for selected unadjusted and logistic model results.
-   - `notebooks/05_sas_python_validation.ipynb`
-   - `sas/programs/01_import_cohort.sas`
-   - `sas/programs/02_baseline_table.sas`
-   - `sas/programs/03_unadjusted_analysis.sas`
-   - `sas/programs/04_multivariable_logistic.sas`
+7. **Validation**: synthetic boundary tests, Firth numerical checks, patient-cluster bootstrap diagnostics and patient-disjoint evaluation are implemented in Python. See [current execution evidence](docs/PYTHON_WORKFLOW_VALIDATION.md).
 8. **Reporting**: the narrative clinical report is authored in Quarto and rendered to `docs/reports/`.
    - `reports/nonicu_raas_mortality_report.qmd`
    - `_quarto.yml`
@@ -50,9 +45,8 @@ The workflow is organized as an admission-level clinical analytics pipeline. The
 
 - **Python environment**: The repository now uses uv with Python 3.12, as documented in `docs/SETUP.md`. Project dependencies are specified in `pyproject.toml` and locked in `uv.lock`; they include pandas, NumPy, statsmodels, firthmodels, scikit-learn, matplotlib, and Google BigQuery client libraries.
 
-- **SAS environment**: SAS® OnDemand for Academics was used for SAS validation workflows. The exact SAS maintenance release was not pinned in the repository.
 - **Quarto version**: 1.9.38 detected locally with `quarto --version`. Quarto configuration is stored in `_quarto.yml`, including output to `docs/` and a post-render normalization script.
-- **Version control**: Git/GitHub are used for code, documentation, SQL definitions, notebooks, SAS programs, aggregate validation outputs, curated figures, and rendered portfolio materials.
+- **Version control**: Git/GitHub are used for code, documentation, SQL definitions, notebooks, current aggregate Python outputs, curated figures, and rendered portfolio materials.
 
 ## Notebook Output Policy
 
@@ -136,20 +130,18 @@ The project targets Python 3.12 with `requires-python = ">=3.12,<3.13"` and `.py
    - `notebooks/03b_describe_analysis_dataset.ipynb`
    - `notebooks/04a_unadjusted_outcomes.ipynb`
    - `notebooks/04b_multivariable_outcomes.ipynb`
-   - `notebooks/05_sas_python_validation.ipynb`
-5. If SAS validation is being reproduced, run the SAS programs in SAS® OnDemand for Academics or another compatible SAS environment, updating library paths as needed.
-6. Render the Quarto report from the repository root:
+5. Render the Quarto report from the repository root:
 
    ```bash
    quarto render reports/nonicu_raas_mortality_report.qmd
    ```
 
-7. Review the rendered report at `docs/reports/nonicu_raas_mortality_report.html`.
+6. Review the rendered report at `docs/reports/nonicu_raas_mortality_report.html`.
 
-The independent-admission profile intervals and historical MLE/SAS outputs are distinct from the added patient-cluster bootstrap intervals. Patient-disjoint discrimination and bootstrap details are documented in [patient-aware validation](docs/PATIENT_AWARE_VALIDATION.md). Quarto post-render now synchronizes referenced canonical images from `assets/` to `docs/assets/` and rejects missing local resources.
+The independent-admission profile intervals and nonconverged Python MLE diagnostics are distinct from the added patient-cluster bootstrap intervals. Patient-disjoint discrimination and bootstrap details are documented in [patient-aware validation](docs/PATIENT_AWARE_VALIDATION.md). Quarto post-render now synchronizes referenced canonical images from `assets/` to `docs/assets/` and rejects missing local resources.
 
 After rendering, run `.venv/bin/python scripts/test_report_consistency.py` to compare current report/narrative values with aggregate CSVs and verify synchronized images. After deployment, run `.venv/bin/python scripts/check_public_report.py` to check live HTML bytes and linked same-site resources.
 
 ## Complete workflow verification
 
-The [complete 00–05 execution record](docs/NOTEBOOK_RUN_VALIDATION.md) and aggregate JSON receipt document eight sequential fresh-kernel runs, source hashes, table expirations and statistical status. Runtime success is recorded separately from historical MLE nonconvergence and SAS comparison flags.
+The [current Python workflow record](docs/PYTHON_WORKFLOW_VALIDATION.md) and its aggregate JSON receipt document the seven sequential fresh-kernel runs, source hashes and statistical status. Runtime success is separate from MLE nonconvergence. The [reproducible scope](docs/REPRODUCIBLE_SCOPE.md) defines the current public workflow.

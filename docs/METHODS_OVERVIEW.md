@@ -4,7 +4,7 @@
 
 This project is a retrospective observational cohort study using MIMIC-IV v3.1 hospital data. The unit of analysis is the hospital admission (`hadm_id`): each row represents one adult non-ICU hospital admission. The cohort is not restricted to one admission per patient, so patients may contribute multiple qualifying admissions.
 
-Cohort construction, exposure definition, baseline covariate assembly, and outcome derivation are implemented with BigQuery-compatible SQL and structured Python notebooks. SAS programs reproduce selected aggregate outputs for validation.
+Cohort construction, exposure definition, baseline covariate assembly, and outcome derivation are implemented with BigQuery-compatible SQL and structured Python notebooks. The public workflow is limited to BigQuery and Python.
 
 ## Cohort Definition
 
@@ -83,9 +83,9 @@ Historical models/profile intervals treat admissions as independent. Added patie
 
 ## Validation Workflow
 
-The SAS-Python validation workflow compares exported aggregate outputs from Python notebooks and SAS programs. It is designed to check reproducibility of selected outputs, not to introduce a new clinical estimand.
+Python validation covers boundary conditions, numerical fit checks, patient-cluster uncertainty and patient-disjoint prediction evaluation. Runtime success does not establish model convergence or causal validity.
 
-See [Validation notes](VALIDATION_NOTES.md) for scope and discrepancy details.
+See [reproducible scope](REPRODUCIBLE_SCOPE.md) and [current execution evidence](PYTHON_WORKFLOW_VALIDATION.md).
 
 **Patient-aware update (2026-11-17):** Current uncertainty summaries use 500 prespecified patient-cluster bootstrap draws, carrying all eligible admissions per sampled patient. Firth point estimates and all exposure/cohort/adjustment definitions are unchanged. Historical admission-independent profile intervals remain available separately. See [patient-aware validation](PATIENT_AWARE_VALIDATION.md).
 

@@ -57,8 +57,7 @@ Adjusted outcome modeling and absolute effect estimation are presented in the su
 
 ## Output and Downstream Use
 
-This notebook does not generate new tables.
-Its outputs are descriptive summaries and figures used for exploratory interpretation and documentation.
+This notebook does not create new BigQuery tables. It exports the current aggregate summary to `python/outputs/unadjusted_outcomes.csv` and generates descriptive figures for interpretation and documentation.
 
 Results from this notebook inform the interpretation of adjusted analyses but are not used directly for modeling.
 

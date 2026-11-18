@@ -40,7 +40,7 @@ MIMIC-IV reflects care delivered within its source health system and time period
 
 ## Practical Value
 
-The main value of the project is methodological and operational: it demonstrates a reproducible EHR-based clinical analytics workflow with transparent definitions, multivariable modeling, absolute risk interpretation, and SAS/Python validation. The results should be treated as association evidence that could motivate more rigorous causal designs or prospective clinical questions.
+The main value of the project is methodological and operational: it demonstrates a reproducible EHR-based clinical analytics workflow with transparent definitions, multivariable modeling, absolute risk interpretation, and documented Python numerical checks. The results should be treated as association evidence that could motivate more rigorous causal designs or prospective clinical questions.
 
 ## Selection and temporal data quality
 

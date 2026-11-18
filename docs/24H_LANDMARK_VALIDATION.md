@@ -74,7 +74,7 @@ An aggregate check found 7,170 `AMBULATORY OBSERVATION` admissions with zero dea
 
 ## Full primary prediction/risk rerun
 
-The existing separate sklearn discrimination and unweighted risk models were rerun. ROC AUC was 0.854487, PR AUC 0.115764, predicted mortality 0.573332% without exposure versus 0.193605% with exposure, and AME −0.379727 percentage points. These reproduce the earlier rounded summaries. The classification and full-cohort risk models used 55 and 13 iterations, respectively. All 200 bootstrap refits completed with the existing seed 42 and 200-replicate specification. These separate penalized prediction models do not repair the unpenalized OR fits. No SAS session was rerun and no SAS-generated artifacts were overwritten.
+The existing separate sklearn discrimination and unweighted risk models were rerun. ROC AUC was 0.854487, PR AUC 0.115764, predicted mortality 0.573332% without exposure versus 0.193605% with exposure, and AME −0.379727 percentage points. These reproduce the earlier rounded summaries. The classification and full-cohort risk models used 55 and 13 iterations, respectively. All 200 bootstrap refits completed with the existing seed 42 and 200-replicate specification. These separate penalized prediction models do not repair the unpenalized OR fits.
 
 ## Reproduction and evidence
 
@@ -97,4 +97,4 @@ Patient records stayed in the authorized BigQuery project and local process memo
 
 The profile intervals and original row-split/bootstrap results above are historical comparisons. Additional patient-cluster intervals (500 prespecified draws), risk/AME intervals and a patient-disjoint holdout are documented in [patient-aware validation](PATIENT_AWARE_VALIDATION.md). Full-data Firth points and original primary/cohort/exposure specifications remain unchanged.
 
-The later [complete notebook rerun](NOTEBOOK_RUN_VALIDATION.md) rebuilt all five tables again and records their current expiration timestamps. The initial reconstruction times above are historical evidence.
+The later [complete notebook rerun](PYTHON_WORKFLOW_VALIDATION.md) rebuilt all five tables again and records their current expiration timestamps. The initial reconstruction times above are historical evidence.

@@ -48,7 +48,7 @@ uv sync
 .venv/bin/python scripts/test_firth_sensitivity.py
 ```
 
-Adding the Firth dependency changed no existing locked package versions. Runtime validation used the existing Python 3.12.13 environment, NumPy 2.4.6, SciPy 1.17.1 and scikit-learn 1.9.0. Only the new pinned package was added. The aggregate outputs are in `python/outputs/firth_model_comparison.csv`; historical MLE outputs remain in `landmark_model_comparison.csv`. No SAS session was rerun; its existing MLE validation artifacts were preserved and do not independently validate Firth inference.
+Adding the Firth dependency changed no existing locked package versions. Runtime validation used the existing Python 3.12.13 environment, NumPy 2.4.6, SciPy 1.17.1 and scikit-learn 1.9.0. Only the new pinned package was added. The aggregate outputs are in `python/outputs/firth_model_comparison.csv`; historical MLE outputs remain in `landmark_model_comparison.csv`. Current numerical checks are Python-only and do not constitute independent clinical validation.
 
 ## Subsequent patient-aware validation
 

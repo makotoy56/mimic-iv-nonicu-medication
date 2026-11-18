@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1440" height="560" viewBox="0 0 1440 560" role="img" aria-labelledby="title desc">
   <title id="title">End-to-end MIMIC-IV non-ICU RAAS medication analysis workflow</title>
-  <desc id="desc">Workflow from MIMIC-IV data through BigQuery cohort construction, adult non-ICU admissions, early RAAS exposure definition, covariate and outcome assembly, unadjusted outcomes, multivariable logistic regression, absolute risk and marginal effects, SAS-Python validation, and cautious observational interpretation.</desc>
+  <desc id="desc">Workflow from MIMIC-IV data through BigQuery cohort construction, adult non-ICU admissions, early RAAS exposure definition, covariate and outcome assembly, unadjusted outcomes, multivariable logistic regression, absolute risk and marginal effects, Python numerical validation, and cautious observational interpretation.</desc>
   <defs>
     <style>
       .bg { fill: #f8fafc; }
@@ -21,7 +21,7 @@
 
   <rect class="bg" x="0" y="0" width="1440" height="560" />
   <text class="title" x="52" y="52">Early RAAS Exposure and Non-ICU Mortality</text>
-  <text class="subtitle" x="52" y="80">Reproducible EHR-based real-world evidence workflow using MIMIC-IV, Python, BigQuery SQL, and SAS</text>
+  <text class="subtitle" x="52" y="80">Reproducible EHR-based real-world evidence workflow using MIMIC-IV, Python and BigQuery SQL</text>
 
   <rect class="step" x="52" y="126" width="160" height="104" rx="14" />
   <text class="label" x="91" y="166">MIMIC-IV</text>
@@ -71,9 +71,9 @@
 
   <path class="arrow" d="M472 338 H436" />
   <rect class="validation" x="248" y="286" width="188" height="104" rx="14" />
-  <text class="label" x="291" y="320">SAS-Python</text>
-  <text class="label" x="299" y="342">validation</text>
-  <text class="small" x="279" y="368">cross-platform checks</text>
+  <text class="label" x="342" y="320" text-anchor="middle">Python</text>
+  <text class="label" x="342" y="342" text-anchor="middle">validation</text>
+  <text class="small" x="342" y="368" text-anchor="middle">patient-aware checks</text>
 
   <path class="arrow" d="M248 338 H212" />
   <rect class="interpretation" x="52" y="286" width="160" height="104" rx="14" />
