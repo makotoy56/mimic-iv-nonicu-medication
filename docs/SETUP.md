@@ -28,13 +28,16 @@ See [destination replacement instructions](../REPRODUCIBILITY.md#replace-the-aut
 
 ## Notebook Execution
 
-Run in order: 00 → 01 → 02 → 03a → 03b → 04a → 04b, using the repository `.venv` and a fresh kernel for each notebook.
+Run in order: 00 → 01 → 02 → 03a → 03b → 04a → 04b → 04c, using the repository `.venv` and a fresh kernel for each notebook.
 
 1. `00_setup.ipynb` validates the interpreter, existing ADC and source access.
 2. `01_cohort.ipynb` through `03b_describe_analysis_dataset.ipynb` build and inspect the analysis tables.
 3. `04a_unadjusted_outcomes.ipynb` and `04b_multivariable_outcomes.ipynb` generate aggregate analyses and figures.
+4. `04c_prediction_time_evaluation.ipynb` adds separate admission/24h ward-confirmed forecasts using the adult base and read-only native-transfer/order queries. Read the [protocol](PREDICTION_TIME_PROTOCOL.md); configure its project/dataset. Later ICU transfers remain included. This is distinct from the retrospective classifier in 04b.
 
-A complete Run All rerun rebuilds five derived tables and overwrites aggregate CSVs and figures. Back up local working changes first and close notebook editors before an external execution to avoid save conflicts. Selective reruns require the upstream tables or exports. See the [complete execution record](PYTHON_WORKFLOW_VALIDATION.md).
+A complete Run All rerun rebuilds five derived tables and overwrites aggregate CSVs and figures. Back up local working changes first and close notebook editors before an external execution to avoid save conflicts. Selective reruns require the upstream tables or exports. See the [current execution record](CLINICAL_REEXECUTION_615de01.md).
+
+
 
 ## Figure Refresh Workflow
 

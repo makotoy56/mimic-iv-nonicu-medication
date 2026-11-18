@@ -92,3 +92,8 @@ See [reproducible scope](REPRODUCIBLE_SCOPE.md) and [current execution evidence]
 **Patient-aware update (2026-11-17):** Current uncertainty summaries use 500 prespecified patient-cluster bootstrap draws, carrying all eligible admissions per sampled patient. Firth point estimates and all exposure/cohort/adjustment definitions are unchanged. Historical admission-independent profile intervals remain available separately. See [patient-aware validation](PATIENT_AWARE_VALIDATION.md).
 
 The supplementary Firth estimator uses a Jeffreys-information penalty and 95% penalized profile-likelihood intervals. All original adjustment categories are retained, including the zero-event admission-type category. Age centering/scaling is an invertible numerical transformation; exact frequency compression of duplicate design/outcome rows does not remove admissions. The original unpenalized primary fit and separate sklearn risk model are preserved.
+
+
+## Separate admission/24-hour prediction evaluation
+
+Notebook 04c adds an independently defined ward-confirmed prediction-time branch from adult base admissions. It retains later ICU transfers and follows subsequent in-hospital death to discharge, with age/sex primary features and a time-verified RAAS-record companion at 24h. The original association cohort/estimates and 04b retrospective discrimination are unchanged. See [protocol](PREDICTION_TIME_PROTOCOL.md) and [real-data results, calibration, exclusions and limits](PREDICTION_TIME_VALIDATION.md).

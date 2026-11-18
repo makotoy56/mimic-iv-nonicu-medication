@@ -20,7 +20,7 @@ For a portfolio-style clinical analytics report presenting the study background,
 
 ➡️ [View the Quarto HTML report](https://makotoy56.github.io/mimic-iv-nonicu-medication/reports/nonicu_raas_mortality_report.html)
 
-This README provides the repository overview and technical navigation. The current [reproducible portfolio scope](docs/REPRODUCIBLE_SCOPE.md) covers BigQuery and Python notebooks 00–04b.
+This README provides the repository overview and technical navigation. The current [reproducible portfolio scope](docs/REPRODUCIBLE_SCOPE.md) covers BigQuery and Python notebooks 00–04c; 04c adds a separate prediction-time evaluation.
 
 ## Reviewer Path
 
@@ -105,6 +105,31 @@ The patient-disjoint holdout is an internal evaluation of retrospective discrimi
 
 The retrospective holdout has zero train/test patient overlap. Scaling and categorical encoding are fitted on training data only. These are single splits with different case mixes, so their metric difference is not evidence of improved model performance. See [patient-aware validation](docs/PATIENT_AWARE_VALIDATION.md).
 
+## Additional Prediction-Time Evaluation
+
+This is an **additional** prediction-time analysis in notebook 04c, separate from 04b's original association cohorts and retrospective discrimination (ROC AUC 0.860635 / PR AUC 0.117607). The outcome is death strictly after the prediction instant through recorded hospital discharge, with a variable hospital-stay horizon.
+
+At admission and at 24 hours, eligibility requires survival, continued hospitalization, a single confirmed non-ICU target-ward transfer interval, and no ICU entry up to that instant. General/specialty, intermediate/stepdown and hospital observation wards are included; ED/ED observation, PACU, nursery and unknown/ambiguous location are excluded. Later ICU transfers remain followed. No later ward entry backfills an unknown admission location. Admission-time results therefore apply to the ward-confirmed subset, not all admissions. This replaces neither the entire-stay ICU exclusion nor the numbers in the original association analyses.
+
+The primary predictors are reconstructed age and recorded sex. A 24-hour companion adds a qualifying 0–<24h RAAS prescription record whose linked POE order time is no later than 24 hours; unverified or later order times cannot make the feature positive. This differs from the original association exposure. Records do not establish medication administration. Untimestamped demographics are assumed available at admission; original entry/version history is unavailable.
+
+| Time | Eligible admissions / deaths | Train admissions | Test admissions / deaths | Later ICU admissions retained |
+| --- | --- | --- | --- | --- |
+| Admission | 719 / 11 | 556 | 163 / 3 | 258 |
+| 24 hours | 336,372 / 3,457 | 268,731 | 67,641 / 698 | 15,329 |
+
+| Model | ROC AUC (95% CI) | PR AUC / AP (95% CI) | Brier |
+| --- | --- | --- | --- |
+| Admission: age/sex | 0.548958 (CI withheld) | 0.030599 (CI withheld) | 0.018112 |
+| 24h: age/sex | 0.686252 (0.668263–0.700923) | 0.021281 (0.018373–0.026761) | 0.010167 |
+| 24h: age/sex + verified RAAS record | 0.699762 (0.681841–0.714670) | 0.022521 (0.019358–0.028395) | 0.010162 |
+
+The protocol used unweighted L2 logistic regression (C=1, lbfgs, max_iter=2000), with training-only imputation, scaling and categorical encoding. One 80/20 patient allocation (seed 42) was fixed on the adult base before time-specific eligibility filters; all admissions of each patient stay in one partition. No test-driven tuning or recalibration was performed. Each model fit converged, with zero patient overlap. Each 24-hour model had 500/500 successful held-out-patient resamples. Admission had only 3 test deaths: 33/500 resamples had one outcome class, leaving 467/500 below the prespecified 95% threshold; all admission bootstrap intervals are withheld. Its point metrics/calibration are sparse-event diagnostics and do not establish reliable admission-time performance. Available 95% percentile intervals condition on the fitted training model and exclude training-sample uncertainty. Calibration is diagnosed without changing predictions. PR AUC is average precision (AP).
+
+The admission and 24-hour populations differ. Metric differences across times are not evidence of improvement. The companion is a feature comparison, not a treatment-effect estimate. These limited-feature retrospective internal models are not prospective, external or deployment validation.
+
+See the [protocol](docs/PREDICTION_TIME_PROTOCOL.md) and [real-data prediction validation](docs/PREDICTION_TIME_VALIDATION.md) for calibration, location uncertainty, exclusion counts and chronology sensitivity.
+
 ## Study Snapshot
 
 | Area | Details |
@@ -132,6 +157,7 @@ Exposure is based on inpatient prescription records. It does not confirm medicat
 - [03b analysis dataset description](notebooks/03b_describe_analysis_dataset.ipynb) and [short notes](docs/03b_describe_analysis_dataset_SHORT.md)
 - [04a unadjusted outcomes](notebooks/04a_unadjusted_outcomes.ipynb) and [short notes](docs/04a_unadjusted_outcomes_SHORT.md)
 - [04b multivariable outcomes](notebooks/04b_multivariable_outcomes.ipynb) and [short notes](docs/04b_multivariable_outcomes_SHORT.md)
+- [04c additional prediction-time evaluation](notebooks/04c_prediction_time_evaluation.ipynb) and [protocol/results](docs/PREDICTION_TIME_VALIDATION.md)
 - [BigQuery SQL](sql/) and [infrastructure sanity check](scripts/validation_checklist.py)
 
 ## Detailed Documentation
@@ -150,7 +176,7 @@ The workflow uses version-controlled notebooks, SQL scripts, and current aggrega
 
 For complete environment and reproducibility details, see [REPRODUCIBILITY.md](REPRODUCIBILITY.md).
 
-The [last full BigQuery/Python execution record](docs/PYTHON_WORKFLOW_VALIDATION.md) records the seven-notebook 00–04b workflow at audit baseline `8063e91`. Later [offline audit corrections](docs/AUDIT_CORRECTIONS_20261118.md) were not a new clinical rerun. Runtime success is separate from statistical convergence; the unpenalized MLE remains nonconverged. See the [reproducible portfolio scope](docs/REPRODUCIBLE_SCOPE.md).
+The [current real-data reexecution record](docs/CLINICAL_REEXECUTION_615de01.md) covers the original 00–04b workflow at `615de01` plus separate notebook 04c (8 notebooks, 93 code cells, zero runtime errors). Connected BigQuery checks and aggregate comparisons passed. Historical [8063e91 evidence](docs/PYTHON_WORKFLOW_VALIDATION.md) is preserved. Runtime success is separate from statistical convergence; the original unpenalized MLE remains nonconverged.
 
 Validation scope:
 

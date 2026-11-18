@@ -48,3 +48,8 @@ All transformations are fitted within training data. The row-split reference was
 ## Interpretation boundary
 
 These are observational associations. Firth addresses separation; patient-cluster resampling addresses repeated-admission dependence. Neither corrects unmeasured severity, treatment eligibility, prescribing behavior, entire-stay ICU selection, or other residual confounding. The 500-draw percentile limits have Monte Carlo error and are not proof of coverage. Nonconverged MLE diagnostics do not validate inference; current Firth/bootstrap checks are documented separately.
+
+
+## Separate admission/24-hour prediction evaluation
+
+Notebook 04c adds an independently defined ward-confirmed prediction-time branch from adult base admissions. It retains later ICU transfers and follows subsequent in-hospital death to discharge, with age/sex primary features and a time-verified RAAS-record companion at 24h. The original association cohort/estimates and 04b retrospective discrimination are unchanged. See [protocol](PREDICTION_TIME_PROTOCOL.md) and [real-data results, calibration, exclusions and limits](PREDICTION_TIME_VALIDATION.md).

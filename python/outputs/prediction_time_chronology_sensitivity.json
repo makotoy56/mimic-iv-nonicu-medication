@@ -1,0 +1,112 @@
+{
+  "started_utc": "2026-11-18T11:19:33.368008+00:00",
+  "completed_utc": "2026-11-18T11:21:52.405628+00:00",
+  "queries": {
+    "query_sha256": "524b307d9fbc1515aa2d949883f046c719a0c937c749485e8396b6570fabf989",
+    "dry_run_bytes": 3282848727,
+    "retrieval_job_id": "3ec97c1e-22ca-466d-bfff-8f0ea283944c",
+    "retrieval_bytes_processed": 0,
+    "sql_python_eligibility_checks": [
+      {
+        "prediction_hours": 0,
+        "admissions": 719,
+        "deaths": 11,
+        "job_id": "0bbf3811-3c35-4f3c-870c-6b0eaca218e5",
+        "bytes_processed": 0
+      },
+      {
+        "prediction_hours": 24,
+        "admissions": 336372,
+        "deaths": 3457,
+        "job_id": "87249b16-a7c7-4764-a2d7-da5d4383e6af",
+        "bytes_processed": 0
+      }
+    ],
+    "native_transfer_reconstruction": {
+      "sample_admissions": 592,
+      "prediction_points_checked": 1184,
+      "mismatches": 0,
+      "sampling": "deterministic admission hash modulo 1000 = 0",
+      "job_id": "65caa354-70f5-4f17-b162-46a679af9d0f",
+      "bytes_processed": 0,
+      "row_exports": false
+    },
+    "source": "MIMIC-IV v3.1 adult base, transfers, icustays, prescriptions, poe",
+    "rows_in_memory": 546028,
+    "row_exports": false
+  },
+  "independent_sql_counts": [
+    {
+      "prediction_hours": 0,
+      "admissions": 719,
+      "job_id": "a488d581-9f4d-45a2-81ca-642c93c35029",
+      "bytes_processed": 1013764559
+    },
+    {
+      "prediction_hours": 24,
+      "admissions": 336362,
+      "job_id": "91cf76cc-470b-4030-8db1-fe52a765cfbc",
+      "bytes_processed": 1013764559
+    }
+  ],
+  "quality": {
+    "base_uncertain_icu_chronology_admissions": 129,
+    "master_patient_split_unchanged": true,
+    "post_QA_not_prespecified_primary": true,
+    "point_estimates_only": true
+  },
+  "models": [
+    {
+      "model": "Admission: age/sex",
+      "prediction_hours": 0,
+      "eligible_admissions": 719,
+      "excluded_uncertain_icu_admissions": 0,
+      "test_admissions": 163,
+      "test_deaths": 3,
+      "overlapping_patients": 0,
+      "roc_auc": 0.5489583333,
+      "pr_auc_average_precision": 0.0305993151,
+      "brier": 0.0181116944,
+      "roc_auc_difference_from_prespecified": 0.0,
+      "pr_auc_difference_from_prespecified": 5.204170428e-17,
+      "converged": true,
+      "iterations": 10,
+      "bootstrap_requested": 0
+    },
+    {
+      "model": "24h: age/sex",
+      "prediction_hours": 24,
+      "eligible_admissions": 336362,
+      "excluded_uncertain_icu_admissions": 10,
+      "test_admissions": 67640,
+      "test_deaths": 697,
+      "overlapping_patients": 0,
+      "roc_auc": 0.6858260709,
+      "pr_auc_average_precision": 0.0211690585,
+      "brier": 0.0101534477,
+      "roc_auc_difference_from_prespecified": -0.0004260295,
+      "pr_auc_difference_from_prespecified": -0.0001122661,
+      "converged": true,
+      "iterations": 10,
+      "bootstrap_requested": 0
+    },
+    {
+      "model": "24h: age/sex + verified RAAS record",
+      "prediction_hours": 24,
+      "eligible_admissions": 336362,
+      "excluded_uncertain_icu_admissions": 10,
+      "test_admissions": 67640,
+      "test_deaths": 697,
+      "overlapping_patients": 0,
+      "roc_auc": 0.6996394136,
+      "pr_auc_average_precision": 0.022503359,
+      "brier": 0.0101476532,
+      "roc_auc_difference_from_prespecified": -0.000123026,
+      "pr_auc_difference_from_prespecified": -1.80056e-05,
+      "converged": true,
+      "iterations": 10,
+      "bootstrap_requested": 0
+    }
+  ],
+  "row_exports": false
+}

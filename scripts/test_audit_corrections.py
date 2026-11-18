@@ -98,7 +98,7 @@ with tempfile.TemporaryDirectory() as temporary:
         query=rebuilt['creation_query'](table,sql)
         assert f'CREATE TABLE `{new_project}.{new_dataset}.{table}`' in query
         assert 'INTERVAL 60 DAY' in query and 'CREATE OR REPLACE' not in query
-print('PASS: documented destination changes cover seven notebooks, six SQL files and all five rebuild steps; source projects/expiration retained')
+print('PASS: documented destination changes cover eight notebooks, seven SQL files and all five rebuild steps; source projects/expiration retained')
 
 checker=ROOT/'scripts/validation_checklist.py';check=load_source(checker,replace(checker.read_text()))
 class Client:

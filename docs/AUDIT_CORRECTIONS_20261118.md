@@ -1,5 +1,7 @@
 # Offline interpretation and source corrections (2026-11-18)
 
+**Later authorized work:** [Current real-data reexecution and added prediction-time evaluation](CLINICAL_REEXECUTION_615de01.md) supersedes the outstanding connected-run gaps. This historical note and its original receipt retain their original scope.
+
 Audit baseline: `8063e9172346b9a6898f8746b1132a0f2d54d9ce`. These corrections use version-controlled source, previously published aggregate CSV/JSON evidence and synthetic data only. No BigQuery connection, patient-data retrieval, clinical model rerun or SAS execution was performed. The revised local Quarto HTML is a presentation rebuild, not a new clinical analysis. Publication/deployment was outside the original offline correction pass. Any subsequently authorized release does not constitute another clinical rerun.
 
 ## Retrospective discrimination and landmark association are different analyses

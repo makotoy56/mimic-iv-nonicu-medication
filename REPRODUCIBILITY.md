@@ -37,8 +37,9 @@ The workflow is organized as an admission-level clinical analytics pipeline. The
    - `notebooks/04b_multivariable_outcomes.ipynb`
 6. **Sensitivity analysis**: 24-hour landmark and admission-source proxy sensitivity models are evaluated in the multivariable outcomes workflow.
    - `notebooks/04b_multivariable_outcomes.ipynb`
-7. **Validation**: synthetic boundary tests, Firth numerical checks, patient-cluster bootstrap diagnostics and internal retrospective discrimination evaluation are implemented in Python. See [current execution evidence](docs/PYTHON_WORKFLOW_VALIDATION.md).
-8. **Reporting**: the narrative clinical report is authored in Quarto and rendered to `docs/reports/`.
+7. **Additional prediction-time evaluation**: notebook 04c defines ward-confirmed admission/24h risk sets, retains later ICU transfers and evaluates subsequent in-hospital death through discharge. See the separate [protocol and results](docs/PREDICTION_TIME_VALIDATION.md).
+8. **Validation**: synthetic boundary tests, Firth numerical checks, patient-cluster bootstrap diagnostics and internal retrospective discrimination evaluation are implemented in Python. See [current execution evidence](docs/CLINICAL_REEXECUTION_615de01.md).
+9. **Reporting**: the narrative clinical report is authored in Quarto and rendered to `docs/reports/`.
    - `reports/nonicu_raas_mortality_report.qmd`
    - `_quarto.yml`
    - `docs/reports/nonicu_raas_mortality_report.html`
@@ -117,9 +118,10 @@ Make these coordinated replacements in a private working copy before any connect
 
 | Source | Required replacement |
 | --- | --- |
-| All six `sql/*.sql` files | Replace every destination prefix `mimic-iv-portfolio.nonicu_raas` with `YOUR_PROJECT.YOUR_DATASET`, including intermediate-table reads and the drug-check query. |
-| All seven notebooks 00–04b | Set `PROJECT_ID` to `YOUR_PROJECT`. Set `DATASET_ID` in 00 and `DATASET` in 01–04b to `YOUR_DATASET`; keep `LOCATION = "US"` in 00. Derived `TABLE_*` strings then follow those constants. |
+| All seven `sql/*.sql` files | Replace every destination prefix `mimic-iv-portfolio.nonicu_raas` with `YOUR_PROJECT.YOUR_DATASET`, including intermediate-table reads and the drug-check query. |
+| All eight notebooks 00–04c | Set `PROJECT_ID` to `YOUR_PROJECT`. Set `DATASET_ID` in 00 and `DATASET` in 01–04c to `YOUR_DATASET`; keep `LOCATION = "US"` in 00. Derived `TABLE_*` strings then follow those constants. |
 | `scripts/rebuild_analysis_tables.py` | Set its fully qualified `DATASET` to `YOUR_PROJECT.YOUR_DATASET` **and** its `bigquery.Client(project=...)` to `YOUR_PROJECT`. Its exact CREATE-header check must agree with the edited SQL prefix. |
+| Additional prediction helpers | Notebook 04c passes its `PROJECT_ID`/`DATASET` to `read_inputs`; no default edits are needed for that route. For direct helper use pass `project=YOUR_PROJECT, dataset=YOUR_DATASET`. The optional chronology sensitivity CLI accepts `--project YOUR_PROJECT --dataset YOUR_DATASET`. Native MIMIC source prefixes stay unchanged. |
 | Optional `scripts/validation_checklist.py` | Set `PROJECT_ID` and `DATASET`; table references, including the landmark prevalence query, follow `TABLES`. |
 
 Keep the authorized source references `physionet-data.mimiciv_3_1_hosp` and `physionet-data.mimiciv_3_1_icu` unchanged unless deliberately using an equivalent licensed source. Do not replace `physionet-data` with the destination project. Retain table names, joins, cohort/exposure predicates and US location. Update explanatory author-project labels in notebook markdown separately if desired; those labels do not configure execution.
@@ -151,6 +153,7 @@ Only after reviewing the replacements, use the rebuild helper without `--execute
    - `notebooks/03b_describe_analysis_dataset.ipynb`
    - `notebooks/04a_unadjusted_outcomes.ipynb`
    - `notebooks/04b_multivariable_outcomes.ipynb`
+   - `notebooks/04c_prediction_time_evaluation.ipynb` (separate ward-confirmed admission/24h predictions; read the protocol first)
 5. Render the Quarto report from the repository root:
 
    ```bash
@@ -165,4 +168,23 @@ After rendering, run `.venv/bin/python scripts/test_report_consistency.py` to co
 
 ## Complete workflow verification
 
-The [last full Python workflow record](docs/PYTHON_WORKFLOW_VALIDATION.md) and its aggregate JSON receipt document the seven sequential fresh-kernel runs, source hashes and statistical status. Runtime success is separate from MLE nonconvergence. The receipt describes the executed source snapshot at `8063e91`; subsequent [offline audit corrections](docs/AUDIT_CORRECTIONS_20261118.md) do not constitute another full run. The [reproducible scope](docs/REPRODUCIBLE_SCOPE.md) defines the public workflow.
+The [current clinical reexecution record](docs/CLINICAL_REEXECUTION_615de01.md) documents the original seven fresh-kernel runs at `615de01`, plus the added prediction-time notebook (8 notebooks / 93 cells total). Connected BigQuery checks and original aggregate comparisons passed; MLE remains separated/nonconverged. Historical [8063e91 execution evidence](docs/PYTHON_WORKFLOW_VALIDATION.md) and [offline correction scope](docs/AUDIT_CORRECTIONS_20261118.md) remain distinct.
+
+## Additional time-anchored prediction branch
+
+Notebook 04c uses read-only `sql/05_prediction_time_inputs.sql` from the adult base and native `transfers`, `icustays`, `prescriptions` and `poe`. It requires confirmed ward occupancy at the point and no prior ICU entry, retains later ICU transfers and follows subsequent in-hospital death through discharge. It does not use the original entire-stay non-ICU analysis table as its risk set. See [protocol](docs/PREDICTION_TIME_PROTOCOL.md) and [real-data validation](docs/PREDICTION_TIME_VALIDATION.md). Admission results apply only to ward-confirmed admissions. Configure the notebook constants before running; reads are dry-run first and capped at 10 GiB/query. Only aggregate CSV/JSON and a calibration figure are saved. The optional post-QA point-estimate sensitivity is:
+
+```bash
+.venv/bin/python scripts/prediction_time_chronology_sensitivity.py --project YOUR_PROJECT --dataset YOUR_DATASET
+```
+
+Synthetic checks require no data access:
+
+```bash
+.venv/bin/python scripts/test_prediction_time_validation.py
+.venv/bin/python scripts/test_prediction_time_location.py
+.venv/bin/python scripts/test_prediction_time_chronology_sensitivity.py
+.venv/bin/python scripts/test_prediction_time_report.py
+```
+
+The additional forecast metrics cannot reuse 04b retrospective AUCs. Their intervals resample held-out patients conditional on fixed trained models. Predictors are limited to age/sex and a separately defined time-verified RAAS record in the companion model. This is retrospective internal evaluation, not prospective/external validation or a causal RAAS effect.

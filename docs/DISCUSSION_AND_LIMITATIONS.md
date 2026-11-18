@@ -51,3 +51,8 @@ Age-specific curves are main-effects model predictions at a typical mean covaria
 The 500-draw percentile bootstrap intervals have Monte Carlo variability; passing the numerical fit checks does not demonstrate nominal coverage or model correctness. The patient-disjoint split is a single internal holdout, not external validation or evidence that model performance improved.
 
 The patient-disjoint holdout is an internal evaluation of retrospective discrimination on the full admission cohort. It uses prescription records from 0–<24 hours while including deaths within 24 hours, and applies no 24-hour survival/continued-hospitalization eligibility filter. There is no fixed clinical prediction time or prospective prediction horizon: ROC AUC 0.860635 and PR AUC 0.117607 do not describe admission-time or 24-hour prognostic performance. Patient separation and train-only preprocessing address patient overlap and preprocessing leakage, not temporal feature availability. The 24-hour landmark association analyses separately require confirmed survival and continued hospitalization strictly beyond 24 hours and evaluate subsequent in-hospital death; they use a different eligible cohort.
+
+
+## Separate admission/24-hour prediction evaluation
+
+Notebook 04c adds an independently defined ward-confirmed prediction-time branch from adult base admissions. It retains later ICU transfers and follows subsequent in-hospital death to discharge, with age/sex primary features and a time-verified RAAS-record companion at 24h. The original association cohort/estimates and 04b retrospective discrimination are unchanged. See [protocol](PREDICTION_TIME_PROTOCOL.md) and [real-data results, calibration, exclusions and limits](PREDICTION_TIME_VALIDATION.md).

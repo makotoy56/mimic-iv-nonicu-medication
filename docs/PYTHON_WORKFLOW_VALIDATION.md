@@ -1,5 +1,7 @@
 # BigQuery/Python execution validation: baseline 8063e91
 
+**Later authorized work:** [Current real-data reexecution and added prediction-time evaluation](CLINICAL_REEXECUTION_615de01.md) supersedes the outstanding connected-run gaps. This historical note and its original receipt retain their original scope.
+
 This is the historical full-execution record for audit baseline `8063e91`. Subsequent [offline audit corrections](AUDIT_CORRECTIONS_20261118.md) changed source labels and interpretation without rerunning clinical models. The original JSON receipt and its source hashes are preserved as evidence of that executed snapshot, not a receipt for the edited source.
 
 Executed from 2026-11-18T06:40:55.673645+00:00 to 2026-11-18T07:12:37.048956+00:00 (UTC).

@@ -29,7 +29,7 @@ The original unpenalized primary/sensitivity fits have separation and remain non
 
 ## Reproducible Workflow
 
-The workflow separates data construction, model estimation, visualization, and validation. The analytic sequence starts with an adult hospital admission cohort, excludes ICU-associated admissions, classifies documented ACE inhibitor or ARB prescription exposure from records with start times within 24 hours, fits adjusted outcome models, and checks aggregate outputs and numerical diagnostics in Python.
+The association workflow below separates data construction, model estimation, visualization, and validation. The additional prediction-time branch starts from adult base admissions and native transfers/ICU/order records; it does not use the future entire-stay ICU exclusion shown in the original association lineage. The analytic sequence starts with an adult hospital admission cohort, excludes ICU-associated admissions, classifies documented ACE inhibitor or ARB prescription exposure from records with start times within 24 hours, fits adjusted outcome models, and checks aggregate outputs and numerical diagnostics in Python.
 
 The key design choice is that the fixed non-ICU cohort is constructed before exposure definition or outcome modeling. The SQL eligibility rule does not use the prescription-exposure flag, and downstream outputs are traceable to one admission-level table. Excluding ICU use over the entire admission can still condition on post-admission events; this procedural ordering does not establish statistical independence or remove selection bias.
 
@@ -175,6 +175,41 @@ The patient-disjoint holdout is an internal evaluation of retrospective discrimi
 
 A patient-disjoint 80/20 patient holdout (seed 42) has zero patient overlap. The same class-balanced L2 classifier specification is used; its scaler and categorical encoder are learned on training data only. The admission-random reference is a new deterministic-order calculation, distinct from the historical unordered-row AUC. A single split does not provide external validation, and the different case mixes preclude a claim that group splitting improved performance.
 
+## Additional Prediction-Time Evaluation {#prediction-time-evaluation}
+
+This is an **additional** prediction-time analysis in notebook 04c, separate from 04b's original association cohorts and retrospective discrimination (ROC AUC 0.860635 / PR AUC 0.117607). The outcome is death strictly after the prediction instant through recorded hospital discharge, with a variable hospital-stay horizon.
+
+At admission and at 24 hours, eligibility requires survival, continued hospitalization, a single confirmed non-ICU target-ward transfer interval, and no ICU entry up to that instant. General/specialty, intermediate/stepdown and hospital observation wards are included; ED/ED observation, PACU, nursery and unknown/ambiguous location are excluded. Later ICU transfers remain followed. No later ward entry backfills an unknown admission location. Admission-time results therefore apply to the ward-confirmed subset, not all admissions. This replaces neither the entire-stay ICU exclusion nor the numbers in the original association analyses.
+
+The primary predictors are reconstructed age and recorded sex. A 24-hour companion adds a qualifying 0–<24h RAAS prescription record whose linked POE order time is no later than 24 hours; unverified or later order times cannot make the feature positive. This differs from the original association exposure. Records do not establish medication administration. Untimestamped demographics are assumed available at admission; original entry/version history is unavailable.
+
+| Time | Eligible admissions / deaths | Train admissions | Test admissions / deaths | Later ICU admissions retained |
+| --- | --- | --- | --- | --- |
+| Admission | 719 / 11 | 556 | 163 / 3 | 258 |
+| 24 hours | 336,372 / 3,457 | 268,731 | 67,641 / 698 | 15,329 |
+
+| Model | ROC AUC (95% CI) | PR AUC / AP (95% CI) | Brier |
+| --- | --- | --- | --- |
+| Admission: age/sex | 0.548958 (CI withheld) | 0.030599 (CI withheld) | 0.018112 |
+| 24h: age/sex | 0.686252 (0.668263–0.700923) | 0.021281 (0.018373–0.026761) | 0.010167 |
+| 24h: age/sex + verified RAAS record | 0.699762 (0.681841–0.714670) | 0.022521 (0.019358–0.028395) | 0.010162 |
+
+The protocol used unweighted L2 logistic regression (C=1, lbfgs, max_iter=2000), with training-only imputation, scaling and categorical encoding. One 80/20 patient allocation (seed 42) was fixed on the adult base before time-specific eligibility filters; all admissions of each patient stay in one partition. No test-driven tuning or recalibration was performed. Each model fit converged, with zero patient overlap. Each 24-hour model had 500/500 successful held-out-patient resamples. Admission had only 3 test deaths: 33/500 resamples had one outcome class, leaving 467/500 below the prespecified 95% threshold; all admission bootstrap intervals are withheld. Its point metrics/calibration are sparse-event diagnostics and do not establish reliable admission-time performance. Available 95% percentile intervals condition on the fitted training model and exclude training-sample uncertainty. Calibration is diagnosed without changing predictions. PR AUC is average precision (AP).
+
+The admission and 24-hour populations differ. Metric differences across times are not evidence of improvement. The companion is a feature comparison, not a treatment-effect estimate. These limited-feature retrospective internal models are not prospective, external or deployment validation.
+
+| Model | Observed / mean predicted mortality | Calibration intercept / slope | Brier / constant-risk reference |
+| --- | --- | --- | --- |
+| Admission: age/sex | 1.840% / 1.406% | -4.2455 / -0.0621 | 0.018112 / 0.018082 |
+| 24h: age/sex | 1.032% / 1.036% | 0.0879 / 1.0213 | 0.010167 / 0.010213 |
+| 24h: age/sex + verified RAAS record | 1.032% / 1.039% | -0.0030 / 1.0008 | 0.010162 / 0.010213 |
+
+Calibration intercept/slope are diagnostic holdout fits (ideal 0/1), not applied recalibrations. Brier is probability mean squared error; the reference predicts the training event rate.
+
+![Patient-disjoint internal calibration of separate admission and 24-hour models. Points show test-set bin means; bars show available 95% held-out-patient bootstrap intervals conditional on trained models. Admission intervals are withheld for sparse events.](../assets/prediction_time_calibration.png){fig-alt="Calibration of admission and 24-hour ward-confirmed prediction models" width="100%"}
+
+The protocol was amended during cohort review to require confirmed ward location; initial no-prior-ICU working outputs are retained privately, and feature/estimator tuning was not based on holdout performance. [Protocol](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/PREDICTION_TIME_PROTOCOL.md) and [real-data validation](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/PREDICTION_TIME_VALIDATION.md) document all exclusion reasons, interval reconstruction, POE coverage and a separately labelled ICU-chronology sensitivity. The original association cohort/results remain unchanged.
+
 ## Absolute Risk Interpretation
 
 The adjusted odds ratio is a relative measure. Because in-hospital mortality was uncommon in this non-ICU cohort, the project also reported adjusted predicted risks and average marginal effects. The fitted model produced an average adjusted predicted mortality difference of approximately -0.38 percentage points between the documented-exposure and no-exposure scenarios.
@@ -197,7 +232,7 @@ The current risk/AME table and age-contrast figure use 500 prespecified patient-
 
 ## Python Reproducibility Checks
 
-The public workflow covers BigQuery construction and Python analysis through notebook 04b. Numerical tests, fit diagnostics, patient-cluster resampling and patient-disjoint evaluation are documented in the [reproducible scope](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/REPRODUCIBLE_SCOPE.md). These checks do not establish causal validity.
+The public workflow covers BigQuery construction and Python analysis through notebook 04c, with separate association and prediction-time evaluations. Numerical tests, fit diagnostics, patient-cluster resampling and patient-disjoint evaluation are documented in the [reproducible scope](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/REPRODUCIBLE_SCOPE.md). These checks do not establish causal validity.
 
 ## Interpretation Boundary
 
@@ -217,7 +252,7 @@ For complete environment and reproducibility details, see [REPRODUCIBILITY.md](h
 
 MIMIC-IV and PhysioNet access, Google Cloud authentication, BigQuery access, and local environment settings are configured outside the repository.
 
-The last full 00–04b execution at audit baseline `8063e91` used sequential fresh repository Python kernels. Later [offline audit corrections](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/AUDIT_CORRECTIONS_20261118.md) clarify interpretation and source labels without another clinical rerun. Local outputs are saved; Git retains the existing output-stripping policy. Model convergence is separate from runtime success. [Baseline execution and source-hash record](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/PYTHON_WORKFLOW_VALIDATION.md).
+The original 00–04b workflow at `615de01` was reexecuted with fresh repository kernels, followed by separate notebook 04c: 8 notebooks / 93 code cells, zero runtime error outputs. Connected BigQuery checks and original aggregate comparisons passed. [Current execution and source-preservation evidence](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/CLINICAL_REEXECUTION_615de01.md) distinguishes runtime success, separated MLE diagnostics and new prediction calibration. [Historical baseline evidence](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/PYTHON_WORKFLOW_VALIDATION.md) remains available. Local outputs are saved; Git strips notebook outputs/counts.
 
 ## Conclusion
 

@@ -74,3 +74,8 @@ Quarto post-render copies referenced canonical images into `docs/assets/` and re
 Firth and patient resampling do not remove unmeasured confounding, timing/eligibility selection or selection from excluding any ICU stay during the entire admission. The primary cohort still includes observation/day-case categories and its original timestamp inconsistencies; the landmark rules explicitly exclude inconsistent eligibility records. No patient-level data, identifiers, credentials or compressed covariate patterns are saved or published.
 
 SciPy is explicitly listed as a direct dependency for the analytic-gradient fallback. Updating the dependency metadata changed no locked package version; the computation used the existing SciPy 1.17.1.
+
+
+## Separate admission/24-hour prediction evaluation
+
+Notebook 04c adds an independently defined ward-confirmed prediction-time branch from adult base admissions. It retains later ICU transfers and follows subsequent in-hospital death to discharge, with age/sex primary features and a time-verified RAAS-record companion at 24h. The original association cohort/estimates and 04b retrospective discrimination are unchanged. See [protocol](PREDICTION_TIME_PROTOCOL.md) and [real-data results, calibration, exclusions and limits](PREDICTION_TIME_VALIDATION.md).

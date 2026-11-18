@@ -35,3 +35,6 @@ The figure files contain only aggregate, presentation-level summaries. No patien
 ## Interpretation Boundary
 
 The README figures summarize observational associations based on documented inpatient prescription exposure. They do not confirm medication administration and should not be interpreted as causal treatment-effect evidence. Residual confounding may remain despite multivariable adjustment and sensitivity analyses. Current Python execution evidence is described in [reproducible scope](REPRODUCIBLE_SCOPE.md).
+
+
+The additional notebook 04c exports `assets/prediction_time_calibration.png` from aggregate time-specific holdout bins. The Quarto post-render step synchronizes it to `docs/assets/`. It displays separate ward-confirmed admission/24h populations with held-out-patient intervals conditional on fitted models; see [prediction validation](PREDICTION_TIME_VALIDATION.md).

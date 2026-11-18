@@ -1,0 +1,4 @@
+model,prediction_hours,eligible_admissions,excluded_uncertain_icu_admissions,test_admissions,test_deaths,overlapping_patients,roc_auc,pr_auc_average_precision,brier,roc_auc_difference_from_prespecified,pr_auc_difference_from_prespecified,converged,iterations,bootstrap_requested
+Admission: age/sex,0,719,0,163,3,0,0.5489583333333332,0.03059931506849315,0.018111694421866692,0.0,5.204170427930421e-17,True,10,0
+24h: age/sex,24,336362,10,67640,697,0,0.6858260708788185,0.021169058506104517,0.01015344772652365,-0.00042602949464642936,-0.0001122661108353823,True,10,0
+24h: age/sex + verified RAAS record,24,336362,10,67640,697,0,0.6996394135690632,0.022503359044176167,0.010147653203312944,-0.00012302599002456116,-1.8005560905032247e-05,True,10,0
