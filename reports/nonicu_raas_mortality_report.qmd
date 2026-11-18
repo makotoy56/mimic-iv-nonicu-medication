@@ -208,6 +208,18 @@ Calibration intercept/slope are diagnostic holdout fits (ideal 0/1), not applied
 
 ![Patient-disjoint internal calibration of separate admission and 24-hour models. Points show test-set bin means; bars show available 95% held-out-patient bootstrap intervals conditional on trained models. Admission intervals are withheld for sparse events.](../assets/prediction_time_calibration.png){fig-alt="Calibration of admission and 24-hour ward-confirmed prediction models" width="100%"}
 
+::: {.callout-note title="How to read the admission-time panel"}
+
+Each point groups admissions with similar predicted risks. The horizontal axis is their average predicted mortality; the vertical axis is their observed mortality. The dashed line marks agreement between prediction and observation.
+
+- **Why the line is jagged:** only 3 of the 163 test admissions died. One death in a small group can raise its observed mortality by several percentage points, while groups with no observed deaths stay at 0%. The line is strongly affected by these few events, so its shape alone cannot establish whether the model predicts well.
+- **What 0% means:** no deaths were observed in that group. It does not mean that the group's true mortality risk is zero.
+- **Why intervals are missing:** with so few deaths, too few patient resamples produced usable estimates to meet the reporting rule set before evaluation. Confidence intervals were therefore withheld. More deaths would need to be observed for a reliable admission-time assessment.
+
+The admission-time and 24-hour panels use different eligible populations. Their difference does not show that waiting 24 hours improves a model.
+
+:::
+
 The protocol was amended during cohort review to require confirmed ward location; initial no-prior-ICU working outputs are retained privately, and feature/estimator tuning was not based on holdout performance. [Protocol](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/PREDICTION_TIME_PROTOCOL.md) and [real-data validation](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/PREDICTION_TIME_VALIDATION.md) document all exclusion reasons, interval reconstruction, POE coverage and a separately labelled ICU-chronology sensitivity. The original association cohort/results remain unchanged.
 
 ## Absolute Risk Interpretation

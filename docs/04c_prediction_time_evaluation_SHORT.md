@@ -36,6 +36,16 @@ Each 24h model accepted 500/500 held-out-patient bootstrap draws. Admission had 
 
 The two times have different risk sets; their AUC difference does not show model improvement. The RAAS companion is a feature comparison, not a treatment effect. These limited-feature retrospective internal evaluations are not prospective, external or deployment validation.
 
+## Reading the admission-time calibration plot
+
+Each point groups admissions with similar predicted risks. The horizontal axis is their average predicted mortality; the vertical axis is their observed mortality. The dashed line marks agreement between prediction and observation.
+
+- **Why the line is jagged:** only 3 of the 163 test admissions died. One death in a small group can raise its observed mortality by several percentage points, while groups with no observed deaths stay at 0%. The line is strongly affected by these few events, so its shape alone cannot establish whether the model predicts well.
+- **What 0% means:** no deaths were observed in that group. It does not mean that the group's true mortality risk is zero.
+- **Why intervals are missing:** with so few deaths, too few patient resamples produced usable estimates to meet the reporting rule set before evaluation. Confidence intervals were therefore withheld. More deaths would need to be observed for a reliable admission-time assessment.
+
+See the [calibration plot in the report](https://makotoy56.github.io/mimic-iv-nonicu-medication/reports/nonicu_raas_mortality_report.html#prediction-time-evaluation). The two panels use different eligible populations and do not establish an improvement from waiting 24 hours.
+
 ## Execution and outputs
 
 Notebook 04c completed 8/8 code cells without runtime error and saved aggregate `prediction_time_*.csv/json` plus the calibration figure. SQL/Python eligibility counts matched at both times. Independent native-transfer reconstruction matched all 1,184 sampled prediction points; 29 BigQuery boundary cases and 16 synthetic transfer cases passed. Only aggregate outputs are public. The initial protocol was amended during cohort review to require confirmed ward location before these revised fits; see the [protocol](PREDICTION_TIME_PROTOCOL.md) and [current execution record](CLINICAL_REEXECUTION_615de01.md).

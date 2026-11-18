@@ -39,6 +39,16 @@ Admission ward confirmation is exceptionally sparse (719 admissions, 11 deaths o
 
 Brier scores are mean squared probability error; the constant reference predicts the training event rate. Calibration intercept/slope are diagnostic holdout fits (ideal 0/1), not applied recalibrations. Bin-wise observed risks and patient-bootstrap intervals are in the aggregate calibration CSV and [figure](../assets/prediction_time_calibration.png). Discrimination alone does not imply accurate absolute risks.
 
+## Reading the admission-time calibration plot
+
+Each point groups admissions with similar predicted risks. The horizontal axis is their average predicted mortality; the vertical axis is their observed mortality. The dashed line marks agreement between prediction and observation.
+
+- **Why the line is jagged:** only 3 of the 163 test admissions died. One death in a small group can raise its observed mortality by several percentage points, while groups with no observed deaths stay at 0%. The line is strongly affected by these few events, so its shape alone cannot establish whether the model predicts well.
+- **What 0% means:** no deaths were observed in that group. It does not mean that the group's true mortality risk is zero.
+- **Why intervals are missing:** with so few deaths, too few patient resamples produced usable estimates to meet the reporting rule set before evaluation. Confidence intervals were therefore withheld. More deaths would need to be observed for a reliable admission-time assessment.
+
+These explanations describe the existing estimates; they do not change the model, cohorts, bootstrap reporting rule or figure.
+
 ## Data and independent checks
 
 The adult source base contained 546,028 admissions from 223,452 patients. Each time-specific exclusion flow below sums to that base. Reasons are hierarchical: only the first applicable reason is counted; flagged-death counts are not validated outcome totals for excluded records. Missing/inconsistent outcome times are never silently assigned survival.
