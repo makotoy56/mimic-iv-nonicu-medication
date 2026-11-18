@@ -72,9 +72,9 @@ Ordinary/proxy specifications have identical model counts and dropped zero numer
 
 An aggregate check found 7,170 `AMBULATORY OBSERVATION` admissions with zero deaths, consistent with a separation problem in the unpenalized model. A subsequent explicit Firth sensitivity analysis retained every adjustment category and converged for all five comparisons. It changes the estimator while preserving the original primary specification/output; see [Firth validation](FIRTH_SENSITIVITY_VALIDATION.md). The original MLE remains separated and is not relabeled as converged. Existing OR figures remain historical and were not overwritten with unconverged results. A skipped export now allows later notebook prediction/bootstrap sections to continue.
 
-## Full primary prediction/risk rerun
+## Historical full-cohort discrimination/risk rerun (2026-11-17)
 
-The existing separate sklearn discrimination and unweighted risk models were rerun. ROC AUC was 0.854487, PR AUC 0.115764, predicted mortality 0.573332% without exposure versus 0.193605% with exposure, and AME −0.379727 percentage points. These reproduce the earlier rounded summaries. The classification and full-cohort risk models used 55 and 13 iterations, respectively. All 200 bootstrap refits completed with the existing seed 42 and 200-replicate specification. These separate penalized prediction models do not repair the unpenalized OR fits.
+The existing separate sklearn discrimination and unweighted risk models were rerun. The unordered admission-row classification split in this initial validation reported ROC AUC 0.854487 and PR AUC 0.115764; these are historical retrospective-discrimination metrics, not patient-disjoint or fixed-time prognosis results. Exact row partitions were not exported. The separate unweighted risk model reported predicted mortality 0.573332% without exposure versus 0.193605% with exposure, and AME −0.379727 percentage points. These values belong to that initial historical rerun, not the patient-disjoint holdout. The classification and full-cohort risk models used 55 and 13 iterations, respectively. All 200 bootstrap refits completed with the existing seed 42 and 200-replicate specification. These separate penalized classification/risk models do not repair the unpenalized OR fits.
 
 ## Reproduction and evidence
 
@@ -95,6 +95,6 @@ Patient records stayed in the authorized BigQuery project and local process memo
 
 ## Subsequent patient-aware validation
 
-The profile intervals and original row-split/bootstrap results above are historical comparisons. Additional patient-cluster intervals (500 prespecified draws), risk/AME intervals and a patient-disjoint holdout are documented in [patient-aware validation](PATIENT_AWARE_VALIDATION.md). Full-data Firth points and original primary/cohort/exposure specifications remain unchanged.
+The profile intervals and original row-split/bootstrap results above are historical comparisons, distinct from the later 2026-11-18 unordered metrics and the deterministic reference/patient-disjoint holdout; see [metric provenance](AUDIT_CORRECTIONS_20261118.md#discrimination-metric-provenance). Additional patient-cluster intervals (500 prespecified draws), risk/AME intervals and a patient-disjoint holdout are documented in [patient-aware validation](PATIENT_AWARE_VALIDATION.md). Full-data Firth points and original primary/cohort/exposure specifications remain unchanged.
 
 The later [complete notebook rerun](PYTHON_WORKFLOW_VALIDATION.md) rebuilt all five tables again and records their current expiration timestamps. The initial reconstruction times above are historical evidence.

@@ -75,18 +75,25 @@ def step_prevalence(client: bigquery.Client, timeout_s: int) -> None:
 
     prev_landmark = query_scalar(
         client,
-        """
+        f"""
 SELECT AVG(CAST(raas_any_early AS FLOAT64))
-FROM `mimic-iv-portfolio.nonicu_raas.analysis_dataset`
-WHERE deathtime IS NULL
-   OR TIMESTAMP_DIFF(deathtime, admittime, HOUR) > 24
+FROM `{TABLES['analysis_dataset']}`
+WHERE admittime IS NOT NULL
+  AND dischtime IS NOT NULL
+  AND dischtime > DATETIME_ADD(admittime, INTERVAL 24 HOUR)
+  AND (
+    (hospital_expire_flag = 0 AND deathtime IS NULL)
+    OR (hospital_expire_flag = 1
+        AND deathtime > DATETIME_ADD(admittime, INTERVAL 24 HOUR)
+        AND deathtime <= dischtime)
+  )
 """.strip(),
         step="prevalence_landmark_24h",
         timeout_s=timeout_s,
     )
 
     print(f"primary: {prev_primary:.4%}")
-    print(f"24h landmark: {prev_landmark:.4%}")
+    print(f"24h landmark (confirmed alive and still hospitalized beyond 24h): {prev_landmark:.4%}")
 
 
 def step_forbidden() -> None:

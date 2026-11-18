@@ -42,6 +42,8 @@ Historical 200-replicate admission-row bootstrap intervals applied only to the a
 
 ## Patient-disjoint discrimination
 
+The patient-disjoint holdout is an internal evaluation of retrospective discrimination on the full admission cohort. It uses prescription records from 0–<24 hours while including deaths within 24 hours, and applies no 24-hour survival/continued-hospitalization eligibility filter. There is no fixed clinical prediction time or prospective prediction horizon: ROC AUC 0.860635 and PR AUC 0.117607 do not describe admission-time or 24-hour prognostic performance. Patient separation and train-only preprocessing address patient overlap and preprocessing leakage, not temporal feature availability. The 24-hour landmark association analyses separately require confirmed survival and continued hospitalization strictly beyond 24 hours and evaluate subsequent in-hospital death; they use a different eligible cohort.
+
 The same class-balanced L2 logistic classifier family, C=1, lbfgs, max_iter=2000, age and categorical covariates is evaluated with an 80/20 patient GroupShuffleSplit, seed 42. Scaler and OneHotEncoder(drop='first', handle_unknown='ignore') are fitted using training data only. Test patients are disjoint; patients are never features. No threshold is tuned on the holdout. The new admission-random reference uses stratification and the same seed on deterministic input order.
 
 | Validation | Train / test admissions | Test deaths | Overlapping patients | ROC AUC | PR AUC |
@@ -49,7 +51,7 @@ The same class-balanced L2 logistic classifier family, C=1, lbfgs, max_iter=2000
 | Admission-random reference | 368,628 / 92,158 | 465 | 42,796 | 0.857576 | 0.106915 |
 | Patient-disjoint holdout | 368,309 / 92,477 | 468 | 0 | 0.860635 | 0.117607 |
 
-Train/test patient counts for the patient-disjoint holdout are 153,420/38,355. Both fits completed without convergence warnings (59/73 iterations, in table order). The historical unordered admission split AUC 0.854487/PR AUC 0.115764 remains a historical result; it is not directly substituted for the deterministic reference. Single-holdout metrics have sampling variation and different test case mixes, so the observed difference is not evidence that group splitting improves prediction. This is internal, not external, validation.
+Train/test patient counts for the patient-disjoint holdout are 153,420/38,355. Both fits completed without convergence warnings (59/73 iterations, in table order). The initial 2026-11-17 validation note reports unordered-row AUC 0.854487/PR AUC 0.115764. The separate 2026-11-18 full-run JSON receipt records 0.859852/0.116565 (rounded 0.8599/0.1166). The exact row partitions of these unordered runs were not exported, so neither is the deterministic reference or a current patient-disjoint metric. See [metric provenance](AUDIT_CORRECTIONS_20261118.md#discrimination-metric-provenance). Single-holdout metrics have sampling variation and different test case mixes, so the observed difference is not evidence that group splitting improves prediction. This is internal, not external, validation.
 
 ## Reproduction and checks
 

@@ -22,7 +22,7 @@ Specifically, this notebook:
 - Constructs binary admission-level indicators for:
   - Documented early ACE inhibitor prescription exposure
   - Documented early ARB prescription exposure
-  - Concurrent documented early prescription exposure to both drug classes
+  - Records from both drug classes in the same early window
   - Composite documented early RAAS prescription exposure (any ACEi or ARB)
 - Materializes exposure tables in BigQuery for downstream analytic use  
 
@@ -47,11 +47,13 @@ Documented early inpatient RAAS prescription exposure is defined as any ACE inhi
 
 Exposure is operationalized using prescription start timestamps relative to admission time. It does not confirm medication administration and does not measure outpatient chronic use, adherence, dose, treatment indication, or duration.
 
+Both-class flags do not require overlapping prescriptions and do not establish simultaneous treatment, co-administration or actual administration.
+
 The following binary indicators are constructed at the admission level:
 
 - `acei_early`: early ACE inhibitor exposure  
 - `arb_early`: early ARB exposure  
-- `raas_both_early`: concurrent early ACE inhibitor and ARB exposure  
+- `raas_both_early`: both ACE inhibitor and ARB prescription-record flags in the same 0–<24-hour window
 - `raas_any_early`: any documented early RAAS prescription exposure
 
 ## Outputs

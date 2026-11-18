@@ -14,6 +14,8 @@ Patient-level MIMIC-IV source tables, patient-level derived analysis datasets, c
 
 ## Analytical Workflow
 
+The patient-disjoint holdout is an internal evaluation of retrospective discrimination on the full admission cohort. It uses prescription records from 0–<24 hours while including deaths within 24 hours, and applies no 24-hour survival/continued-hospitalization eligibility filter. There is no fixed clinical prediction time or prospective prediction horizon: ROC AUC 0.860635 and PR AUC 0.117607 do not describe admission-time or 24-hour prognostic performance. Patient separation and train-only preprocessing address patient overlap and preprocessing leakage, not temporal feature availability. The 24-hour landmark association analyses separately require confirmed survival and continued hospitalization strictly beyond 24 hours and evaluate subsequent in-hospital death; they use a different eligible cohort.
+
 The workflow is organized as an admission-level clinical analytics pipeline. The analytic unit is the hospital admission (`hadm_id`), and the cohort is not restricted to one admission per patient.
 
 1. **Cohort construction**: adult hospital admissions are identified and ICU-associated admissions are excluded before exposure or outcome modeling.
@@ -35,7 +37,7 @@ The workflow is organized as an admission-level clinical analytics pipeline. The
    - `notebooks/04b_multivariable_outcomes.ipynb`
 6. **Sensitivity analysis**: 24-hour landmark and admission-source proxy sensitivity models are evaluated in the multivariable outcomes workflow.
    - `notebooks/04b_multivariable_outcomes.ipynb`
-7. **Validation**: synthetic boundary tests, Firth numerical checks, patient-cluster bootstrap diagnostics and patient-disjoint evaluation are implemented in Python. See [current execution evidence](docs/PYTHON_WORKFLOW_VALIDATION.md).
+7. **Validation**: synthetic boundary tests, Firth numerical checks, patient-cluster bootstrap diagnostics and internal retrospective discrimination evaluation are implemented in Python. See [current execution evidence](docs/PYTHON_WORKFLOW_VALIDATION.md).
 8. **Reporting**: the narrative clinical report is authored in Quarto and rendered to `docs/reports/`.
    - `reports/nonicu_raas_mortality_report.qmd`
    - `_quarto.yml`
@@ -107,6 +109,25 @@ ipykernel>=6.0
 
 The project targets Python 3.12 with `requires-python = ">=3.12,<3.13"` and `.python-version`.
 
+## Replace the author-specific BigQuery destination before running
+
+The checked-in examples use the author's project `mimic-iv-portfolio` and destination dataset `nonicu_raas`; they do not configure a new user's project automatically. Do not run the construction notebooks against those defaults. Choose your own writable project and dataset, create the dataset in **US**, and configure your own authorized ADC/source access. Retain the sandbox's 60-day expiration where applicable. No credentials belong in source control.
+
+Make these coordinated replacements in a private working copy before any connected run:
+
+| Source | Required replacement |
+| --- | --- |
+| All six `sql/*.sql` files | Replace every destination prefix `mimic-iv-portfolio.nonicu_raas` with `YOUR_PROJECT.YOUR_DATASET`, including intermediate-table reads and the drug-check query. |
+| All seven notebooks 00–04b | Set `PROJECT_ID` to `YOUR_PROJECT`. Set `DATASET_ID` in 00 and `DATASET` in 01–04b to `YOUR_DATASET`; keep `LOCATION = "US"` in 00. Derived `TABLE_*` strings then follow those constants. |
+| `scripts/rebuild_analysis_tables.py` | Set its fully qualified `DATASET` to `YOUR_PROJECT.YOUR_DATASET` **and** its `bigquery.Client(project=...)` to `YOUR_PROJECT`. Its exact CREATE-header check must agree with the edited SQL prefix. |
+| Optional `scripts/validation_checklist.py` | Set `PROJECT_ID` and `DATASET`; table references, including the landmark prevalence query, follow `TABLES`. |
+
+Keep the authorized source references `physionet-data.mimiciv_3_1_hosp` and `physionet-data.mimiciv_3_1_icu` unchanged unless deliberately using an equivalent licensed source. Do not replace `physionet-data` with the destination project. Retain table names, joins, cohort/exposure predicates and US location. Update explanatory author-project labels in notebook markdown separately if desired; those labels do not configure execution.
+
+Review executable cells, SQL and both helper scripts for remaining author-specific destination literals; use notebook source/JSON-aware editing rather than replacing saved outputs. `scripts/test_audit_corrections.py` tests this replacement recipe on temporary source copies without credentials, a client connection or data queries. Passing it does not prove IAM, source access or BigQuery SQL execution.
+
+Only after reviewing the replacements, use the rebuild helper without `--execute` for a connected dry run. Its `--execute` mode creates missing tables only. By contrast, notebooks 01–02 run `CREATE OR REPLACE` and overwrite their configured destination tables. Confirm that destination is your own before a complete rerun.
+
 ## Reproduction Steps
 
 1. Obtain independent MIMIC-IV/PhysioNet approval and configure Google Cloud/BigQuery access for MIMIC-IV v3.1.
@@ -144,4 +165,4 @@ After rendering, run `.venv/bin/python scripts/test_report_consistency.py` to co
 
 ## Complete workflow verification
 
-The [current Python workflow record](docs/PYTHON_WORKFLOW_VALIDATION.md) and its aggregate JSON receipt document the seven sequential fresh-kernel runs, source hashes and statistical status. Runtime success is separate from MLE nonconvergence. The [reproducible scope](docs/REPRODUCIBLE_SCOPE.md) defines the current public workflow.
+The [last full Python workflow record](docs/PYTHON_WORKFLOW_VALIDATION.md) and its aggregate JSON receipt document the seven sequential fresh-kernel runs, source hashes and statistical status. Runtime success is separate from MLE nonconvergence. The receipt describes the executed source snapshot at `8063e91`; subsequent [offline audit corrections](docs/AUDIT_CORRECTIONS_20261118.md) do not constitute another full run. The [reproducible scope](docs/REPRODUCIBLE_SCOPE.md) defines the public workflow.

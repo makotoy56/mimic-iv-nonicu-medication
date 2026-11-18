@@ -36,12 +36,14 @@ Age-specific contrasts fix other covariates at their mean profile. They are not 
 
 ## Patient-disjoint discrimination
 
+The patient-disjoint holdout is an internal evaluation of retrospective discrimination on the full admission cohort. It uses prescription records from 0–<24 hours while including deaths within 24 hours, and applies no 24-hour survival/continued-hospitalization eligibility filter. There is no fixed clinical prediction time or prospective prediction horizon: ROC AUC 0.860635 and PR AUC 0.117607 do not describe admission-time or 24-hour prognostic performance. Patient separation and train-only preprocessing address patient overlap and preprocessing leakage, not temporal feature availability. The 24-hour landmark association analyses separately require confirmed survival and continued hospitalization strictly beyond 24 hours and evaluate subsequent in-hospital death; they use a different eligible cohort.
+
 | Validation | Train / test admissions | Test deaths | Overlapping patients | ROC AUC | PR AUC |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | Admission-random reference | 368,628 / 92,158 | 465 | 42,796 | 0.857576 | 0.106915 |
 | Patient-disjoint holdout | 368,309 / 92,477 | 468 | 0 | 0.860635 | 0.117607 |
 
-All transformations are fitted within training data. The row-split reference was recomputed on deterministic subject/admission order; it is distinct from the earlier unordered-row AUC 0.854487. The holdouts have different case mixes; no performance improvement or external validation is claimed.
+All transformations are fitted within training data. The row-split reference was recomputed on deterministic subject/admission order; it is distinct from the historical unordered-row metrics documented in [metric provenance](AUDIT_CORRECTIONS_20261118.md#discrimination-metric-provenance). The holdouts have different case mixes; no performance improvement or external validation is claimed.
 
 ## Interpretation boundary
 

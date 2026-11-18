@@ -59,7 +59,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#unadjusted-mortality" id="toc-unadjusted-mortality" class="nav-link" data-scroll-target="#unadjusted-mortality"><span class="header-section-number">6</span> Unadjusted Mortality</a></li>
   <li><a href="#unpenalized-model-diagnostics" id="toc-unpenalized-model-diagnostics" class="nav-link" data-scroll-target="#unpenalized-model-diagnostics"><span class="header-section-number">7</span> Unpenalized Model Diagnostics</a></li>
   <li><a href="#sensitivity-analyses" id="toc-sensitivity-analyses" class="nav-link" data-scroll-target="#sensitivity-analyses"><span class="header-section-number">8</span> Sensitivity Analyses</a></li>
-  <li><a href="#patient-disjoint-discrimination" id="toc-patient-disjoint-discrimination" class="nav-link" data-scroll-target="#patient-disjoint-discrimination"><span class="header-section-number">9</span> Patient-Disjoint Discrimination</a></li>
+  <li><a href="#patient-disjoint-discrimination" id="toc-patient-disjoint-discrimination" class="nav-link" data-scroll-target="#patient-disjoint-discrimination"><span class="header-section-number">9</span> Patient-Disjoint Retrospective Discrimination</a></li>
   <li><a href="#absolute-risk-interpretation" id="toc-absolute-risk-interpretation" class="nav-link" data-scroll-target="#absolute-risk-interpretation"><span class="header-section-number">10</span> Absolute Risk Interpretation</a></li>
   <li><a href="#python-reproducibility-checks" id="toc-python-reproducibility-checks" class="nav-link" data-scroll-target="#python-reproducibility-checks"><span class="header-section-number">11</span> Python Reproducibility Checks</a></li>
   <li><a href="#interpretation-boundary" id="toc-interpretation-boundary" class="nav-link" data-scroll-target="#interpretation-boundary"><span class="header-section-number">12</span> Interpretation Boundary</a></li>
@@ -251,10 +251,10 @@ Source tables to analysis dataset lineage. <a href="../assets/nonicu_table_linea
 <td>Exposure subtype among exposed admissions</td>
 </tr>
 <tr class="odd">
-<td>Concurrent documented early ACE inhibitor and ARB prescription exposure</td>
+<td>Both ACE inhibitor and ARB prescription-record flags in the early window</td>
 <td style="text-align: right;">0.00</td>
 <td style="text-align: right;">0.008</td>
-<td>Rare combined early exposure</td>
+<td>Records from both classes; no inference of simultaneous administration</td>
 </tr>
 </tbody>
 </table>
@@ -288,7 +288,7 @@ Source tables to analysis dataset lineage. <a href="../assets/nonicu_table_linea
 <tr class="odd">
 <td>Discrimination</td>
 <td>Class-balanced L2 sklearn logistic regression, training data only</td>
-<td>Patient-disjoint holdout ROC/PR AUC; admission-row split retained as reference</td>
+<td>Internal retrospective-discrimination ROC/PR AUC; no fixed prediction time; admission-row split retained as reference</td>
 </tr>
 <tr class="even">
 <td>Average risks / AME / age contrasts</td>
@@ -341,7 +341,7 @@ Source tables to analysis dataset lineage. <a href="../assets/nonicu_table_linea
 </tr>
 </tbody>
 </table>
-<p>The prescription-based exposure definition does not confirm medication administration and does not directly measure outpatient chronic use, adherence, dose, treatment indication, or duration.</p>
+<p>Both-class flags do not require overlapping prescriptions and do not establish co-administration. The prescription-based exposure definition does not confirm medication administration and does not directly measure outpatient chronic use, adherence, dose, treatment indication, or duration.</p>
 </section>
 <section id="unadjusted-mortality" class="level2" data-number="6">
 <h2 data-number="6" class="anchored" data-anchor-id="unadjusted-mortality"><span class="header-section-number">6</span> Unadjusted Mortality</h2>
@@ -548,7 +548,8 @@ Source tables to analysis dataset lineage. <a href="../assets/nonicu_table_linea
 <p>All five Firth fits converged in 13–15 iterations. Exposure profile bounds were finite and independent adjusted-score checks were below 1e-5. A separation certificate was found for every corresponding unpenalized design, explaining why additional MLE iterations do not provide a finite full-model solution. Cohort definitions, exposure, adjustment categories and model admission counts were unchanged. Original MLE diagnostic outputs are retained in the validation files.</p>
 </section>
 <section id="patient-disjoint-discrimination" class="level2" data-number="9">
-<h2 data-number="9" class="anchored" data-anchor-id="patient-disjoint-discrimination"><span class="header-section-number">9</span> Patient-Disjoint Discrimination</h2>
+<h2 data-number="9" class="anchored" data-anchor-id="patient-disjoint-discrimination"><span class="header-section-number">9</span> Patient-Disjoint Retrospective Discrimination</h2>
+<p>The patient-disjoint holdout is an internal evaluation of retrospective discrimination on the full admission cohort. It uses prescription records from 0–&lt;24 hours while including deaths within 24 hours, and applies no 24-hour survival/continued-hospitalization eligibility filter. There is no fixed clinical prediction time or prospective prediction horizon: ROC AUC 0.860635 and PR AUC 0.117607 do not describe admission-time or 24-hour prognostic performance. Patient separation and train-only preprocessing address patient overlap and preprocessing leakage, not temporal feature availability. The 24-hour landmark association analyses separately require confirmed survival and continued hospitalization strictly beyond 24 hours and evaluate subsequent in-hospital death; they use a different eligible cohort.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 13%">
@@ -655,7 +656,7 @@ Source tables to analysis dataset lineage. <a href="../assets/nonicu_table_linea
 <p>Reproducibility was addressed by separating cohort construction, exposure definition, model estimation, figure generation, and Python numerical checks into version-controlled workflow steps. The rendered report is supported by notebooks, SQL definitions, aggregate validation outputs, and exported figures, while patient-level MIMIC-IV data remain outside the repository.</p>
 <p>For complete environment and reproducibility details, see <a href="https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/REPRODUCIBILITY.md">REPRODUCIBILITY.md</a>.</p>
 <p>MIMIC-IV and PhysioNet access, Google Cloud authentication, BigQuery access, and local environment settings are configured outside the repository.</p>
-<p>The current public 00–04b workflow is executed sequentially with fresh repository Python kernels. Local outputs are saved; Git retains the existing output-stripping policy. Model convergence is separate from runtime success. <a href="https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/PYTHON_WORKFLOW_VALIDATION.md">Current execution and source-hash record</a>.</p>
+<p>The last full 00–04b execution at audit baseline <code>8063e91</code> used sequential fresh repository Python kernels. Later <a href="https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/AUDIT_CORRECTIONS_20261118.md">offline audit corrections</a> clarify interpretation and source labels without another clinical rerun. Local outputs are saved; Git retains the existing output-stripping policy. Model convergence is separate from runtime success. <a href="https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/PYTHON_WORKFLOW_VALIDATION.md">Baseline execution and source-hash record</a>.</p>
 </section>
 <section id="conclusion" class="level2" data-number="14">
 <h2 data-number="14" class="anchored" data-anchor-id="conclusion"><span class="header-section-number">14</span> Conclusion</h2>

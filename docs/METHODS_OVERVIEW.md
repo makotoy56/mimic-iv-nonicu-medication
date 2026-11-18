@@ -20,13 +20,13 @@ Admissions are classified as exposed if they have at least one ACE inhibitor or 
 
 The 0 to <24 hour window is an operational analytic definition, not a biological threshold or guideline-based treatment window.
 
-This prescription-based definition does not confirm medication administration and does not measure outpatient chronic use, adherence, dose, treatment indication, or duration.
+Both-class flags only indicate records from both classes in the same early window; they do not establish overlapping treatment or co-administration. This prescription-based definition does not confirm medication administration and does not measure outpatient chronic use, adherence, dose, treatment indication, or duration.
 
 The exposure table includes:
 
 - `acei_early`: early ACE inhibitor exposure
 - `arb_early`: early ARB exposure
-- `raas_both_early`: concurrent early ACE inhibitor and ARB exposure
+- `raas_both_early`: both ACE inhibitor and ARB prescription-record flags in the same 0–<24-hour window
 - `raas_any_early`: any documented early RAAS prescription exposure
 
 The primary exposure variable is `raas_any_early`.
@@ -82,6 +82,8 @@ These sensitivity analyses do not establish causality or remove all potential bi
 Historical models/profile intervals treat admissions as independent. Added patient-cluster bootstrap intervals resample patients with all eligible admissions. Added discrimination validation holds entire patients out; these are separate corrections for inference and train/test overlap.
 
 ## Validation Workflow
+
+The patient-disjoint holdout is an internal evaluation of retrospective discrimination on the full admission cohort. It uses prescription records from 0–<24 hours while including deaths within 24 hours, and applies no 24-hour survival/continued-hospitalization eligibility filter. There is no fixed clinical prediction time or prospective prediction horizon: ROC AUC 0.860635 and PR AUC 0.117607 do not describe admission-time or 24-hour prognostic performance. Patient separation and train-only preprocessing address patient overlap and preprocessing leakage, not temporal feature availability. The 24-hour landmark association analyses separately require confirmed survival and continued hospitalization strictly beyond 24 hours and evaluate subsequent in-hospital death; they use a different eligible cohort.
 
 Python validation covers boundary conditions, numerical fit checks, patient-cluster uncertainty and patient-disjoint prediction evaluation. Runtime success does not establish model convergence or causal validity.
 

@@ -86,7 +86,7 @@ Source notebook and supporting documentation: [03b_describe_analysis_dataset.ipy
 | Any documented early RAAS prescription exposure | 0.00 | 1.00 | Primary exposure flag |
 | Documented early ACE inhibitor prescription exposure | 0.00 | 0.682 | Exposure subtype among exposed admissions |
 | Documented early ARB prescription exposure | 0.00 | 0.326 | Exposure subtype among exposed admissions |
-| Concurrent documented early ACE inhibitor and ARB prescription exposure | 0.00 | 0.008 | Rare combined early exposure |
+| Both ACE inhibitor and ARB prescription-record flags in the early window | 0.00 | 0.008 | Records from both classes; no inference of simultaneous administration |
 
 ## Endpoint And Model Specification
 
@@ -94,7 +94,7 @@ Source notebook and supporting documentation: [03b_describe_analysis_dataset.ipy
 | --- | --- | --- |
 | Historical primary OR output | Unpenalized statsmodels Logit, full cohort | Separated/nonconverged; diagnostic archive only |
 | Supplementary adjusted ORs | Firth/Jeffreys logistic regression, same covariates and cohort variants | Profile intervals assume admission independence; additional patient-cluster intervals resample entire patients |
-| Discrimination | Class-balanced L2 sklearn logistic regression, training data only | Patient-disjoint holdout ROC/PR AUC; admission-row split retained as reference |
+| Discrimination | Class-balanced L2 sklearn logistic regression, training data only | Internal retrospective-discrimination ROC/PR AUC; no fixed prediction time; admission-row split retained as reference |
 | Average risks / AME / age contrasts | Unweighted L2 sklearn logistic regression, full cohort | AME averages observed covariates; age curves use a typical mean profile; patient-cluster bootstrap intervals |
 
 The main-effects model has no exposure-by-age interaction. Age-varying absolute contrasts should not be called a formal test of interaction or effect heterogeneity.
@@ -111,7 +111,7 @@ The primary endpoint was in-hospital mortality, defined by `hospital_expire_flag
 | Main estimands | Adjusted odds ratio, adjusted predicted risks, average marginal effect |
 | Sensitivity models | 24-hour landmark model; 24-hour landmark plus admission-source proxy |
 
-The prescription-based exposure definition does not confirm medication administration and does not directly measure outpatient chronic use, adherence, dose, treatment indication, or duration.
+Both-class flags do not require overlapping prescriptions and do not establish co-administration. The prescription-based exposure definition does not confirm medication administration and does not directly measure outpatient chronic use, adherence, dose, treatment indication, or duration.
 
 ## Unadjusted Mortality
 
@@ -164,7 +164,9 @@ The following original profile intervals assume independent admissions and are r
 
 All five Firth fits converged in 13–15 iterations. Exposure profile bounds were finite and independent adjusted-score checks were below 1e-5. A separation certificate was found for every corresponding unpenalized design, explaining why additional MLE iterations do not provide a finite full-model solution. Cohort definitions, exposure, adjustment categories and model admission counts were unchanged. Original MLE diagnostic outputs are retained in the validation files.
 
-## Patient-Disjoint Discrimination
+## Patient-Disjoint Retrospective Discrimination {#patient-disjoint-discrimination}
+
+The patient-disjoint holdout is an internal evaluation of retrospective discrimination on the full admission cohort. It uses prescription records from 0–<24 hours while including deaths within 24 hours, and applies no 24-hour survival/continued-hospitalization eligibility filter. There is no fixed clinical prediction time or prospective prediction horizon: ROC AUC 0.860635 and PR AUC 0.117607 do not describe admission-time or 24-hour prognostic performance. Patient separation and train-only preprocessing address patient overlap and preprocessing leakage, not temporal feature availability. The 24-hour landmark association analyses separately require confirmed survival and continued hospitalization strictly beyond 24 hours and evaluate subsequent in-hospital death; they use a different eligible cohort.
 
 | Validation | Train / test admissions | Test deaths | Overlapping patients | ROC AUC | PR AUC |
 | --- | ---: | ---: | ---: | ---: | ---: |
@@ -215,7 +217,7 @@ For complete environment and reproducibility details, see [REPRODUCIBILITY.md](h
 
 MIMIC-IV and PhysioNet access, Google Cloud authentication, BigQuery access, and local environment settings are configured outside the repository.
 
-The current public 00–04b workflow is executed sequentially with fresh repository Python kernels. Local outputs are saved; Git retains the existing output-stripping policy. Model convergence is separate from runtime success. [Current execution and source-hash record](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/PYTHON_WORKFLOW_VALIDATION.md).
+The last full 00–04b execution at audit baseline `8063e91` used sequential fresh repository Python kernels. Later [offline audit corrections](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/AUDIT_CORRECTIONS_20261118.md) clarify interpretation and source labels without another clinical rerun. Local outputs are saved; Git retains the existing output-stripping policy. Model convergence is separate from runtime success. [Baseline execution and source-hash record](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/PYTHON_WORKFLOW_VALIDATION.md).
 
 ## Conclusion
 

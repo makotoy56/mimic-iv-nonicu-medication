@@ -1,4 +1,6 @@
-# Current BigQuery/Python execution validation
+# BigQuery/Python execution validation: baseline 8063e91
+
+This is the historical full-execution record for audit baseline `8063e91`. Subsequent [offline audit corrections](AUDIT_CORRECTIONS_20261118.md) changed source labels and interpretation without rerunning clinical models. The original JSON receipt and its source hashes are preserved as evidence of that executed snapshot, not a receipt for the edited source.
 
 Executed from 2026-11-18T06:40:55.673645+00:00 to 2026-11-18T07:12:37.048956+00:00 (UTC).
 
@@ -38,7 +40,7 @@ Runtime completion is separate from convergence. The original unpenalized primar
 
 The corrected 24-hour cohort contains 342,519 admissions and 1,769 deaths. The landmark definition, exposure timing, entire-stay ICU exclusion and adjustment variables are unchanged. The patient-disjoint holdout has zero patient overlap. The unweighted risk model returned AME -0.379727 percentage points.
 
-The historical unordered admission split returned ROC AUC 0.859852 and PR AUC 0.116565. These reference metrics depend on retrieval order; the current patient-disjoint evaluation uses deterministic patient/admission ordering. Different case mixes do not establish improved prediction. All 200/200 reference admission-bootstrap refits completed.
+The historical unordered admission split returned ROC AUC 0.859852 and PR AUC 0.116565. These reference metrics depend on retrieval order; the current patient-disjoint evaluation uses deterministic patient/admission ordering. The rounded values are 0.8599/0.1166; they are not the patient-disjoint metrics. These are retrospective discrimination checks without a fixed prediction time. Different case mixes do not establish improved prediction. All 200/200 reference admission-bootstrap refits completed.
 
 The optional BigQuery Storage reader is absent; the client successfully used the REST endpoint. This informational warning does not indicate a failed query. Statistical nonconvergence above remains a separate limitation.
 

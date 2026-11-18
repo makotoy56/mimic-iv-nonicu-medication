@@ -37,7 +37,7 @@ For a quick review:
 - Reproducible cohort, exposure, covariate, and outcome construction in BigQuery SQL
 - Transparent documented inpatient prescription-exposure definition using ACE inhibitor and ARB records with start times within 24 hours of admission
 - Multivariable logistic regression with odds ratios, adjusted risks, and average marginal effects
-- Numerical checks, patient-cluster uncertainty, and patient-disjoint prediction evaluation
+- Numerical checks, patient-cluster uncertainty, and internal evaluation of retrospective discrimination
 - Clear separation between clinical analysis, validation artifacts, and compliance-safe repository contents
 
 ## Workflow
@@ -94,14 +94,16 @@ The corrected rule requires confirmed survival and continued hospitalization bey
 
 <img src="assets/firth_landmark_patient_bootstrap.png" alt="Supplementary Firth odds ratios with 95 percent patient-cluster bootstrap intervals" width="760">
 
-### Patient-Disjoint Discrimination
+### Patient-Disjoint Retrospective Discrimination
+
+The patient-disjoint holdout is an internal evaluation of retrospective discrimination on the full admission cohort. It uses prescription records from 0–<24 hours while including deaths within 24 hours, and applies no 24-hour survival/continued-hospitalization eligibility filter. There is no fixed clinical prediction time or prospective prediction horizon: ROC AUC 0.860635 and PR AUC 0.117607 do not describe admission-time or 24-hour prognostic performance. Patient separation and train-only preprocessing address patient overlap and preprocessing leakage, not temporal feature availability. The 24-hour landmark association analyses separately require confirmed survival and continued hospitalization strictly beyond 24 hours and evaluate subsequent in-hospital death; they use a different eligible cohort.
 
 | Validation | Train / test admissions | Test deaths | Overlapping patients | ROC AUC | PR AUC |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | Admission-random reference | 368,628 / 92,158 | 465 | 42,796 | 0.857576 | 0.106915 |
 | Patient-disjoint holdout | 368,309 / 92,477 | 468 | 0 | 0.860635 | 0.117607 |
 
-The additional patient-disjoint holdout has zero train/test patient overlap. Scaling and categorical encoding are fitted on training data only. These are single splits with different case mixes, so their metric difference is not evidence of improved model performance. See [patient-aware validation](docs/PATIENT_AWARE_VALIDATION.md).
+The retrospective holdout has zero train/test patient overlap. Scaling and categorical encoding are fitted on training data only. These are single splits with different case mixes, so their metric difference is not evidence of improved model performance. See [patient-aware validation](docs/PATIENT_AWARE_VALIDATION.md).
 
 ## Study Snapshot
 
@@ -148,13 +150,13 @@ The workflow uses version-controlled notebooks, SQL scripts, and current aggrega
 
 For complete environment and reproducibility details, see [REPRODUCIBILITY.md](REPRODUCIBILITY.md).
 
-The [current BigQuery/Python execution record](docs/PYTHON_WORKFLOW_VALIDATION.md) records the seven-notebook 00–04b workflow. Runtime success is separate from statistical convergence; the unpenalized MLE remains nonconverged. See the [reproducible portfolio scope](docs/REPRODUCIBLE_SCOPE.md).
+The [last full BigQuery/Python execution record](docs/PYTHON_WORKFLOW_VALIDATION.md) records the seven-notebook 00–04b workflow at audit baseline `8063e91`. Later [offline audit corrections](docs/AUDIT_CORRECTIONS_20261118.md) were not a new clinical rerun. Runtime success is separate from statistical convergence; the unpenalized MLE remains nonconverged. See the [reproducible portfolio scope](docs/REPRODUCIBLE_SCOPE.md).
 
 Validation scope:
 
 - `04b_multivariable_outcomes.ipynb` contains the primary clinical analysis: multivariable logistic regression and absolute risk estimation.
 - Python validation artifacts are stored under `python/outputs/`.
-- `scripts/validation_checklist.py` performs lightweight BigQuery table-existence checks only; it does not validate table contents or statistical results.
+- `scripts/validation_checklist.py` checks aggregate row counts, exposure prevalence and repeat admissions, plus a static forbidden-feature guard; it does not establish model validity.
 
 MIMIC-IV/PhysioNet access, Google Cloud authentication, BigQuery access, and local environment settings are configured outside the repository.
 

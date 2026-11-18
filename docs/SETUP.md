@@ -24,6 +24,8 @@ The repository does not include MIMIC-IV tables, local extracts, credentials or 
 
 The tracked CSV files under `python/outputs/` are aggregate validation artifacts only.
 
+See [destination replacement instructions](../REPRODUCIBILITY.md#replace-the-author-specific-bigquery-destination-before-running) before any connected run.
+
 ## Notebook Execution
 
 Run in order: 00 → 01 → 02 → 03a → 03b → 04a → 04b, using the repository `.venv` and a fresh kernel for each notebook.
@@ -79,7 +81,7 @@ See [Firth validation](FIRTH_SENSITIVITY_VALIDATION.md) for the estimator change
 
 ## Publication checks and patient-aware validation
 
-In VS Code, select the Python interpreter in this repository's `.venv/`; an older globally registered kernel may point to another environment. The patient-aware section of notebook 04b runs 500 prespecified patient-cluster bootstrap replicates, reports failed/recovered fits, and evaluates a patient-disjoint holdout. It may take several minutes and does not export patient rows or identifiers. See [patient-aware validation](PATIENT_AWARE_VALIDATION.md).
+In VS Code, select the Python interpreter in this repository's `.venv/`; an older globally registered kernel may point to another environment. The patient-aware section of notebook 04b runs 500 prespecified patient-cluster bootstrap replicates, reports failed/recovered fits, and evaluates a patient-disjoint holdout. It may take several minutes and does not export patient rows or identifiers. See [patient-aware validation](PATIENT_AWARE_VALIDATION.md). The holdout evaluates retrospective discrimination, not admission-time or 24-hour prognosis; it includes early deaths and has no fixed prediction time.
 
 ```bash
 .venv/bin/python scripts/test_patient_validation.py
