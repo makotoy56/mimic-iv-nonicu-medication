@@ -10,6 +10,7 @@ import socket
 import sqlite3
 import sys
 import tempfile
+from types import SimpleNamespace
 
 import numpy as np
 import pandas as pd
@@ -35,7 +36,7 @@ def load_source(path,text=None):
 a=notebook('04a_unadjusted_outcomes.ipynb');b=notebook('04b_multivariable_outcomes.ipynb')
 df=pd.DataFrame({'subject_id':[10,10,20,30], 'raas_any_early':[0,0,1,1],
                  'hospital_expire_flag':[0,1,0,1], 'age':[40,40,60,70]})
-ns={'df':df,'pd':pd};exec(source(a,'n_admissions=("raas_any_early"'),ns)
+ns={'df':df,'pd':pd,'notebook_results':SimpleNamespace(capture=lambda *args,**kwargs:contextlib.nullcontext())};exec(source(a,'n_admissions=("raas_any_early"'),ns)
 assert ns['tbl'].n_admissions.tolist()==[2,2]
 assert df.groupby('raas_any_early').subject_id.nunique().tolist()==[1,2]
 exec(source(b,'mortality_summary ='),ns)
@@ -130,5 +131,7 @@ for path in ['README.md','REPRODUCIBILITY.md','reports/nonicu_raas_mortality_rep
     assert 'internal evaluation of retrospective discrimination' in text and 'no fixed clinical prediction time' in text
     assert '0.860635' in text and '0.117607' in text
 markdown='\n'.join(''.join(c['source']) for c in b['cells'] if c['cell_type']=='markdown')
-assert 'not temporal feature availability' in markdown and '0.859852/0.116565' in markdown
+assert 'not temporal feature availability' in markdown
+assert 'AUDIT_CORRECTIONS_20261118.md#discrimination-metric-provenance' in markdown
+assert all(value in (ROOT/'docs/AUDIT_CORRECTIONS_20261118.md').read_text() for value in ['0.859852','0.116565'])
 print('PASS: main narrative surfaces preserve AUCs and state the temporal interpretation boundary')

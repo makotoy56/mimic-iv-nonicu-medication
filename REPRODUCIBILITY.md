@@ -188,3 +188,31 @@ Synthetic checks require no data access:
 ```
 
 The additional forecast metrics cannot reuse 04b retrospective AUCs. Their intervals resample held-out patients conditional on fixed trained models. Predictors are limited to age/sex and a separately defined time-verified RAAS record in the companion model. This is retrospective internal evaluation, not prospective/external validation or a causal RAAS effect.
+
+## Python-generated notebook results
+
+All public notebooks 00–04c now initialize `NotebookResults` from `scripts/nonicu_notebook_results.py`. Numbered titles, tables/figures, reading guidance, computed summaries and interpretation limits are emitted by Python from the current execution's aggregate objects. Source references and execution mode are generated once near the beginning of each notebook, after the destination settings. The shared header includes an expandable source index keyed by result number; individual figure/table captions do not repeat it. `scripts/nonicu_result_specs.json` contains captions and methodological guidance, not stored clinical estimates. Destination table labels follow the notebook's `PROJECT_ID` and `DATASET`/`DATASET_ID`.
+
+The original 93 analytical code cells retain their cohort/exposure/model statements. Eight presentation setup cells and eight shared-provenance cells bring the current total to 109 code cells. Presentation wrappers capture the existing outputs without introducing data queries or model fits. Existing model and CSV exports remain in their original analysis cells. Firth and patient-cluster displays use current fitted aggregate rows; the calibration display is drawn directly from current aggregate bins. No old PNG is substituted if an execution fails or does not produce a figure.
+
+Each notebook's shared source/mode header explicitly identifies the saved local numbered displays as **presentation replay**. These were regenerated from previously saved aggregate tables/figure outputs to check display, with execution counts cleared. They are not a new clinical run and do not replace the historical clinical execution receipts. The two original age-risk plots retain their saved figure output in that replay because reconstructing their fitted curves or admission-row interval band would require a clinical model rerun. During a real Run All, those cells generate and display their current figures normally.
+
+Run each notebook from a fresh repository Python 3.12 kernel in the documented order, after configuring your own authorized BigQuery destination. Run All still executes the original construction queries, fitting and resampling; 01–02 retain their `CREATE OR REPLACE` behavior. Successful execution replaces the replay outputs with current results and recalculates their numerical summaries. Fits that fail, intervals that are withheld, and missing outputs are reported explicitly rather than filled from old results.
+
+The following checks use synthetic aggregates and local source files only; they do not authenticate, query BigQuery or refit clinical models:
+
+```bash
+uv run python scripts/test_notebook_results.py
+uv run python scripts/test_audit_corrections.py
+uv run python scripts/test_report_consistency.py
+uv run python scripts/test_prediction_time_report.py
+```
+
+
+### Calculation inputs versus saved aggregates and verification files
+
+The shared header separates **Calculation inputs and source definitions** from **Saved aggregates and verification files (CSV/JSON)**. The latter links identify saved aggregate results, diagnostics and execution/checking records, not original MIMIC-IV source tables. `nonicu_result_specs.json` keeps current Python calculation inputs in `source`, and saved CSV/JSON result and verification references separately in `exports`. The two indexes do not imply the same data-flow role.
+
+For example, Table 04b.13 joins the in-memory `firth_patient_ci` and `firth_compare_raw` objects directly. `firth_patient_bootstrap.csv` and `firth_model_comparison.csv` are saved copies, not files reloaded to produce that display. The same distinction applies to other affected result definitions. Separate report/validation workflows may legitimately read those exports.
+
+This clarification preserves the current shared-provenance design, all analytical code cells, execution counts, aggregate tables, figures and numerical summaries. Only explanatory metadata and saved shared-header text are refreshed; no clinical query, fit or bootstrap is executed. Synthetic presentation checks forbid network access and CSV reading.

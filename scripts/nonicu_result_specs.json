@@ -1,0 +1,411 @@
+{
+  "Table 00.1": {
+    "title": "Connection check: source ICU stay count",
+    "source": "The current read-only COUNT(*) query and its aggregate DataFrame in this cell; the MIMIC-IV ICU source table is specified in the code.",
+    "read": "`icu_stays` counts rows in the source table. It is not the number of admissions included in the Non-ICU analysis.",
+    "limit": "This count documents source-table access in the execution that produced it. It does not establish downstream analytical validity or future availability. A saved-replay notice means the query was not rerun for that displayed output."
+  },
+  "Table 01.1": {
+    "title": "Adult base: schema and age summary",
+    "source": "`nonicu_raas.base_admissions`; construction SQL: [01_build_base_hosp_admissions.sql](../sql/01_build_base_hosp_admissions.sql).",
+    "read": "Read non-null counts and data types in `info()`, rows and columns in `Shape`, and then the age summary.",
+    "limit": "Rows count admissions, not distinct patients. Schema checks do not establish timestamp consistency, ward location or information availability at a prediction time."
+  },
+  "Table 01.2": {
+    "title": "Race-grouped adult base: schema and category counts",
+    "source": "`nonicu_raas.base_admissions_racegrp`; construction SQL: [01_collapse_race_categories.sql](../sql/01_collapse_race_categories.sql).",
+    "read": "The upper output shows the schema; the lower output counts admissions in each `race_group`.",
+    "limit": "This table precedes ICU exclusion. Do not confuse its category counts with those of the subsequent Non-ICU cohort. Categories reflect social classifications in the source records."
+  },
+  "Table 01.3": {
+    "title": "Entire-stay Non-ICU cohort: schema and race groups",
+    "source": "`nonicu_raas.nonicu_admissions`; construction SQL: [02_exclude_icu_admissions.sql](../sql/02_exclude_icu_admissions.sql).",
+    "read": "Check the schema and row count, then read the admission counts by `race_group`.",
+    "limit": "Entire-stay ICU exclusion uses information through discharge. This table alone cannot define a population using only information available at admission."
+  },
+  "Table 01.4": {
+    "title": "Selection from the adult base to the original Non-ICU cohort",
+    "source": "`nonicu_raas.base_admissions`; construction SQL: [01_build_base_hosp_admissions.sql](../sql/01_build_base_hosp_admissions.sql). `nonicu_raas.nonicu_admissions`; construction SQL: [02_exclude_icu_admissions.sql](../sql/02_exclude_icu_admissions.sql).",
+    "read": "`n_base` and `n_adult_admissions` repeat the same adult-base count. `n_excluded_icu` is the difference; `n_nonicu` is the retained count.",
+    "limit": "This is an admission-level selection flow. The separate 04c prediction risk sets do not reuse this entire-stay ICU exclusion."
+  },
+  "Table 01.5": {
+    "title": "Original Non-ICU cohort: basic characteristics",
+    "source": "`nonicu_raas.nonicu_admissions`; construction SQL: [02_exclude_icu_admissions.sql](../sql/02_exclude_icu_admissions.sql).",
+    "read": "Age is in years. Sex fractions and mortality are proportions from 0 to 1; multiply by 100 for percentages.",
+    "limit": "These are descriptive summaries of one population. They are not adjusted mortality estimates or evidence that every field was available at admission."
+  },
+  "Table 01.6": {
+    "title": "Missingness in the collapsed race category",
+    "source": "`nonicu_raas.nonicu_admissions`; construction SQL: [02_exclude_icu_admissions.sql](../sql/02_exclude_icu_admissions.sql).",
+    "read": "`n_missing_race_group` is the SQL NULL count. Zero means that no NULL values were found.",
+    "limit": "Absence of NULL values does not establish complete, detailed or accurate source race information. Category collapsing and the Other group can conceal information loss."
+  },
+  "Table 01.7": {
+    "title": "Adult base: race-group counts",
+    "source": "`nonicu_raas.base_admissions_racegrp`; construction SQL: [01_collapse_race_categories.sql](../sql/01_collapse_race_categories.sql).",
+    "read": "Rows show admission counts `n` by `race_group`, ordered from most to least frequent.",
+    "limit": "The denominator is `base_admissions_racegrp`, before ICU exclusion. It differs from the Non-ICU table used in the preceding missingness check."
+  },
+  "Table 01.8": {
+    "title": "Original Non-ICU cohort: age distribution",
+    "source": "`nonicu_raas.nonicu_admissions`; construction SQL: [02_exclude_icu_admissions.sql](../sql/02_exclude_icu_admissions.sql).",
+    "read": "`q1`, `median` and `q3` are the 25th, 50th and 75th percentiles; `min` and `max` give the range. Units are years.",
+    "limit": "Age is reconstructed approximately from MIMIC anchor information. BigQuery quantiles are approximate, and the values do not reveal an individual\u2019s exact chronological age."
+  },
+  "Table 01.9": {
+    "title": "Admissions by in-hospital mortality flag",
+    "source": "`nonicu_raas.nonicu_admissions`; construction SQL: [02_exclude_icu_admissions.sql](../sql/02_exclude_icu_admissions.sql).",
+    "read": "`hospital_expire_flag=1` indicates in-hospital death; 0 indicates live discharge. `n` counts admissions.",
+    "limit": "Flag counts alone do not establish death-time consistency or continued hospitalization at 24 hours. Those conditions are assessed separately in 04b and 04c."
+  },
+  "Table 01.10": {
+    "title": "Whole-admission length of stay: distribution summary",
+    "source": "`nonicu_raas.nonicu_admissions`; construction SQL: [02_exclude_icu_admissions.sql](../sql/02_exclude_icu_admissions.sql).",
+    "read": "Read the mean, median, quartiles and range of `hosp_los` in days.",
+    "limit": "LOS is determined over the whole admission and is not an admission-time predictor. Negative values and other timestamp inconsistencies require attention to the reported range."
+  },
+  "Table 01.11": {
+    "title": "Whole-admission length of stay: day-bin counts",
+    "source": "`nonicu_raas.nonicu_admissions`; construction SQL: [02_exclude_icu_admissions.sql](../sql/02_exclude_icu_admissions.sql).",
+    "read": "`hosp_los_day_bin` floors LOS to an integer: for example, 2 means at least 2 but less than 3 days. `n` counts admissions.",
+    "limit": "Negative bins reflect timestamp inconsistencies. Flooring is not rounding. This is a frequency table, not a survival curve or adjusted analysis."
+  },
+  "Table 01.12": {
+    "title": "ICU overlap check for the original Non-ICU cohort",
+    "source": "`nonicu_raas.nonicu_admissions`; construction SQL: [02_exclude_icu_admissions.sql](../sql/02_exclude_icu_admissions.sql). Reference: `physionet-data.mimiciv_3_1_icu.icustays`.",
+    "read": "`n_icu` counts retained admissions that match the ICU stay table.",
+    "limit": "This check applies to the ICU stay table used in the original entire-stay exclusion. It does not replace the prediction-time ward and ICU chronology checks in 04c."
+  },
+  "Table 01.13": {
+    "title": "Final summary of the original association cohort",
+    "source": "`nonicu_raas.base_admissions`; construction SQL: [01_build_base_hosp_admissions.sql](../sql/01_build_base_hosp_admissions.sql). `nonicu_raas.nonicu_admissions`; construction SQL: [02_exclude_icu_admissions.sql](../sql/02_exclude_icu_admissions.sql).",
+    "read": "The table combines adult-base and Non-ICU admission counts, mortality (in percent in this table), and median age.",
+    "limit": "Some other tables express mortality as a 0\u20131 proportion. Distinguish proportions from percentages, and do not apply these counts to the separate 04c cohorts."
+  },
+  "Table 02.1": {
+    "title": "Early RAAS prescription flags: input structure",
+    "source": "`nonicu_raas.exposure_raas_early`; construction SQL: [03_define_exposure_raas_early.sql](../sql/03_define_exposure_raas_early.sql).",
+    "read": "The schema and dimensions are followed by admission counts for `raas_any_early=0/1`.",
+    "limit": "Zero means no qualifying prescription record with a start time at 0\u2013<24 hours. These flags classify prescription records; they do not establish administration, adherence, simultaneous treatment or a treatment effect."
+  },
+  "Table 02.2": {
+    "title": "Integrated association dataset: structure and exposure counts",
+    "source": "`nonicu_raas.analysis_dataset` (the original association cohort, excluding admissions with ICU use at any time during hospitalization). Construction SQL: [03_build_analysis_dataset.sql](../sql/03_build_analysis_dataset.sql).",
+    "read": "Use `info()` and `Shape` to check structure, then read the final 0/1 count output.",
+    "limit": "Matching row counts after a join do not establish timestamp or ward consistency. These flags differ from the POE-time-verified feature in 04c."
+  },
+  "Table 02.3": {
+    "title": "Logical agreement of composite prescription flags",
+    "source": "`nonicu_raas.exposure_raas_early`; construction SQL: [03_define_exposure_raas_early.sql](../sql/03_define_exposure_raas_early.sql).",
+    "read": "`any_consistency` checks ACEi OR ARB; `both_consistency` checks ACEi AND ARB. A value of 1.0 means 100% agreement.",
+    "limit": "This is internal flag consistency, not validation of drug-name classification, missing records or actual administration."
+  },
+  "Table 02.4": {
+    "title": "Mismatch counts for composite prescription flags",
+    "source": "`nonicu_raas.exposure_raas_early`; construction SQL: [03_define_exposure_raas_early.sql](../sql/03_define_exposure_raas_early.sql).",
+    "read": "Counts identify admissions that violate the OR/AND definitions. They express the preceding agreement check as counts.",
+    "limit": "This repeats the same logical check in a different form; it is not independent external validation. These flags classify prescription records; they do not establish administration, adherence, simultaneous treatment or a treatment effect."
+  },
+  "Table 02.5": {
+    "title": "Row-count comparison: cohort and prescription flags",
+    "source": "`nonicu_raas.nonicu_admissions`; construction SQL: [02_exclude_icu_admissions.sql](../sql/02_exclude_icu_admissions.sql). `nonicu_raas.exposure_raas_early`; construction SQL: [03_define_exposure_raas_early.sql](../sql/03_define_exposure_raas_early.sql).",
+    "read": "Compare `n_nonicu` with `n_expo`. Both count admissions.",
+    "limit": "Equal row counts need not imply identical key sets. Row counts, one-to-one key alignment and logical flag consistency are separate checks."
+  },
+  "Table 02.6": {
+    "title": "Early RAAS prescription records by recorded drug name",
+    "source": "`prescriptions` joined to the original Non-ICU admissions; aggregation SQL: [04_check_raas_drugs.sql](../sql/04_check_raas_drugs.sql).",
+    "read": "`class` is assigned by drug-name matching; `drug_lc` is the lowercased recorded name. `n_rows` counts prescription rows.",
+    "limit": "Counts refer to prescription rows, not admissions or patients, and may include multiple records within an admission. Name matching does not establish dose or administration."
+  },
+  "Table 02.7": {
+    "title": "Missing prescription start times in the source table",
+    "source": "`physionet-data.mimiciv_3_1_hosp.prescriptions`, restricted by this cell\u2019s SQL to prescription rows with an admission identifier and drug name.",
+    "read": "`n_total` is the prescription-row denominator, `n_starttime_null` is the missing count, and `pct_starttime_null` is a percentage.",
+    "limit": "This denominator covers the source prescriptions, not just Non-ICU RAAS prescriptions. It does not measure availability of linked POE order times."
+  },
+  "Table 03a.1": {
+    "title": "Non-ICU input: schema and non-null counts",
+    "source": "`nonicu_raas.nonicu_admissions`; construction SQL: [02_exclude_icu_admissions.sql](../sql/02_exclude_icu_admissions.sql).",
+    "read": "Read column names, types, non-null counts and the final dimensions. This is a structural summary, not a record-level listing.",
+    "limit": "Notebook 03a creates or modifies no table. Schema inspection alone does not validate all keys, clinical meanings or prediction-time ward eligibility in 04c."
+  },
+  "Table 03a.2": {
+    "title": "Prescription-flag input: structure and 0/1 counts",
+    "source": "`nonicu_raas.exposure_raas_early`; construction SQL: [03_define_exposure_raas_early.sql](../sql/03_define_exposure_raas_early.sql).",
+    "read": "The upper output shows types and non-null counts; the lower output counts admissions by `raas_any_early`.",
+    "limit": "These are the 0\u2013<24-hour prescription-record flags constructed in 02. The check does not establish administration or information availability at a prediction time."
+  },
+  "Table 03b.1": {
+    "title": "Descriptive-analysis input: structure and age summary",
+    "source": "`nonicu_raas.analysis_dataset` (the original association cohort, excluding admissions with ICU use at any time during hospitalization).",
+    "read": "Read types, non-null counts and dimensions, followed by the age summary.",
+    "limit": "Admissions are not distinct patients. This table does not describe the separate prediction-time cohorts in 04c."
+  },
+  "Table 03b.2": {
+    "title": "Admission keys and prescription-flag consistency",
+    "source": "`nonicu_raas.analysis_dataset` (the original association cohort, excluding admissions with ICU use at any time during hospitalization).",
+    "read": "Compare Rows with Unique hadm_id, then check prescription-record prevalence and OR/AND agreement.",
+    "limit": "Repeated admissions per patient are allowed. Internal agreement does not resolve missing records, administration or causal interpretation."
+  },
+  "Table 03b.3": {
+    "title": "Admission counts with and without qualifying prescription records",
+    "source": "`nonicu_raas.analysis_dataset` (the original association cohort, excluding admissions with ICU use at any time during hospitalization).",
+    "read": "Read No RAAS early as no qualifying record and RAAS early as a qualifying record. These meanings apply to the table\u2019s abbreviated labels.",
+    "limit": "These flags classify prescription records; they do not establish administration, adherence, simultaneous treatment or a treatment effect."
+  },
+  "Table 03b.4": {
+    "title": "Continuous characteristics by prescription-record group",
+    "source": "`nonicu_raas.analysis_dataset` (the original association cohort, excluding admissions with ICU use at any time during hospitalization).",
+    "read": "Columns show mean (SD) and median [interquartile range] within each group. Age is in years and hospital LOS in days.",
+    "limit": "LOS describes the entire admission. These marked baseline differences are not adjusted effects, and the table is not restricted to information available at admission."
+  },
+  "Table 03b.5": {
+    "title": "Recorded sex by prescription-record group",
+    "source": "`nonicu_raas.analysis_dataset` (the original association cohort, excluding admissions with ICU use at any time during hospitalization).",
+    "read": "This executed cell displays `gender` only. Read n (within-group %) and pp_diff, the percentage-point difference for record present minus no qualifying record.",
+    "limit": "The subsequent narrative also discusses admission type and era; those distributions are not all displayed in this sex table. This is a descriptive composition comparison, not an adjusted analysis."
+  },
+  "Table 03b.6": {
+    "title": "Summary characteristics by prescription-record group",
+    "source": "`nonicu_raas.analysis_dataset` (the original association cohort, excluding admissions with ICU use at any time during hospitalization).",
+    "read": "`n` counts admissions; age is in years and `los_median` in days. `raas_any`, `acei`, `arb` and `both` are 0\u20131 proportions.",
+    "limit": "Records from both classes do not establish simultaneous administration. A difference in mean age alone does not establish a difference in comorbidity burden."
+  },
+  "Figure 03b.1": {
+    "title": "Admission count, age and LOS by prescription-record group",
+    "source": "The current group-level summary DataFrame and this cell\u2019s Matplotlib plot, derived from the association dataset.",
+    "read": "Panels show admission counts (thousands), mean age (years) and median LOS (days), from left to right. Gray means no qualifying early prescription record and blue means a qualifying record. Each panel has a different vertical unit.",
+    "limit": "Do not compare bar heights across panels with different units. These are unadjusted descriptions; LOS covers the entire admission and exposure is prescription-record based. The figure establishes neither administration, treatment effects nor predictive performance."
+  },
+  "Table 04a.1": {
+    "title": "Outcome-analysis input: schema and prescription counts",
+    "source": "`nonicu_raas.analysis_dataset` (the original association cohort, excluding admissions with ICU use at any time during hospitalization).",
+    "read": "Read types, non-null counts, dimensions and the 0/1 admission counts.",
+    "limit": "This is a structural check, not a count of independent patients or the prediction risk sets in 04c."
+  },
+  "Table 04a.2": {
+    "title": "Counts by in-hospital mortality flag",
+    "source": "`nonicu_raas.analysis_dataset` (the original association cohort, excluding admissions with ICU use at any time during hospitalization).",
+    "read": "The last displayed expression in this cell counts `hospital_expire_flag`: 1 means in-hospital death and 0 live discharge.",
+    "limit": "Flag counts do not describe a time-specific death hazard or post-discharge mortality."
+  },
+  "Table 04a.3": {
+    "title": "Basic aggregate summary of the original association cohort",
+    "source": "`nonicu_raas.analysis_dataset` (the original association cohort, excluding admissions with ICU use at any time during hospitalization).",
+    "read": "N counts admissions; mortality is shown as a percentage and median age in years.",
+    "limit": "Some patients contribute repeated admissions. This is not a distinct-patient mortality rate or a population selected for survival and hospitalization at 24 hours."
+  },
+  "Table 04a.4": {
+    "title": "Prescription-record group labels for analysis",
+    "source": "`nonicu_raas.analysis_dataset` (the original association cohort, excluding admissions with ICU use at any time during hospitalization).",
+    "read": "RAAS early and No RAAS early mean a qualifying record and no qualifying record, respectively.",
+    "limit": "These flags classify prescription records; they do not establish administration, adherence, simultaneous treatment or a treatment effect."
+  },
+  "Table 04a.5": {
+    "title": "Age distributions by prescription-record group",
+    "source": "`nonicu_raas.analysis_dataset` (the original association cohort, excluding admissions with ICU use at any time during hospitalization).",
+    "read": "Read count, mean, SD, quantiles and range within each group. Age is in years.",
+    "limit": "This descriptive age difference neither explains the entire mortality contrast nor permits an unadjusted inference of medication benefit."
+  },
+  "Table 04a.6": {
+    "title": "Crude in-hospital mortality by prescription-record group",
+    "source": "`nonicu_raas.analysis_dataset` (the original association cohort, excluding admissions with ICU use at any time during hospitalization).",
+    "read": "`n_admissions` counts admissions, `n_events` counts deaths and `mortality_rate` is a 0\u20131 proportion. Multiply by 100 for percent.",
+    "limit": "This is an unadjusted observational comparison. Differences in patient characteristics and prescribing indications prevent a causal interpretation."
+  },
+  "Table 04a.7": {
+    "title": "Aggregate export of crude in-hospital outcomes",
+    "source": "The current `python_unadjusted_outcomes` aggregate, computed from this execution's admission counts in `tbl`.",
+    "read": "`n` and `deaths` are counts; `mortality_proportion` is a proportion. `crude_odds_ratio_vs_no_early_raas` uses the no-qualifying-record group as reference.",
+    "limit": "This is not a new independent analysis. An odds ratio is not a mortality probability ratio, and labels containing use still refer to record-based classification. This is an unadjusted observational comparison. Differences in patient characteristics and prescribing indications prevent a causal interpretation.",
+    "exports": "[unadjusted_outcomes.csv](../python/outputs/unadjusted_outcomes.csv)."
+  },
+  "Table 04a.8": {
+    "title": "Whole-admission LOS by prescription-record group",
+    "source": "`nonicu_raas.analysis_dataset` (the original association cohort, excluding admissions with ICU use at any time during hospitalization).",
+    "read": "Both `median` and `mean` are in days.",
+    "limit": "These whole-admission summaries are not adjusted for death or discharge disposition. They are neither admission-time predictors nor evidence that medication prolongs hospitalization."
+  },
+  "Figure 04a.1": {
+    "title": "Crude in-hospital mortality by prescription-record group",
+    "source": "The current `python_unadjusted_outcomes` aggregate and this cell's Matplotlib plot.",
+    "read": "The horizontal axis separates admissions without and with qualifying early prescription records; the vertical axis is mortality (%). Annotations show percentage and deaths/admissions. Gray means no qualifying record and blue means a record.",
+    "limit": "The figure has no confidence intervals or covariate adjustment. This is an unadjusted observational comparison. Differences in patient characteristics and prescribing indications prevent a causal interpretation. These flags classify prescription records; they do not establish administration, adherence, simultaneous treatment or a treatment effect.",
+    "exports": "[unadjusted_outcomes.csv](../python/outputs/unadjusted_outcomes.csv)."
+  },
+  "Table 04b.1": {
+    "title": "Association input: schema and timing fields",
+    "source": "`nonicu_raas.analysis_dataset` (the original association cohort, excluding admissions with ICU use at any time during hospitalization).",
+    "read": "Read types for admittime, dischtime, deathtime and the mortality flag, then dimensions and non-null counts.",
+    "limit": "A non-null timestamp need not be consistent. A missing death time is not automatically interpreted as survival."
+  },
+  "Table 04b.2": {
+    "title": "Original modeling matrix: dimensions and outcome prevalence",
+    "source": "`nonicu_raas.analysis_dataset` (the original association cohort, excluding admissions with ICU use at any time during hospitalization). Feature encoding is defined in this notebook.",
+    "read": "`X shape` is admissions \u00d7 feature columns. Outcome rate is a 0\u20131 mortality proportion.",
+    "limit": "Dimensions do not validate model fit, convergence or prediction-time information availability. Notebook 04c uses separate risk sets and models."
+  },
+  "Table 04b.3": {
+    "title": "Crude mortality counts in the association cohort",
+    "source": "`nonicu_raas.analysis_dataset` (the original association cohort, excluding admissions with ICU use at any time during hospitalization).",
+    "read": "Rows distinguish no qualifying prescription record and a qualifying record; columns show admissions, deaths and mortality proportions.",
+    "limit": "This is an unadjusted observational comparison. Differences in patient characteristics and prescribing indications prevent a causal interpretation."
+  },
+  "Table 04b.4": {
+    "title": "Legacy admission-random discrimination diagnostics",
+    "source": "The objects fitted in this execution of the legacy admission-random code; this differs from the patient-disjoint evaluation below.",
+    "read": "AUC means ROC AUC; Average precision is precision\u2013recall average precision. This split differs from the later patient-disjoint holdout.",
+    "limit": "Input retrieval order affects the split and patients may overlap. This is retrospective discrimination using 0\u2013<24-hour prescriptions and including early deaths, without a fixed prediction time. It does not validate calibrated risks or OR inference."
+  },
+  "Table 04b.5": {
+    "title": "Exposure coefficient in the class-balanced classifier",
+    "source": "This cell\u2019s `classification_model`, a class-balanced L2 classifier.",
+    "read": "`coef` is a classifier coefficient; OR is its exponential transformation.",
+    "limit": "It is distinct from the Firth adjusted OR and the unweighted model\u2019s risks/AME. Do not report the classifier coefficient as the main association estimate or a treatment effect."
+  },
+  "Table 04b.6": {
+    "title": "Ordinary-MLE exposure OR: fit diagnostics",
+    "source": "The exposure-row aggregate and convergence diagnostics from this cell's ordinary-MLE statsmodels Logit fit.",
+    "read": "Read convergence and finite-inference diagnostics before the OR, CI or p-value. A returned numerical value does not by itself establish a valid fit.",
+    "limit": "Neither a nominal CI excluding 1 nor a small p-value supports completed inference here. Use the separately labeled Firth estimates and patient-cluster intervals for current supplementary OR inference.",
+    "exports": "[mle_diagnostics.csv](../python/outputs/mle_diagnostics.csv)."
+  },
+  "Table 04b.7": {
+    "title": "Aggregate export of ordinary-MLE diagnostics",
+    "source": "The current `python_logistic_parameters` aggregate derived from the fitted ordinary-MLE model.",
+    "read": "Coefficient is on the log-odds scale; odds_ratio is its exponential. The exposure row is an aggregate diagnostic export from the current ordinary-MLE fit.",
+    "limit": "Do not use its nominal intervals or p-values for inference. Distinguish it from finite Firth estimation and the separate patient-cluster uncertainty analysis.",
+    "exports": "[mle_diagnostics.csv](../python/outputs/mle_diagnostics.csv)."
+  },
+  "Table 04b.8": {
+    "title": "24-hour eligibility diagnostics and exclusive exclusions (a\u2013b)",
+    "source": "The current `landmark_diagnostics` and `landmark_exclusions` aggregate objects.",
+    "read": "Table a counts potentially overlapping issues in all admissions and those retained by the original condition. Table b assigns only the first applicable reason. Do not sum a; reconcile b, including included admissions, to the full input.",
+    "limit": "Death or discharge exactly at 24 hours is excluded. A consistent live discharge with no death time differs from a flagged hospital death with an unknown death time. Overlapping diagnostic counts need not equal exclusive exclusion counts.",
+    "exports": "[landmark_diagnostics.csv](../python/outputs/landmark_diagnostics.csv) and [landmark_exclusions.csv](../python/outputs/landmark_exclusions.csv)."
+  },
+  "Table 04b.9": {
+    "title": "Ordinary-MLE comparison: original and corrected conditions (a\u2013b)",
+    "source": "The current `landmark_model_comparison` and `compare_or` aggregates.",
+    "read": "Table a gives full fit diagnostics; b summarizes selected rows. Read cohort_n, actual n, deaths, numerical exclusions, converged and inference_valid before the OR.",
+    "limit": "Do not compare nonconverged ORs, nominal CIs or p-values as validated inference. Distinguish actual fitting sample sizes if they differ within a cohort. Eligibility correction does not remove residual confounding.",
+    "exports": "[landmark_model_comparison.csv](../python/outputs/landmark_model_comparison.csv)."
+  },
+  "Table 04b.10": {
+    "title": "Supplementary Firth: numerical checks and profile intervals",
+    "source": "The current `firth_compare_raw` aggregate produced by `fit_firth` in this execution.",
+    "read": "Rows represent cohort/adjustment specifications. Check n, deaths, convergence, inference_valid and adjusted score before OR/CI. Intervals in this table use penalized profile likelihood.",
+    "limit": "Profile intervals assume independent admissions. Later patient-cluster bootstrap intervals separately address repeated-admission dependence. Finite Firth estimates do not resolve confounding or selection.",
+    "exports": "[firth_model_comparison.csv](../python/outputs/firth_model_comparison.csv)."
+  },
+  "Table 04b.11": {
+    "title": "Mean adjusted risks from the unweighted L2 model",
+    "source": "This execution's `compute_ame(risk_model, X)` result and its in-memory scenario-risk aggregates.",
+    "read": "Keep each admission\u2019s other covariates observed, set the prescription indicator to 0 or 1, then average each scenario over admissions. Values are percentages.",
+    "limit": "These are neither observed group mortality rates nor individual treatment effects. They come from the separate unweighted model, not probabilities borrowed from the classifier or Firth OR model.",
+    "exports": "[risk_patient_bootstrap.csv](../python/outputs/risk_patient_bootstrap.csv)."
+  },
+  "Table 04b.12": {
+    "title": "Average marginal effect: difference between risk scenarios",
+    "source": "The preceding unweighted L2 risk model and its current `p0_mean`, `p1_mean` and `ame` values.",
+    "read": "AME averages the qualifying-record minus no-record risk difference. A negative value means lower model-predicted risk in the record scenario. Units are percentage points.",
+    "limit": "This is not a relative reduction of 0.38%. It is a model-dependent observational contrast, not a causal reduction in mortality.",
+    "exports": "[risk_patient_bootstrap.csv](../python/outputs/risk_patient_bootstrap.csv)."
+  },
+  "Table 04b.13": {
+    "title": "Firth patient-cluster 95% intervals",
+    "source": "The current `firth_patient_ci` aggregate joined with `firth_compare_raw` point estimates by `model`; display uses these in-memory objects directly.",
+    "read": "Rows show model specifications. ORs retain the full-data point estimates; intervals use the requested patient resamples carrying all eligible admissions.",
+    "limit": "Uncertainty is handled differently from profile likelihood. Exposure, cohort and adjustment definitions are unchanged; these observational estimates do not establish a causal medication benefit.",
+    "exports": "[firth_patient_bootstrap.csv](../python/outputs/firth_patient_bootstrap.csv) and [firth_model_comparison.csv](../python/outputs/firth_model_comparison.csv)."
+  },
+  "Table 04b.14": {
+    "title": "Risk and AME patient-cluster 95% intervals",
+    "source": "The current `risk_patient_ci` aggregate from this execution's patient-cluster bootstrap.",
+    "read": "Rows identify each metric. The display converts risk estimates/limits to percent and AME estimates/limits to percentage points; the unit column identifies the scale. Bootstrap counts and interval eligibility accompany the estimates. The underlying exported aggregates remain on the probability scale.",
+    "limit": "These are observational contrasts from the unweighted risk model. Do not equate them with the class-balanced classifier, Firth coefficients, individual treatment effects or prospective predictive accuracy.",
+    "exports": "[risk_patient_bootstrap.csv](../python/outputs/risk_patient_bootstrap.csv)."
+  },
+  "Table 04b.15": {
+    "title": "Patient-disjoint holdout and admission-random reference",
+    "source": "The current `patient_split_validation` aggregate returned by `evaluate_patient_split`.",
+    "read": "Train/test count admissions; overlap counts patients in both partitions. PR AUC is average precision (AP).",
+    "limit": "This internal evaluation addresses patient overlap. Retrospective discrimination has no fixed prediction time and is not admission-time or 24h prognosis. Point differences between splits do not establish improvement.",
+    "exports": "[patient_split_validation.csv](../python/outputs/patient_split_validation.csv)."
+  },
+  "Figure 04b.1": {
+    "title": "Supplementary Firth ORs with 95% profile-likelihood intervals",
+    "source": "The current `firth_compare_raw` aggregate; the forest plot is drawn directly from these fitted rows.",
+    "read": "Dots show adjusted prescription-record ORs; horizontal bars show 95% penalized profile-likelihood intervals. The reference is OR=1 on a logarithmic axis; values below 1 indicate lower adjusted odds of death. Rows represent primary, corrected 24h and corrected 24h plus admission-source proxy specifications.",
+    "limit": "These supplementary profile intervals assume independent admissions. The current patient-cluster interval figure appears separately below. ORs are neither risk ratios nor mortality probabilities, and differences between specifications are not formal tests.",
+    "exports": "[firth_model_comparison.csv](../python/outputs/firth_model_comparison.csv)."
+  },
+  "Figure 04b.2": {
+    "title": "Adjusted model-predicted mortality by age",
+    "source": "The current unweighted full-cohort risk model, age_grid and its two typical-profile probability curves, plotted by this cell.",
+    "read": "Age is on the horizontal axis and predicted mortality (%) on the vertical axis. Gray means no qualifying prescription record and blue a qualifying record. Non-age covariates are fixed at full-cohort means/category proportions, defining a typical profile.",
+    "limit": "These are neither independently estimated observed age-group rates nor population-standardized averages. No exposure-by-age interaction was fitted; widening separation alone does not establish effect modification or medication benefit."
+  },
+  "Figure 04b.3": {
+    "title": "Age-specific risk differences: historical admission-row intervals",
+    "source": "The current rd_line and rd_boot objects from the unweighted risk model and admission-row bootstrap, plotted by this cell.",
+    "read": "Age is horizontal; qualifying-record minus no-record predicted mortality is vertical in percentage points. The line is the full-data estimate, the band a pointwise 95% admission-row bootstrap interval, and the dashed zero line represents no difference.",
+    "limit": "These historical admission-row intervals ignore repeated-admission dependence. The patient-cluster figure appears later. This is neither a formal age-group/interaction comparison nor a causal treatment effect."
+  },
+  "Figure 04b.4": {
+    "title": "Supplementary Firth ORs with patient-cluster 95% intervals",
+    "source": "The current `firth_compare_raw` point estimates joined with `firth_patient_ci` patient-cluster interval aggregates.",
+    "read": "Dots show adjusted ORs and bars 95% intervals from the requested patient-cluster resamples. The OR=1 reference represents equal odds. Read model labels first; the horizontal axis is logarithmic.",
+    "limit": "Resampling patients with all eligible admissions addresses repeated-admission dependence. This interval method differs from profile likelihood. ORs are not absolute mortality probabilities; the figure is neither a test between specifications nor a causal treatment comparison.",
+    "exports": "[firth_model_comparison.csv](../python/outputs/firth_model_comparison.csv) and [firth_patient_bootstrap.csv](../python/outputs/firth_patient_bootstrap.csv)."
+  },
+  "Figure 04b.5": {
+    "title": "Age-specific risk differences: patient-cluster 95% intervals",
+    "source": "The current `age_patient_ci` age-specific risk-difference and patient-cluster interval aggregates.",
+    "read": "Age is horizontal and qualifying-record minus no-record predicted mortality is vertical in percentage points. The line is the full-data point estimate; the band contains age-specific 95% intervals from the requested patient-cluster draws.",
+    "limit": "This contrast fixes non-age covariates at a mean profile and differs from population-average AME. The band is not a simultaneous confidence band. It does not test interaction, differences between age groups or causal treatment effects.",
+    "exports": "[age_risk_patient_bootstrap.csv](../python/outputs/age_risk_patient_bootstrap.csv)."
+  },
+  "Table 04c.1": {
+    "title": "Prediction-time eligibility: SQL\u2013Python count reconciliation",
+    "source": "This execution's `query_checks[\"sql_python_eligibility_checks\"]` reconciliation aggregates from adult, ward-transfer, ICU and order queries.",
+    "read": "`prediction_hours` is 0 at admission and 24 at the landmark. Admissions/deaths count each eligible population; bytes_processed measures query processing volume.",
+    "limit": "Agreement checks two implementations of the same definition; it is not independent clinical validation. The admission-time target remains a ward-confirmed subset, not all adult admissions.",
+    "exports": "[prediction_time_execution.json](../python/outputs/prediction_time_execution.json)."
+  },
+  "Table 04c.2": {
+    "title": "Prediction-time cohorts and exclusive exclusions (a\u2013b)",
+    "source": "The current `prediction_results[\"cohorts\"]` and `prediction_results[\"exclusions\"]` aggregates.",
+    "read": "Table a shows cohort, split and retained later-ICU-transfer counts; b lists time-specific exclusion reasons. The final quality output diagnoses order-time coverage and sources. Patients are separated between train and test.",
+    "limit": "Admissions without a confirmed covering target-ward interval are excluded; future ward records do not backfill location. The admission cohort is a small confirmed subset. Count differences across times do not represent improvement on the same population.",
+    "exports": "[prediction_time_cohorts.csv](../python/outputs/prediction_time_cohorts.csv) and [prediction_time_exclusions.csv](../python/outputs/prediction_time_exclusions.csv)."
+  },
+  "Table 04c.3": {
+    "title": "Held-out discrimination and calibration diagnostics (a\u2013b)",
+    "source": "The current `prediction_results[\"metrics\"]` aggregate, including held-out discrimination and calibration diagnostics.",
+    "read": "Table a shows ROC AUC, precision\u2013recall average precision (AP) and Brier score. Table b shows mean predicted/observed risk, calibration intercept/slope, fitting iterations and accepted bootstrap draws. Missing CIs mean the reporting threshold was not met, not zero-width uncertainty.",
+    "limit": "PR AUC here means AP. Intervals condition on fixed trained models and exclude training-sample uncertainty. Different admission/24h populations prevent interpreting their AUC difference as improvement. These models differ from 04b in population, prediction time and predictors; they are not external or prospective validation.",
+    "exports": "[prediction_time_metrics.csv](../python/outputs/prediction_time_metrics.csv) and [prediction_time_calibration.csv](../python/outputs/prediction_time_calibration.csv)."
+  },
+  "Figure 04c.1": {
+    "title": "Internal calibration at admission and 24 hours",
+    "source": "The current `prediction_results` calibration bins, metrics and cohort aggregates; the figure is drawn directly from these objects.",
+    "read": "The horizontal axis is mean predicted mortality within similar-risk groups; the vertical axis is observed mortality in those groups (both %). The dashed line represents agreement. The left panel is the admission age/sex model. The right panel compares 24h age/sex (blue) with the verified-prescription companion (orange). Bars show available 95% held-out-patient bootstrap intervals.",
+    "limit": "Zero observed mortality in a bin does not establish zero true risk. Reported intervals condition on fixed trained models and exclude training-sample uncertainty. Different eligible populations prevent attributing differences between panels to waiting 24 hours. This is neither medication-effect estimation nor external/prospective validation.",
+    "exports": "[prediction_time_calibration.csv](../python/outputs/prediction_time_calibration.csv) and [prediction_time_metrics.csv](../python/outputs/prediction_time_metrics.csv)."
+  },
+  "Figure 04b.D1": {
+    "title": "Ordinary-MLE OR: convergence-gated diagnostic",
+    "source": "The current ordinary-MLE exposure row in this notebook.",
+    "read": "The point is an OR and horizontal bars are the model-reported nominal 95% interval. The reference is OR=1.",
+    "limit": "This historical estimator is distinct from Firth. Inspect convergence, separation and finite-inference diagnostics before interpretation; the plot is not a causal comparison."
+  },
+  "Figure 04b.D2": {
+    "title": "Ordinary-MLE landmark comparison: validity-gated diagnostic",
+    "source": "The current compare_raw model-comparison object.",
+    "read": "Rows compare fitted specifications; points are ORs and bars are nominal intervals.",
+    "limit": "The existing export gate must pass for every displayed specification. Different cohorts and adjustment sets do not constitute a formal test of differences or a treatment-effect comparison."
+  }
+}
