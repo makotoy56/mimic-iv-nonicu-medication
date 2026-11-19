@@ -149,7 +149,7 @@ if (ROOT/'notebooks').is_dir():
     labels=set();setup_count=0;overview_count=0
     for path in (ROOT/'notebooks').glob('*.ipynb'):
         if path.name.startswith('05'):continue
-        nb=json.loads(path.read_text());notebook_labels=set();overview_labels=None
+        nb=json.loads(path.read_text());notebook_labels=set();overview_labels=None;notebook_setup=0
         for cell in nb['cells']:
             source=''.join(cell['source'])
             if cell['cell_type']=='markdown':
@@ -157,8 +157,16 @@ if (ROOT/'notebooks').is_dir():
                 assert not any(line.startswith('|') for line in source.splitlines())
                 assert '![' not in source
             if cell['cell_type']!='code':continue
-            if cell.get('id')=='python-result-view':setup_count+=1
             tree=ast.parse(source)
+            # nbstripout renumbers cell IDs when committing. Identify setup by
+            # its executable assignment so both local and published files pass.
+            for statement in tree.body:
+                if (isinstance(statement,ast.Assign)
+                        and any(isinstance(target,ast.Name) and target.id=='notebook_results' for target in statement.targets)
+                        and isinstance(statement.value,ast.Call)
+                        and isinstance(statement.value.func,ast.Name)
+                        and statement.value.func.id=='NotebookResults'):
+                    setup_count+=1;notebook_setup+=1
             for node in ast.walk(tree):
                 if isinstance(node,ast.Call) and isinstance(node.func,ast.Attribute) and isinstance(node.func.value,ast.Name) and node.func.value.id=='notebook_results' and node.func.attr in {'capture','diagnostic'}:
                     value=ast.literal_eval(node.args[0]);items=[value] if isinstance(value,str) else value
@@ -166,6 +174,7 @@ if (ROOT/'notebooks').is_dir():
                 if isinstance(node,ast.Call) and isinstance(node.func,ast.Attribute) and isinstance(node.func.value,ast.Name) and node.func.value.id=='notebook_results' and node.func.attr=='overview':
                     assert overview_labels is None,'Duplicate notebook provenance header'
                     overview_labels=set(ast.literal_eval(node.args[0]));overview_count+=1
+        assert notebook_setup==1,(path.name,notebook_setup)
         assert overview_labels==notebook_labels,path.name
     assert setup_count==8 and labels==set(view.specs),(setup_count,labels.symmetric_difference(view.specs))
     assert overview_count==8
