@@ -1,7 +1,17 @@
 """Synthetic boundary checks; no MIMIC records are used."""
+from contextlib import nullcontext
 import json
 from pathlib import Path
+from types import SimpleNamespace
 import pandas as pd
+
+# Execute the notebook's actual calculations and plot-export gates unchanged;
+# only suppress display wrappers in these isolated execution namespaces.
+# The renderer itself is exercised by test_notebook_results.py.
+notebook_results = SimpleNamespace(
+    capture=lambda *args, **kwargs: nullcontext(),
+    diagnostic=lambda *args, **kwargs: nullcontext(),
+)
 
 base = pd.Timestamp("2020-01-01")
 def t(hours):
@@ -81,7 +91,8 @@ synthetic.loc[0, "age"] = np.nan
 synthetic.loc[1:100, "admission_location"] = None
 model_cell = next("".join(c["source"]) for c in notebook["cells"]
                   if c["cell_type"] == "code" and "def fit_landmark_model(" in "".join(c["source"]))
-model_ns = dict(pd=pd, np=np, sm=sm, warnings=warnings, cat_vars=categories, num_vars=["age"])
+model_ns = dict(pd=pd, np=np, sm=sm, warnings=warnings, cat_vars=categories,
+                num_vars=["age"], notebook_results=notebook_results)
 exec(model_cell.split("df_lm_original =", 1)[0], model_ns)
 for proxy in [False, True]:
     fitted, result = model_ns["fit_landmark_model"](synthetic, "synthetic", proxy)
@@ -131,5 +142,6 @@ print("PASS: full original/corrected ordinary/proxy comparison and primary prese
 # Failed convergence must skip the historical-figure export and allow later cells.
 figure_cell = next("".join(c["source"]) for c in notebook["cells"]
                    if c["cell_type"] == "code" and "Landmark figure not refreshed:" in "".join(c["source"]))
-exec(figure_cell, {"compare_raw": pd.DataFrame({"inference_valid": [False, False, False]})})
+exec(figure_cell, {"compare_raw": pd.DataFrame({"inference_valid": [False, False, False]}),
+                   "notebook_results": notebook_results})
 print("PASS: unconverged real-data state skips figure export without stopping subsequent cells")
