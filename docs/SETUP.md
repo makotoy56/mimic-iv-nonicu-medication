@@ -35,9 +35,15 @@ Run in order: 00 → 01 → 02 → 03a → 03b → 04a → 04b → 04c, using th
 3. `04a_unadjusted_outcomes.ipynb` and `04b_multivariable_outcomes.ipynb` generate aggregate analyses and figures.
 4. `04c_prediction_time_evaluation.ipynb` adds separate admission/24h ward-confirmed forecasts using the adult base and read-only native-transfer/order queries. Read the [protocol](PREDICTION_TIME_PROTOCOL.md); configure its project/dataset. Later ICU transfers remain included. This is distinct from the retrospective classifier in 04b.
 
-A complete Run All rerun rebuilds five derived tables and overwrites aggregate CSVs and figures. Back up local working changes first and close notebook editors before an external execution to avoid save conflicts. Selective reruns require the upstream tables or exports. See the [current execution record](CLINICAL_REEXECUTION_615de01.md).
+A complete Run All rerun rebuilds five derived tables and overwrites aggregate CSVs and figures. Back up local working changes first and close notebook editors before an external execution to avoid save conflicts. Selective reruns require the upstream tables or exports. See the [current execution record](CLINICAL_REEXECUTION_20261119.md).
 
 
+
+## Real input failures
+
+Normal notebook execution never falls back to synthetic/demo data or saved results. Configure your project/dataset and matching SQL prefixes before execution. An access failure stops with a cause and **Next** instruction; repair ADC, PhysioNet approval, BigQuery permissions, resource names/expiration or US location as indicated, then retry from a fresh kernel. Keep processing limits unchanged. Dataset/table construction still requires its existing explicit setup/rebuild step; error handling does not authorize or run reconstruction.
+
+The 2026-11-19 connected Run All saved live outputs on the SSD. Older outputs labeled presentation replay are review artifacts, not an alternative live data source. The prediction loader's guarded entry is `real_data_access.read_prediction_inputs`; the verified low-level loader and numerical results are unchanged. See [real-data execution and access failures](../REPRODUCIBILITY.md#real-data-execution-and-access-failures). Test without access using `.venv/bin/python scripts/test_real_data_access.py`. The explicit `validation_checklist.py --step forbidden` check remains offline.
 
 ## Figure Refresh Workflow
 

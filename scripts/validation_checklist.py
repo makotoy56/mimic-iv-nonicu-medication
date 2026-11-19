@@ -4,6 +4,7 @@ import argparse
 
 from google.cloud import bigquery
 from google.cloud.bigquery import QueryJobConfig
+from real_data_access import real_data_io, require_settings
 
 PROJECT_ID = "mimic-iv-portfolio"
 DATASET = "nonicu_raas"
@@ -140,6 +141,7 @@ def step_repeats(client: bigquery.Client, timeout_s: int) -> None:
     print(f"pct subjects with >=2 admissions: {pct_subjects_repeat:.4%}")
 
 
+@real_data_io
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -150,7 +152,10 @@ def main() -> None:
     parser.add_argument("--timeout", type=int, default=120)
     args = parser.parse_args()
 
-    client = bigquery.Client(project=PROJECT_ID)
+    # The explicit static feature check needs neither ADC nor BigQuery.
+    if args.step != "forbidden":
+        require_settings(PROJECT_ID, DATASET)
+        client = bigquery.Client(project=PROJECT_ID)
     timeout_s = args.timeout
 
     if args.step in ("row_counts", "all"):

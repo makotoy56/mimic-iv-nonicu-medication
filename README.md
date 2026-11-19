@@ -180,7 +180,7 @@ The workflow uses version-controlled notebooks, SQL scripts, and current aggrega
 
 For complete environment and reproducibility details, see [REPRODUCIBILITY.md](REPRODUCIBILITY.md).
 
-The [current real-data reexecution record](docs/CLINICAL_REEXECUTION_615de01.md) covers the original 00–04b workflow at `615de01` plus separate notebook 04c (8 notebooks, 93 code cells, zero runtime errors). Connected BigQuery checks and aggregate comparisons passed. Historical [8063e91 evidence](docs/PYTHON_WORKFLOW_VALIDATION.md) is preserved. Runtime success is separate from statistical convergence; the original unpenalized MLE remains nonconverged.
+The [current real-data reexecution record](docs/CLINICAL_REEXECUTION_20261119.md) covers a fresh-kernel Run All of 00–04c on 2026-11-19 (8 notebooks, 109 code cells, zero runtime errors), including the Python-generated numbered displays and real-data access guards. Connected BigQuery checks and stable aggregate comparisons passed. Historical [615de01](docs/CLINICAL_REEXECUTION_615de01.md) and [8063e91 evidence](docs/PYTHON_WORKFLOW_VALIDATION.md) are preserved. Runtime success is separate from statistical convergence; the original unpenalized MLE remains nonconverged.
 
 Validation scope:
 

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Makoto Yoshida, PhD">
-<meta name="dcterms.date" content="2026-11-18">
+<meta name="dcterms.date" content="2026-11-19">
 
 <title>Documented Early Inpatient RAAS Prescription Exposure and In-Hospital Mortality in Adult Non-ICU Admissions</title>
 <style>
@@ -91,7 +91,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">November 18, 2026</p>
+      <p class="date">November 19, 2026</p>
     </div>
   </div>
   
@@ -798,7 +798,7 @@ Source tables to analysis dataset lineage. <a href="../assets/nonicu_table_linea
 <p>Reproducibility was addressed by separating cohort construction, exposure definition, model estimation, figure generation, and Python numerical checks into version-controlled workflow steps. The rendered report is supported by notebooks, SQL definitions, aggregate validation outputs, and exported figures, while patient-level MIMIC-IV data remain outside the repository.</p>
 <p>For complete environment and reproducibility details, see <a href="https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/REPRODUCIBILITY.md">REPRODUCIBILITY.md</a>.</p>
 <p>MIMIC-IV and PhysioNet access, Google Cloud authentication, BigQuery access, and local environment settings are configured outside the repository.</p>
-<p>The original 00–04b workflow at <code>615de01</code> was reexecuted with fresh repository kernels, followed by separate notebook 04c: 8 notebooks / 93 code cells, zero runtime error outputs. Connected BigQuery checks and original aggregate comparisons passed. <a href="https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/CLINICAL_REEXECUTION_615de01.md">Current execution and source-preservation evidence</a> distinguishes runtime success, separated MLE diagnostics and new prediction calibration. <a href="https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/PYTHON_WORKFLOW_VALIDATION.md">Historical baseline evidence</a> remains available. Local outputs are saved; Git strips notebook outputs/counts.</p>
+<p>On 2026-11-19, all current notebooks 00–04c were reexecuted sequentially with fresh repository kernels: 8 notebooks / 109 code cells, zero runtime error outputs. This run includes the live Python-generated displays and real-data access guards. Connected BigQuery checks and stable aggregate comparisons passed. <a href="https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/CLINICAL_REEXECUTION_20261119.md">Current execution and source-preservation evidence</a> distinguishes runtime success, separated MLE diagnostics and prediction calibration. <a href="https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/CLINICAL_REEXECUTION_615de01.md">Historical 615de01</a> and <a href="https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/PYTHON_WORKFLOW_VALIDATION.md">baseline evidence</a> remain available. Local live outputs are saved; Git strips notebook outputs/counts.</p>
 </section>
 <section id="conclusion" class="level2" data-number="15">
 <h2 data-number="15" class="anchored" data-anchor-id="conclusion"><span class="header-section-number">15</span> Conclusion</h2>

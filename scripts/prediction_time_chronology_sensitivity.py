@@ -10,7 +10,8 @@ import numpy as np
 import pandas as pd
 from sklearn.metrics import roc_auc_score,average_precision_score
 from sklearn.model_selection import GroupShuffleSplit
-from prediction_time_validation import read_inputs,prepare_inputs,eligibility,make_model,MODELS,SPLIT_SEED,independent_rank_metrics,ROOT
+from prediction_time_validation import prepare_inputs,eligibility,make_model,MODELS,SPLIT_SEED,independent_rank_metrics,ROOT
+from real_data_access import read_prediction_inputs as read_inputs, real_data_io
 
 
 def uncertain_chronology(data):
@@ -44,7 +45,8 @@ def sensitivity(data,primary_metrics):
                               'master_patient_split_unchanged':True,'post_QA_not_prespecified_primary':True,'point_estimates_only':True}
 
 
-if __name__=='__main__':
+@real_data_io
+def main():
     from datetime import datetime,timezone
     from google.cloud import bigquery
     from prediction_time_validation import input_sql,eligible_sql_predicate,LIMIT
@@ -68,3 +70,7 @@ AND NOT COALESCE(first_icu_intime > dischtime OR (hospital_expire_flag=1 AND fir
              'quality':checks,'models':json.loads(metrics.to_json(orient='records')),'row_exports':False}
     (ROOT/'python/outputs/prediction_time_chronology_sensitivity.json').write_text(json.dumps(receipt,indent=2,allow_nan=False)+'\n')
     print('PASS: post-QA chronology sensitivity complete; same master patient allocation; aggregate-only results saved; primary results untouched')
+
+
+if __name__=='__main__':
+    main()

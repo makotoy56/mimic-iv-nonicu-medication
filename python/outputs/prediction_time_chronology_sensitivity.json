@@ -1,25 +1,25 @@
 {
-  "started_utc": "2026-11-18T11:19:33.368008+00:00",
-  "completed_utc": "2026-11-18T11:21:52.405628+00:00",
+  "started_utc": "2026-11-19T09:45:15.812024+00:00",
+  "completed_utc": "2026-11-19T09:48:04.960146+00:00",
   "queries": {
     "query_sha256": "524b307d9fbc1515aa2d949883f046c719a0c937c749485e8396b6570fabf989",
     "dry_run_bytes": 3282848727,
-    "retrieval_job_id": "3ec97c1e-22ca-466d-bfff-8f0ea283944c",
-    "retrieval_bytes_processed": 0,
+    "retrieval_job_id": "c0c428b6-9402-466a-8e02-b14d32ba334d",
+    "retrieval_bytes_processed": 3282848727,
     "sql_python_eligibility_checks": [
       {
         "prediction_hours": 0,
         "admissions": 719,
         "deaths": 11,
-        "job_id": "0bbf3811-3c35-4f3c-870c-6b0eaca218e5",
-        "bytes_processed": 0
+        "job_id": "5a13f2ab-805a-479e-8446-5861f8e5c5b6",
+        "bytes_processed": 1013764559
       },
       {
         "prediction_hours": 24,
         "admissions": 336372,
         "deaths": 3457,
-        "job_id": "87249b16-a7c7-4764-a2d7-da5d4383e6af",
-        "bytes_processed": 0
+        "job_id": "717142ab-a32f-40b6-b6ea-fcd853e83e8a",
+        "bytes_processed": 1013764559
       }
     ],
     "native_transfer_reconstruction": {
@@ -27,8 +27,8 @@
       "prediction_points_checked": 1184,
       "mismatches": 0,
       "sampling": "deterministic admission hash modulo 1000 = 0",
-      "job_id": "65caa354-70f5-4f17-b162-46a679af9d0f",
-      "bytes_processed": 0,
+      "job_id": "27a93228-5cf7-4e47-b451-fc0186004f06",
+      "bytes_processed": 164032069,
       "row_exports": false
     },
     "source": "MIMIC-IV v3.1 adult base, transfers, icustays, prescriptions, poe",
@@ -39,13 +39,13 @@
     {
       "prediction_hours": 0,
       "admissions": 719,
-      "job_id": "a488d581-9f4d-45a2-81ca-642c93c35029",
+      "job_id": "97583efd-c8de-41fa-b0bb-d58469e07877",
       "bytes_processed": 1013764559
     },
     {
       "prediction_hours": 24,
       "admissions": 336362,
-      "job_id": "91cf76cc-470b-4030-8db1-fe52a765cfbc",
+      "job_id": "99988589-6cc5-4768-b22c-4a53379e0981",
       "bytes_processed": 1013764559
     }
   ],

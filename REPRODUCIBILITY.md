@@ -38,7 +38,7 @@ The workflow is organized as an admission-level clinical analytics pipeline. The
 6. **Sensitivity analysis**: 24-hour landmark and admission-source proxy sensitivity models are evaluated in the multivariable outcomes workflow.
    - `notebooks/04b_multivariable_outcomes.ipynb`
 7. **Additional prediction-time evaluation**: notebook 04c defines ward-confirmed admission/24h risk sets, retains later ICU transfers and evaluates subsequent in-hospital death through discharge. See the separate [protocol and results](docs/PREDICTION_TIME_VALIDATION.md).
-8. **Validation**: synthetic boundary tests, Firth numerical checks, patient-cluster bootstrap diagnostics and internal retrospective discrimination evaluation are implemented in Python. See [current execution evidence](docs/CLINICAL_REEXECUTION_615de01.md).
+8. **Validation**: synthetic boundary tests, Firth numerical checks, patient-cluster bootstrap diagnostics and internal retrospective discrimination evaluation are implemented in Python. See [current execution evidence](docs/CLINICAL_REEXECUTION_20261119.md).
 9. **Reporting**: the narrative clinical report is authored in Quarto and rendered to `docs/reports/`.
    - `reports/nonicu_raas_mortality_report.qmd`
    - `_quarto.yml`
@@ -121,7 +121,7 @@ Make these coordinated replacements in a private working copy before any connect
 | All seven `sql/*.sql` files | Replace every destination prefix `mimic-iv-portfolio.nonicu_raas` with `YOUR_PROJECT.YOUR_DATASET`, including intermediate-table reads and the drug-check query. |
 | All eight notebooks 00–04c | Set `PROJECT_ID` to `YOUR_PROJECT`. Set `DATASET_ID` in 00 and `DATASET` in 01–04c to `YOUR_DATASET`; keep `LOCATION = "US"` in 00. Derived `TABLE_*` strings then follow those constants. |
 | `scripts/rebuild_analysis_tables.py` | Set its fully qualified `DATASET` to `YOUR_PROJECT.YOUR_DATASET` **and** its `bigquery.Client(project=...)` to `YOUR_PROJECT`. Its exact CREATE-header check must agree with the edited SQL prefix. |
-| Additional prediction helpers | Notebook 04c passes its `PROJECT_ID`/`DATASET` to `read_inputs`; no default edits are needed for that route. For direct helper use pass `project=YOUR_PROJECT, dataset=YOUR_DATASET`. The optional chronology sensitivity CLI accepts `--project YOUR_PROJECT --dataset YOUR_DATASET`. Native MIMIC source prefixes stay unchanged. |
+| Additional prediction helpers | Notebook 04c passes its `PROJECT_ID`/`DATASET` through `real_data_access.read_prediction_inputs` to the verified loader; no default edits are needed for that route. For direct guarded use pass `project=YOUR_PROJECT, dataset=YOUR_DATASET`. The optional chronology sensitivity CLI accepts `--project YOUR_PROJECT --dataset YOUR_DATASET`. Native MIMIC source prefixes stay unchanged. |
 | Optional `scripts/validation_checklist.py` | Set `PROJECT_ID` and `DATASET`; table references, including the landmark prevalence query, follow `TABLES`. |
 
 Keep the authorized source references `physionet-data.mimiciv_3_1_hosp` and `physionet-data.mimiciv_3_1_icu` unchanged unless deliberately using an equivalent licensed source. Do not replace `physionet-data` with the destination project. Retain table names, joins, cohort/exposure predicates and US location. Update explanatory author-project labels in notebook markdown separately if desired; those labels do not configure execution.
@@ -168,7 +168,7 @@ After rendering, run `.venv/bin/python scripts/test_report_consistency.py` to co
 
 ## Complete workflow verification
 
-The [current clinical reexecution record](docs/CLINICAL_REEXECUTION_615de01.md) documents the original seven fresh-kernel runs at `615de01`, plus the added prediction-time notebook (8 notebooks / 93 cells total). Connected BigQuery checks and original aggregate comparisons passed; MLE remains separated/nonconverged. Historical [8063e91 execution evidence](docs/PYTHON_WORKFLOW_VALIDATION.md) and [offline correction scope](docs/AUDIT_CORRECTIONS_20261118.md) remain distinct.
+The [current clinical reexecution record](docs/CLINICAL_REEXECUTION_20261119.md) documents the 2026-11-19 sequential fresh-kernel Run All of 00–04c (8 notebooks / 109 code cells, zero runtime error outputs). It includes the live Python-generated displays and real-data access guards. Connected BigQuery checks and stable aggregate comparisons passed; MLE remains separated/nonconverged. Historical [615de01 execution evidence](docs/CLINICAL_REEXECUTION_615de01.md), [8063e91 execution evidence](docs/PYTHON_WORKFLOW_VALIDATION.md) and [offline correction scope](docs/AUDIT_CORRECTIONS_20261118.md) retain their recorded scope.
 
 ## Additional time-anchored prediction branch
 
@@ -195,7 +195,7 @@ All public notebooks 00–04c now initialize `NotebookResults` from `scripts/non
 
 The original 93 analytical code cells retain their cohort/exposure/model statements. Eight presentation setup cells and eight shared-provenance cells bring the current total to 109 code cells. Presentation wrappers capture the existing outputs without introducing data queries or model fits. Existing model and CSV exports remain in their original analysis cells. Firth and patient-cluster displays use current fitted aggregate rows; the calibration display is drawn directly from current aggregate bins. No old PNG is substituted if an execution fails or does not produce a figure.
 
-Each notebook's shared source/mode header explicitly identifies the saved local numbered displays as **presentation replay**. These were regenerated from previously saved aggregate tables/figure outputs to check display, with execution counts cleared. They are not a new clinical run and do not replace the historical clinical execution receipts. The two original age-risk plots retain their saved figure output in that replay because reconstructing their fitted curves or admission-row interval band would require a clinical model rerun. During a real Run All, those cells generate and display their current figures normally.
+The earlier presentation-only review regenerated displays from saved aggregates with cleared execution counts and labeled them **presentation replay**. The 2026-11-19 connected Run All replaced those local replay outputs with live results, sequential execution counts and freshly calculated summaries/figures, including both original age-risk plots. Each saved header now identifies **live notebook execution**. The receipt above records that successful clinical run; historical replay and execution receipts retain their original scope.
 
 Run each notebook from a fresh repository Python 3.12 kernel in the documented order, after configuring your own authorized BigQuery destination. Run All still executes the original construction queries, fitting and resampling; 01–02 retain their `CREATE OR REPLACE` behavior. Successful execution replaces the replay outputs with current results and recalculates their numerical summaries. Fits that fail, intervals that are withheld, and missing outputs are reported explicitly rather than filled from old results.
 
@@ -215,4 +215,22 @@ The shared header separates **Calculation inputs and source definitions** from *
 
 For example, Table 04b.13 joins the in-memory `firth_patient_ci` and `firth_compare_raw` objects directly. `firth_patient_bootstrap.csv` and `firth_model_comparison.csv` are saved copies, not files reloaded to produce that display. The same distinction applies to other affected result definitions. Separate report/validation workflows may legitimately read those exports.
 
-This clarification preserves the current shared-provenance design, all analytical code cells, execution counts, aggregate tables, figures and numerical summaries. Only explanatory metadata and saved shared-header text are refreshed; no clinical query, fit or bootstrap is executed. Synthetic presentation checks forbid network access and CSV reading.
+The earlier source-label clarification changed only explanatory metadata and saved shared-header text; it did not execute clinical queries, fits or bootstraps. The subsequent 2026-11-19 connected Run All separately verified the complete live workflow, as recorded above. Synthetic presentation checks still forbid network access and CSV reading.
+
+## Real-data execution and access failures
+
+Normal execution of notebooks 00–04c uses real MIMIC-IV/BigQuery inputs. There is no automatic switch to synthetic/demo data or saved aggregate files when access fails. Configure `PROJECT_ID` and `DATASET`/`DATASET_ID` and the matching SQL destination prefixes first. Missing or placeholder settings stop before authentication. The checked-in author settings are examples for other users; they do not grant access.
+
+The notebook/CLI access boundaries report a safe cause and **Next** action for missing/expired ADC, rejected permissions, missing resources, location, service and processing-limit errors. They do not print SDK request details or credentials. Configure ADC outside the notebook with `gcloud auth application-default login`, use your approved PhysioNet account and authorized BigQuery project, then start a fresh repository Python kernel. If source access or job/destination permissions are denied, resolve them with the project administrator. Missing derived tables may have reached the sandbox's 60-day expiration; follow the documented construction/rebuild procedure explicitly. Error handling never starts a rebuild itself.
+
+Notebook 00 retains its existing dataset setup behavior, and 01–02 retain their explicit construction queries. The prediction and rebuild processing caps, dry runs, US-location checks, missing-only rebuild, 60-day lifetime and aggregate-only exports are unchanged. A failed input step stops before fitting or result export. Saved notebook presentation-replay outputs remain available for review and do not prove that a new run succeeded.
+
+Notebook 04c and the chronology-sensitivity CLI use `real_data_access.read_prediction_inputs`, an error-guidance adapter around the unchanged verified `prediction_time_validation.read_inputs` loader. Direct low-level loader calls remain real-only and raise on failure; use the adapter for the same actionable guidance. Historical execution receipts and source hashes remain unchanged. Separate numerical optimizer recovery in the Firth code is not a switch of datasets.
+
+Explicit synthetic tests and saved-aggregate review/validation workflows remain separate. `validation_checklist.py --step forbidden` is a static feature-list check and needs no ADC or BigQuery client. The new access tests mock failures and block network/credential access:
+
+```bash
+.venv/bin/python scripts/test_real_data_access.py
+```
+
+These tests are offline access/presentation checks. The separate [2026-11-19 connected execution](docs/CLINICAL_REEXECUTION_20261119.md) verified actual access, live tables, all 109 notebook code cells and the existing aggregate-validation/chronology CLI paths. A passing historical run does not guarantee future IAM or table availability.

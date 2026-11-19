@@ -10,6 +10,7 @@ from pathlib import Path
 import google.auth
 from google.api_core.exceptions import NotFound
 from google.cloud import bigquery
+from real_data_access import real_data_io, require_destination
 
 ROOT = Path(__file__).resolve().parents[1]
 DATASET = "mimic-iv-portfolio.nonicu_raas"
@@ -53,10 +54,12 @@ def creation_query(table, sql):
     return sql.replace(header, replacement, 1)
 
 
+@real_data_io
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--execute", action="store_true", help="Create missing tables after dry-run validation")
     args = parser.parse_args()
+    require_destination(DATASET)
     steps = load_steps()
     credentials, _ = google.auth.default()
     client = bigquery.Client(project="mimic-iv-portfolio", credentials=credentials)

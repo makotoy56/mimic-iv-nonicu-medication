@@ -63,7 +63,7 @@ Results from this notebook inform the original association analyses. Their entir
 
 ## Current execution (2026-11-18)
 
-This notebook was reexecuted successfully with a fresh repository kernel. The [current execution record](CLINICAL_REEXECUTION_615de01.md) covers 8 notebooks / 93 code cells with zero runtime error outputs, connected BigQuery checks and preserved original association estimates. Runtime success is distinct from the nonconverged MLE diagnostics in 04b.
+This notebook was reexecuted successfully with a fresh repository kernel on 2026-11-19. The [current execution record](CLINICAL_REEXECUTION_20261119.md) covers all 8 notebooks / 109 code cells with zero runtime error outputs, live Python-generated displays, connected BigQuery checks and preserved association estimates. Runtime success is distinct from the nonconverged MLE diagnostics in 04b.
 
 ---
 ## Next Step

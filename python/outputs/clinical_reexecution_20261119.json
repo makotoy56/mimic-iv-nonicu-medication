@@ -1,0 +1,553 @@
+{
+  "baseline_head": "859bca4070072cb5c74090c32e3325d530b7e4c0",
+  "source_scope": "Authorized real-data-access guard worktree based on baseline_head; exact executed sources are identified by hashes, not by claiming baseline HEAD includes uncommitted guards.",
+  "started_utc": "2026-11-19T09:25:32.965978+00:00",
+  "completed_utc": "2026-11-19T09:56:32.577499+00:00",
+  "status": "passed",
+  "notebooks": [
+    {
+      "notebook": "00_setup.ipynb",
+      "code_cells": 7,
+      "started_utc": "2026-11-19T09:25:32.991993+00:00",
+      "status": "passed",
+      "completed_code_cells": 7,
+      "active_cell": 12,
+      "completed_utc": "2026-11-19T09:25:37.076228+00:00",
+      "elapsed_seconds": 4.08,
+      "executed_code_cells": 7,
+      "runtime_error_outputs": 0,
+      "saved_to_ssd": true,
+      "semantic_source_sha256": "21833d9fd5cfbe89a873ba3cc5b803eb1c8372a4ac8c36b839bfec802f289604"
+    },
+    {
+      "notebook": "01_cohort.ipynb",
+      "code_cells": 19,
+      "started_utc": "2026-11-19T09:25:37.194035+00:00",
+      "status": "passed",
+      "completed_code_cells": 19,
+      "active_cell": 44,
+      "completed_utc": "2026-11-19T09:31:56.348969+00:00",
+      "elapsed_seconds": 379.15,
+      "executed_code_cells": 19,
+      "runtime_error_outputs": 0,
+      "saved_to_ssd": true,
+      "semantic_source_sha256": "b209b7c4395932398e298c60883711c0be1a43cfcebd9c3de92a92e3a5f40b88"
+    },
+    {
+      "notebook": "02_exposure.ipynb",
+      "code_cells": 12,
+      "started_utc": "2026-11-19T09:31:56.466517+00:00",
+      "status": "passed",
+      "completed_code_cells": 12,
+      "active_cell": 27,
+      "completed_utc": "2026-11-19T09:34:39.655732+00:00",
+      "elapsed_seconds": 163.19,
+      "executed_code_cells": 12,
+      "runtime_error_outputs": 0,
+      "saved_to_ssd": true,
+      "semantic_source_sha256": "2934dc87f27ef6bc2a1e4fdccd1ee9f1efdf688c17b24cd2c7c062836a2b1954"
+    },
+    {
+      "notebook": "03a_validate_input_tables.ipynb",
+      "code_cells": 7,
+      "started_utc": "2026-11-19T09:34:39.775208+00:00",
+      "status": "passed",
+      "completed_code_cells": 7,
+      "active_cell": 14,
+      "completed_utc": "2026-11-19T09:36:50.038349+00:00",
+      "elapsed_seconds": 130.26,
+      "executed_code_cells": 7,
+      "runtime_error_outputs": 0,
+      "saved_to_ssd": true,
+      "semantic_source_sha256": "ec8fe10317fb59cd24390dab37a6c17da519cba4f222c80e9dc591222f10fb7a"
+    },
+    {
+      "notebook": "03b_describe_analysis_dataset.ipynb",
+      "code_cells": 14,
+      "started_utc": "2026-11-19T09:36:50.158367+00:00",
+      "status": "passed",
+      "completed_code_cells": 14,
+      "active_cell": 27,
+      "completed_utc": "2026-11-19T09:38:54.446206+00:00",
+      "elapsed_seconds": 124.29,
+      "executed_code_cells": 14,
+      "runtime_error_outputs": 0,
+      "saved_to_ssd": true,
+      "semantic_source_sha256": "c119d426142e545e1504b9c5c830d5365f7c3a285c488034fffca13eef3b05e7"
+    },
+    {
+      "notebook": "04a_unadjusted_outcomes.ipynb",
+      "code_cells": 14,
+      "started_utc": "2026-11-19T09:38:54.566253+00:00",
+      "status": "passed",
+      "completed_code_cells": 14,
+      "active_cell": 24,
+      "completed_utc": "2026-11-19T09:40:43.903296+00:00",
+      "elapsed_seconds": 109.34,
+      "executed_code_cells": 14,
+      "runtime_error_outputs": 0,
+      "saved_to_ssd": true,
+      "semantic_source_sha256": "fb9d14758caf1901a6bbec11880a4b7814be9cda4296662d80ca3007d2c0b83d"
+    },
+    {
+      "notebook": "04b_multivariable_outcomes.ipynb",
+      "code_cells": 26,
+      "started_utc": "2026-11-19T09:40:44.024746+00:00",
+      "status": "passed",
+      "completed_code_cells": 26,
+      "active_cell": 52,
+      "completed_utc": "2026-11-19T09:54:29.955172+00:00",
+      "elapsed_seconds": 825.92,
+      "executed_code_cells": 26,
+      "runtime_error_outputs": 0,
+      "saved_to_ssd": true,
+      "semantic_source_sha256": "ca23b657186c206effded1e915877de2d864a4fd27e5fe7345d10050cbf3b786"
+    },
+    {
+      "notebook": "04c_prediction_time_evaluation.ipynb",
+      "code_cells": 10,
+      "started_utc": "2026-11-19T09:54:30.075035+00:00",
+      "status": "passed",
+      "completed_code_cells": 10,
+      "active_cell": 18,
+      "completed_utc": "2026-11-19T09:56:32.460122+00:00",
+      "elapsed_seconds": 122.38,
+      "executed_code_cells": 10,
+      "runtime_error_outputs": 0,
+      "saved_to_ssd": true,
+      "semantic_source_sha256": "2e490f19271116e44c011f8a77d5eff7d0b733b64712222d9400afce23a34a0e"
+    }
+  ],
+  "code_cells": 109,
+  "runtime_error_outputs": 0,
+  "packages": {
+    "numpy": "2.4.6",
+    "pandas": "3.0.3",
+    "scikit-learn": "1.9.0",
+    "statsmodels": "0.14.6",
+    "firthmodels": "0.8.2",
+    "google-cloud-bigquery": "3.41.0"
+  },
+  "python": "3.12.13",
+  "source_sha256": {
+    "sql/01_build_base_hosp_admissions.sql": "9b8ae35397ee09f39fa365b89c089def07b8d3fe48f1038dbf69197d87184b56",
+    "sql/01_collapse_race_categories.sql": "00c8950bce6a735655bd199ebc5c0b0868eef72480358b90444d096a25c5e00f",
+    "sql/02_exclude_icu_admissions.sql": "c2a93889b67dfac79fe2a8c770e0f83c98dff49e115ecee6a14a3a399136fc92",
+    "sql/03_build_analysis_dataset.sql": "3cd93c33ba7c733241702f2ceae6211ca4bc4bdde5abeabd422cc26ca2dc79f9",
+    "sql/03_define_exposure_raas_early.sql": "0bbcc0b13e5f080b807caf266f308bca595f1deb2a93baa87708bba567404be0",
+    "sql/04_check_raas_drugs.sql": "66c0f091c85effc2db31eb237901ed48661a18b9050f4b26b68f91507a7c98b9",
+    "sql/05_prediction_time_inputs.sql": "81bec21ad9560c659a46d3141aa916771c6634d0395ba9b3214e9294244ac7df",
+    "scripts/real_data_access.py": "7752849186ada923967baf7c721c774b2898b1fb10451034706c1afb2c3dc933",
+    "scripts/nonicu_notebook_results.py": "e0748f3eeb95a214486288b23b201bee5e38ce7a823beaf75ac8ee254d27706c",
+    "scripts/nonicu_result_specs.json": "83f939ac824f611652b63e71cf092c3406da95a044ee3751722a2771af5fde34",
+    "scripts/firth_sensitivity.py": "0338a269f0279e693e0fc3bb0ff655b5544d201be5dc3296bce065845dfcdb83",
+    "scripts/firth_point_fallback.py": "32dfe0e8a37d6da9a6549078014370b618601c304d562eb217fee73d84dd9775",
+    "scripts/patient_validation.py": "ec0c8f40ddb3f66cf8f189d3ff0958a4525f0815b39f7fc40b9fdf9cb66a761a",
+    "scripts/prediction_time_validation.py": "0eea87d969a3615ff980f9b113b05262c8c7102c7471dd29a73480bb74c833a9",
+    "scripts/prediction_time_chronology_sensitivity.py": "5443fb6ca1f5bafe436dd0bc75d149dfcdf7d741778e1c9d4500a459a21b92b5",
+    "scripts/rebuild_analysis_tables.py": "07290e8ba40bf7801773cb9041dc077573c70c041d86283c8035f2787420acd7",
+    "scripts/validation_checklist.py": "f9f5eb65293b66ead3efbbb70f68a85956561c4705291dcb8db8801e5d3329f4"
+  },
+  "preflight": {
+    "checked_utc": "2026-11-19T09:23:18.926694+00:00",
+    "project": "mimic-iv-portfolio",
+    "dataset": "nonicu_raas",
+    "location": "US",
+    "default_expiration_ms": 5184000000,
+    "dry_run_bytes": 921440830,
+    "maximum_dry_run_bytes": 10737418240,
+    "tables": [
+      {
+        "table": "base_admissions",
+        "rows": 546028,
+        "expires_utc": "2027-01-17T10:13:24.573000+00:00",
+        "columns": 19
+      },
+      {
+        "table": "base_admissions_racegrp",
+        "rows": 546028,
+        "expires_utc": "2027-01-17T10:15:36.572000+00:00",
+        "columns": 21
+      },
+      {
+        "table": "nonicu_admissions",
+        "rows": 460786,
+        "expires_utc": "2027-01-17T10:17:51.975000+00:00",
+        "columns": 21
+      },
+      {
+        "table": "exposure_raas_early",
+        "rows": 460786,
+        "expires_utc": "2027-01-17T10:20:05.828000+00:00",
+        "columns": 6
+      },
+      {
+        "table": "analysis_dataset",
+        "rows": 460786,
+        "expires_utc": "2027-01-17T10:20:36.400000+00:00",
+        "columns": 25
+      }
+    ],
+    "credentials_or_rows_exported": false,
+    "billing_changed": false
+  },
+  "connected_checks": {
+    "completed_utc": "2026-11-19T09:38:49.628589+00:00",
+    "checks": [
+      {
+        "check": "analysis_integrity",
+        "aggregates": {
+          "admissions": 460786,
+          "unique_admissions": 460786,
+          "patients": 191775,
+          "deaths": 2326,
+          "missing_identifiers": 0,
+          "invalid_exposure_flags": 0,
+          "inconsistent_exposure_flags": 0
+        },
+        "dry_run_bytes": 25804016,
+        "bytes_processed": 25804016,
+        "job_id": "9e97a9c4-79ac-44bb-bece-49583a7643b9",
+        "sql_sha256": "bafb812e1948abdfa9e6390756afe6d4fd230b424ee057e7ddd32a59b342dc53"
+      },
+      {
+        "check": "no_entire_stay_icu",
+        "aggregates": {
+          "icu_matches": 0
+        },
+        "dry_run_bytes": 4441952,
+        "bytes_processed": 4441952,
+        "job_id": "3dde2a68-518f-4abc-8f5f-6d667f6685b1",
+        "sql_sha256": "59102191a365a0e4fdb2d72cfcaa8cc1d056a482ecfcc64926406ad1e30ab280"
+      },
+      {
+        "check": "corrected_landmark",
+        "aggregates": {
+          "admissions": 342519,
+          "deaths": 1769
+        },
+        "dry_run_bytes": 11077456,
+        "bytes_processed": 11077456,
+        "job_id": "3299ee3c-3bea-465b-a9db-a1d7512db6f0",
+        "sql_sha256": "d69740f0cecd149fbc1f6797204ca65418fb77174120f4a3431370bc4ae6fd75"
+      }
+    ],
+    "tables": [
+      {
+        "table": "base_admissions",
+        "rows": 546028,
+        "expires_utc": "2027-01-18T09:25:42.529000+00:00",
+        "columns": 19
+      },
+      {
+        "table": "base_admissions_racegrp",
+        "rows": 546028,
+        "expires_utc": "2027-01-18T09:27:48.782000+00:00",
+        "columns": 21
+      },
+      {
+        "table": "nonicu_admissions",
+        "rows": 460786,
+        "expires_utc": "2027-01-18T09:29:55.844000+00:00",
+        "columns": 21
+      },
+      {
+        "table": "exposure_raas_early",
+        "rows": 460786,
+        "expires_utc": "2027-01-18T09:32:01.789000+00:00",
+        "columns": 6
+      },
+      {
+        "table": "analysis_dataset",
+        "rows": 460786,
+        "expires_utc": "2027-01-18T09:32:33.650000+00:00",
+        "columns": 25
+      }
+    ],
+    "maximum_bytes_billed": 10737418240,
+    "row_exports": false,
+    "billing_changed": false
+  },
+  "auxiliary_cli_checks": {
+    "rebuild_helper": {
+      "mode": "read-only dry-run; no --execute",
+      "returncode": 0,
+      "dry_run_bytes": 921440830
+    },
+    "validation_checklist": {
+      "arguments": [
+        "--step",
+        "all"
+      ],
+      "returncode": 0,
+      "primary_exposure_prevalence_percent": 12.3322,
+      "landmark_exposure_prevalence_percent": 14.1353,
+      "feature_guard_passed": true,
+      "patients_with_multiple_admissions": 85858
+    },
+    "row_exports": false,
+    "chronology_sensitivity": {
+      "returncode": 0,
+      "master_patient_allocation_unchanged": true,
+      "independent_sql_counts_matched": true,
+      "primary_results_overwritten": false,
+      "aggregate_only": true
+    }
+  },
+  "aggregate_comparison": {
+    "absolute_tolerance": 1e-07,
+    "relative_tolerance": 1e-06,
+    "files": [
+      {
+        "file": "age_risk_patient_bootstrap.csv",
+        "same_bytes": true,
+        "same_shape_and_columns": true,
+        "numerically_equal": true,
+        "changed_columns_beyond_tolerance": []
+      },
+      {
+        "file": "firth_model_comparison.csv",
+        "same_bytes": true,
+        "same_shape_and_columns": true,
+        "numerically_equal": true,
+        "changed_columns_beyond_tolerance": []
+      },
+      {
+        "file": "firth_patient_bootstrap.csv",
+        "same_bytes": true,
+        "same_shape_and_columns": true,
+        "numerically_equal": true,
+        "changed_columns_beyond_tolerance": []
+      },
+      {
+        "file": "landmark_cohort_counts.csv",
+        "same_bytes": true,
+        "same_shape_and_columns": true,
+        "numerically_equal": true,
+        "changed_columns_beyond_tolerance": []
+      },
+      {
+        "file": "landmark_diagnostics.csv",
+        "same_bytes": true,
+        "same_shape_and_columns": true,
+        "numerically_equal": true,
+        "changed_columns_beyond_tolerance": []
+      },
+      {
+        "file": "landmark_exclusions.csv",
+        "same_bytes": true,
+        "same_shape_and_columns": true,
+        "numerically_equal": true,
+        "changed_columns_beyond_tolerance": []
+      },
+      {
+        "file": "landmark_model_comparison.csv",
+        "same_bytes": true,
+        "same_shape_and_columns": true,
+        "numerically_equal": true,
+        "changed_columns_beyond_tolerance": []
+      },
+      {
+        "file": "mle_diagnostics.csv",
+        "same_bytes": false,
+        "same_shape_and_columns": true,
+        "numerically_equal": false,
+        "changed_columns_beyond_tolerance": [
+          "coefficient_ci_lower",
+          "coefficient_ci_upper"
+        ]
+      },
+      {
+        "file": "patient_split_validation.csv",
+        "same_bytes": true,
+        "same_shape_and_columns": true,
+        "numerically_equal": true,
+        "changed_columns_beyond_tolerance": []
+      },
+      {
+        "file": "prediction_time_calibration.csv",
+        "same_bytes": false,
+        "same_shape_and_columns": true,
+        "numerically_equal": true,
+        "changed_columns_beyond_tolerance": []
+      },
+      {
+        "file": "prediction_time_chronology_sensitivity.csv",
+        "same_bytes": true,
+        "same_shape_and_columns": true,
+        "numerically_equal": true,
+        "changed_columns_beyond_tolerance": []
+      },
+      {
+        "file": "prediction_time_cohorts.csv",
+        "same_bytes": true,
+        "same_shape_and_columns": true,
+        "numerically_equal": true,
+        "changed_columns_beyond_tolerance": []
+      },
+      {
+        "file": "prediction_time_exclusions.csv",
+        "same_bytes": true,
+        "same_shape_and_columns": true,
+        "numerically_equal": true,
+        "changed_columns_beyond_tolerance": []
+      },
+      {
+        "file": "prediction_time_metrics.csv",
+        "same_bytes": false,
+        "same_shape_and_columns": true,
+        "numerically_equal": true,
+        "changed_columns_beyond_tolerance": []
+      },
+      {
+        "file": "risk_patient_bootstrap.csv",
+        "same_bytes": true,
+        "same_shape_and_columns": true,
+        "numerically_equal": true,
+        "changed_columns_beyond_tolerance": []
+      },
+      {
+        "file": "unadjusted_outcomes.csv",
+        "same_bytes": true,
+        "same_shape_and_columns": true,
+        "numerically_equal": true,
+        "changed_columns_beyond_tolerance": []
+      }
+    ],
+    "non_mle_aggregate_files_equal": true,
+    "cohort_counts_preserved": true,
+    "all_five_firth_inference_valid": true,
+    "patient_bootstraps_successful": 500,
+    "prediction_overlap": 0,
+    "admission_prediction_intervals_withheld": true,
+    "row_exports": false
+  },
+  "model_checks": {
+    "primary_mle_converged": false,
+    "firth_point_models_valid": 5,
+    "firth_patient_bootstrap_successful": [
+      500,
+      500,
+      500,
+      500,
+      500
+    ],
+    "risk_patient_bootstrap_successful": [
+      500,
+      500,
+      500
+    ],
+    "reference_admission_bootstrap_successful": 200,
+    "patient_disjoint_holdout": {
+      "test_admissions": 92477,
+      "test_deaths": 468,
+      "overlapping_patients": 0,
+      "roc_auc": 0.8606351264596654,
+      "pr_auc": 0.1176071713031529
+    },
+    "legacy_unordered_admission_split": {
+      "roc_auc": 0.8516836864107895,
+      "pr_auc": 0.10820031712854676,
+      "scope": "Historical comparator only; retrieval-order dependent, not current patient-disjoint or time-anchored metrics."
+    }
+  },
+  "preservation": {
+    "executed_notebook_sources_equal_pre_run_backup": true,
+    "unchanged_private_historical_artifact_stats": 21,
+    "historical_receipts_rewritten": false
+  },
+  "row_exports": false,
+  "SAS_executed": false,
+  "billing_changed": false,
+  "dataset_expiration_changed": false,
+  "release_checks_scope": "Offline tests, Quarto generation, push and live deployment are verified separately after this clinical execution record.",
+  "local_release_checks": {
+    "completed_utc": "2026-11-19T09:59:37.110626+00:00",
+    "offline_tests": {
+      "network_credentials_blocked": true,
+      "test_count": 12,
+      "passed": 12,
+      "tests": [
+        {
+          "test": "test_audit_corrections.py",
+          "returncode": 0,
+          "seconds": 1.93
+        },
+        {
+          "test": "test_firth_sensitivity.py",
+          "returncode": 0,
+          "seconds": 1.11
+        },
+        {
+          "test": "test_landmark_sensitivity.py",
+          "returncode": 0,
+          "seconds": 1.33
+        },
+        {
+          "test": "test_notebook_results.py",
+          "returncode": 0,
+          "seconds": 13.32
+        },
+        {
+          "test": "test_patient_validation.py",
+          "returncode": 0,
+          "seconds": 1.5
+        },
+        {
+          "test": "test_prediction_time_chronology_sensitivity.py",
+          "returncode": 0,
+          "seconds": 2.39
+        },
+        {
+          "test": "test_prediction_time_location.py",
+          "returncode": 0,
+          "seconds": 1.36
+        },
+        {
+          "test": "test_prediction_time_report.py",
+          "returncode": 0,
+          "seconds": 0.35
+        },
+        {
+          "test": "test_prediction_time_validation.py",
+          "returncode": 0,
+          "seconds": 2.04
+        },
+        {
+          "test": "test_real_data_access.py",
+          "returncode": 0,
+          "seconds": 1.82
+        },
+        {
+          "test": "test_report_consistency.py",
+          "returncode": 0,
+          "seconds": 0.52
+        },
+        {
+          "test": "test_report_publication.py",
+          "returncode": 0,
+          "seconds": 0.04
+        }
+      ]
+    },
+    "quarto_render_succeeded": true,
+    "publication_checks": {
+      "copied_images": 0,
+      "checked_resources": 23
+    },
+    "canonical_public_images_equal": [
+      "absolute_risk_difference_patient_bootstrap.png",
+      "absolute_risk_difference_plot.png",
+      "baseline_characteristics_summary.png",
+      "firth_landmark_patient_bootstrap.png",
+      "firth_landmark_sensitivity.png",
+      "nonicu_table_lineage_construction.svg",
+      "predicted_mortality_by_age.png",
+      "prediction_time_calibration.png",
+      "unadjusted_mortality_by_raas.png",
+      "workflow_diagram.svg"
+    ],
+    "html_sha256": "cb9e03390449e74f5124f1ccd7df6f78c90d3dcd08b068d178ec5a4d3e227e5d",
+    "git_push_and_live_deployment": "verified separately after commit"
+  }
+}

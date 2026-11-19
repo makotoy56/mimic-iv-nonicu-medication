@@ -1,4 +1,6 @@
-# Prediction-time evaluation: real-data validation (2026-11-18)
+# Prediction-time evaluation: real-data validation
+
+The [2026-11-19 connected Run All](CLINICAL_REEXECUTION_20261119.md) reproduced the cohorts, metrics, interval-withholding rule, SQL/Python counts, native-transfer checks and chronology sensitivity below. The historical 29-case BigQuery boundary exercise was not repeated in that run.
 
 This is an **additional** prediction-time analysis in notebook 04c, separate from 04b's original association cohorts and retrospective discrimination (ROC AUC 0.860635 / PR AUC 0.117607). The outcome is death strictly after the prediction instant through recorded hospital discharge, with a variable hospital-stay horizon.
 
@@ -93,4 +95,4 @@ This chronology sensitivity assesses source-timing uncertainty; it does not excl
 
 ## Evidence and limits
 
-Sources: `sql/05_prediction_time_inputs.sql`, `scripts/prediction_time_validation.py`, notebook 04c, aggregate `prediction_time_*.csv/json`, and [current reexecution record](CLINICAL_REEXECUTION_615de01.md). Source references and operational-availability assumptions are in the [protocol](PREDICTION_TIME_PROTOCOL.md). One internal split, approximate reconstructed age, restricted ward coverage, limited predictors, uncertain timestamps/version history, variable follow-up and exclusion of indeterminate outcomes limit generalization. No patient records, identifiers or individual scores are published.
+Sources: `sql/05_prediction_time_inputs.sql`, `scripts/prediction_time_validation.py`, notebook 04c, aggregate `prediction_time_*.csv/json`, and [current reexecution record](CLINICAL_REEXECUTION_20261119.md). Source references and operational-availability assumptions are in the [protocol](PREDICTION_TIME_PROTOCOL.md). One internal split, approximate reconstructed age, restricted ward coverage, limited predictors, uncertain timestamps/version history, variable follow-up and exclusion of indeterminate outcomes limit generalization. No patient records, identifiers or individual scores are published.

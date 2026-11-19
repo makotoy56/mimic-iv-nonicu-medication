@@ -2,7 +2,7 @@
 title: "Documented Early Inpatient RAAS Prescription Exposure and In-Hospital Mortality in Adult Non-ICU Admissions"
 subtitle: "A MIMIC-IV Clinical Data Analytics and Real-World Evidence Portfolio Report"
 author: "Makoto Yoshida, PhD"
-date: "2026-11-18"
+date: "2026-11-19"
 format:
   html:
     toc: true
@@ -264,7 +264,7 @@ For complete environment and reproducibility details, see [REPRODUCIBILITY.md](h
 
 MIMIC-IV and PhysioNet access, Google Cloud authentication, BigQuery access, and local environment settings are configured outside the repository.
 
-The original 00–04b workflow at `615de01` was reexecuted with fresh repository kernels, followed by separate notebook 04c: 8 notebooks / 93 code cells, zero runtime error outputs. Connected BigQuery checks and original aggregate comparisons passed. [Current execution and source-preservation evidence](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/CLINICAL_REEXECUTION_615de01.md) distinguishes runtime success, separated MLE diagnostics and new prediction calibration. [Historical baseline evidence](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/PYTHON_WORKFLOW_VALIDATION.md) remains available. Local outputs are saved; Git strips notebook outputs/counts.
+On 2026-11-19, all current notebooks 00–04c were reexecuted sequentially with fresh repository kernels: 8 notebooks / 109 code cells, zero runtime error outputs. This run includes the live Python-generated displays and real-data access guards. Connected BigQuery checks and stable aggregate comparisons passed. [Current execution and source-preservation evidence](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/CLINICAL_REEXECUTION_20261119.md) distinguishes runtime success, separated MLE diagnostics and prediction calibration. [Historical 615de01](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/CLINICAL_REEXECUTION_615de01.md) and [baseline evidence](https://github.com/makotoy56/mimic-iv-nonicu-medication/blob/main/docs/PYTHON_WORKFLOW_VALIDATION.md) remain available. Local live outputs are saved; Git strips notebook outputs/counts.
 
 ## Conclusion
 

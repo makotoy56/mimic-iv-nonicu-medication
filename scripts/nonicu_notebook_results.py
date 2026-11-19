@@ -15,6 +15,7 @@ import numpy as np
 import pandas as pd
 from IPython.display import Markdown, HTML, display
 from IPython.utils.capture import capture_output
+from real_data_access import real_data_errors
 
 SPEC_PATH = Path(__file__).with_name('nonicu_result_specs.json')
 FORBIDDEN = {'subject_id','hadm_id','stay_id','transfer_id','poe_id',
@@ -380,8 +381,9 @@ class NotebookResults:
         labels=[labels] if isinstance(labels,str) else labels
         previous_figure=namespace.get('fig')
         namespace['_notebook_result_value']=None
-        with capture_output(stdout=True,stderr=True,display=True) as captured:
-            yield
+        with real_data_errors('notebook result input/calculation'):
+            with capture_output(stdout=True,stderr=True,display=True) as captured:
+                yield
         # Exceptions leave before this point: never publish a previous result.
         for index,label in enumerate(labels):
             payload=live_payload(label,namespace,captured,previous_figure)
